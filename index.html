@@ -1,0 +1,1547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalyd — AI-powered TMS for road freight</title>
+<meta name="description" content="Kalyd reads every transport order in your inbox, creates the order and puts it on your dispatch board. Assign, track and invoice from the same record.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;
+  --bg-soft:#fafaf8;
+  --bg-sunk:#f4f4f1;
+  --ink:#0e0f10;
+  --ink-2:#4b4f56;
+  --ink-3:#8b9099;
+  --line:#ebebe7;
+  --line-2:#dfdfd9;
+  --yellow:#ffc800;
+  --yellow-2:#ffd94d;
+  --yellow-soft:#fff6d1;
+  --yellow-ink:#7a5800;
+  --green:#18a957;
+  --red:#e5484d;
+  --wa:#dcf8c6;
+  --radius:4px;
+  --shadow:0 1px 0 rgba(14,15,16,.04),0 8px 24px -8px rgba(14,15,16,.10),0 24px 64px -24px rgba(14,15,16,.14);
+  --road-gutter:88px;
+  --font:"Inter",system-ui,-apple-system,sans-serif;
+  --font-display:"Inter Tight","Inter",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-left:var(--road-gutter)}
+::selection{background:var(--yellow-2);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{padding:0 56px}
+.frame{width:100%}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:12px;font-weight:500;font-size:15px;border:1px solid transparent;transition:transform .15s ease,background .15s ease,box-shadow .15s ease;cursor:pointer;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--ink);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 2px 6px rgba(14,15,16,.18)}
+.btn-primary:hover{background:#26282b}
+.btn-yellow{background:var(--yellow);color:var(--ink);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 2px 8px rgba(255,200,0,.35)}
+.btn-yellow:hover{background:var(--yellow-2)}
+.btn-ghost{background:#fff;border-color:var(--line-2);color:var(--ink)}
+.btn-ghost:hover{background:var(--bg-soft)}
+.btn-sm{height:34px;padding:0 13px;font-size:14px;border-radius:12px}
+.btn .arr{transition:transform .2s ease}
+.btn:hover .arr{transform:translateX(3px)}
+
+/* ---------- nav ---------- */
+/* header floats 20px below the top with a blurred glass background; once you scroll it docks full width */
+.nav{position:fixed;z-index:40;top:20px;left:calc(var(--road-gutter) + 24px);right:24px;border:1px solid var(--line-2);border-radius:var(--radius);background:rgba(255,255,255,.62);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);box-shadow:0 8px 28px -12px rgba(14,15,16,.18);transition:top .3s ease,left .3s ease,right .3s ease,border-radius .3s ease,background .3s ease,box-shadow .3s ease,border-color .3s ease}
+.nav.stuck{top:0;left:0;right:0;border-radius:0;border-color:transparent transparent var(--line);background:rgba(255,255,255,.85);box-shadow:none}
+.nav .wrap{display:flex;align-items:center;height:60px;gap:32px;padding:0 12px 0 20px;transition:padding .3s ease}
+.nav.stuck .wrap{padding:0 56px 0 calc(var(--road-gutter) + 56px)}
+.nav .logo-mark{border-radius:var(--radius)}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:-.02em}
+.logo-mark{width:28px;height:28px;border-radius:8px;background:var(--yellow);display:grid;place-items:center;box-shadow:0 0 0 1px rgba(14,15,16,.08) inset}
+.nav-links{display:flex;gap:4px;font-size:14.5px;color:var(--ink-2)}
+.nav-links a{padding:6px 12px;border-radius:8px}
+.nav-links a:hover{background:var(--bg-sunk);color:var(--ink)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-login{font-size:14.5px;color:var(--ink-2);padding:6px 12px}
+.nav-login:hover{color:var(--ink)}
+
+/* ---------- sections ---------- */
+section{position:relative}
+.sec{border-top:1px solid var(--line)}
+.sec-inner{padding:112px 56px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);background:#fff;border:1px solid var(--line-2);padding:5px 12px 5px 6px;border-radius:999px}
+.eyebrow .pill{background:var(--yellow);color:var(--ink);font-weight:600;font-size:11.5px;padding:2px 8px;border-radius:999px;letter-spacing:.01em}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.kicker::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--yellow);box-shadow:0 0 0 1px rgba(14,15,16,.12) inset}
+h1,h2,h3{font-family:var(--font-display);letter-spacing:-.035em;margin:0;font-weight:600}
+h1{font-size:clamp(40px,6.2vw,76px);line-height:1.02}
+h2{font-size:clamp(32px,4.2vw,52px);line-height:1.06}
+h3{font-size:19px;letter-spacing:-.015em;line-height:1.3}
+.lead{font-size:clamp(17px,1.5vw,19.5px);color:var(--ink-2);line-height:1.55}
+.muted{color:var(--ink-2)}
+mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow-2) 92%,transparent 92%);color:inherit;padding:0 .04em}
+
+/* ---------- hero ---------- */
+.hero{background:radial-gradient(1200px 500px at 50% -10%,var(--yellow-soft),transparent 70%),var(--bg);overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 30%,transparent 75%);opacity:.7;pointer-events:none}
+.hero-inner{position:relative;padding:188px 56px 0;text-align:center}
+.hero h1{max-width:1240px;margin:28px auto 0;font-weight:700;letter-spacing:-.045em;font-size:clamp(36px,4.6vw,76px);text-wrap:balance}
+.h1-accent{background:linear-gradient(90deg,#f0b400 0%,#e0a000 55%,#c88a00 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow-ai{gap:8px;padding:6px 14px 6px 12px;color:#fff;background:var(--ink);border-color:var(--ink);font-weight:500;box-shadow:0 4px 14px -4px rgba(14,15,16,.35)}
+.hero .lead{max-width:640px;margin:24px auto 0}
+.hero-cta{display:flex;gap:10px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.hero-cta .btn{height:48px;padding:0 22px;font-size:15.5px}
+.trust{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:18px;font-size:13.5px;color:var(--ink-3)}
+.trust span{display:inline-flex;align-items:center;gap:6px}
+.trust svg{color:var(--green)}
+.tagline{align-items:center;gap:12px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.tagline i{width:5px;height:5px;border-radius:50%;background:var(--yellow)}
+
+/* ---------- product window (hero media) ---------- */
+.window{margin:64px auto 0;max-width:1040px;background:#fff;border:1px solid var(--line-2);border-radius:16px 16px 0 0;border-bottom:0;box-shadow:var(--shadow);text-align:left;overflow:hidden}
+.win-bar{height:42px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.win-bar i{width:11px;height:11px;border-radius:50%;background:#e2e2dd;display:block}
+.win-title{margin:0 auto;font-size:12.5px;color:var(--ink-3);font-family:var(--mono)}
+.win-body{display:grid;grid-template-columns:200px 1fr;height:460px}
+.win-side{border-right:1px solid var(--line);padding:14px 10px;background:var(--bg-soft);font-size:13.5px}
+.win-side .ws-org{display:flex;align-items:center;gap:8px;padding:6px 8px 14px;font-weight:600}
+.win-side .ws-org b{width:22px;height:22px;border-radius:6px;background:var(--ink);color:var(--yellow);display:grid;place-items:center;font-size:11px}
+.ws-item{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:7px;color:var(--ink-2);transition:background .3s,color .3s}
+.ws-item.on{background:#fff;color:var(--ink);box-shadow:0 0 0 1px var(--line-2),0 1px 2px rgba(0,0,0,.04)}
+.ws-item .dot{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
+.ws-item.on .dot{background:var(--yellow)}
+.ws-item .ct{margin-left:auto;font-size:11px;font-family:var(--mono);color:var(--ink-3)}
+.win-main{position:relative;overflow:hidden;background:#fff}
+.stage{position:absolute;inset:0;padding:26px 28px;opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+.stage.on{opacity:1;transform:none}
+.stage-h{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;margin-bottom:18px}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:3px 8px;border-radius:6px;background:var(--bg-sunk);color:var(--ink-2);border:1px solid var(--line)}
+.tag.y{background:var(--yellow-soft);border-color:#f3e2a0;color:var(--yellow-ink)}
+.tag.g{background:#e7f7ee;border-color:#c5ebd5;color:#0f7a3e}
+.tag.r{background:#fdecec;border-color:#f6caca;color:#b42318}
+
+/* stage 1: email */
+.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mail-head{padding:14px 16px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.avatar{width:32px;height:32px;border-radius:50%;background:#e9eef7;display:grid;place-items:center;font-size:12px;font-weight:600;color:#3b5aa8}
+.mail-head small{display:block;color:var(--ink-3);font-size:12px}
+.mail-body{padding:16px;font-size:13.5px;color:var(--ink-2);line-height:1.7}
+.mail-body .hl{background:transparent;border-radius:3px;transition:background .4s}
+.stage.on .mail-body .hl{animation:hl 2.6s ease forwards}
+.stage.on .mail-body .hl:nth-of-type(2){animation-delay:.25s}
+.stage.on .mail-body .hl:nth-of-type(3){animation-delay:.5s}
+.stage.on .mail-body .hl:nth-of-type(4){animation-delay:.75s}
+.stage.on .mail-body .hl:nth-of-type(5){animation-delay:1s}
+.stage.on .mail-body .hl:nth-of-type(6){animation-delay:1.25s}
+@keyframes hl{0%,30%{background:transparent}50%,100%{background:var(--yellow-soft);box-shadow:0 0 0 2px var(--yellow-soft)}}
+.attach{display:inline-flex;gap:8px;align-items:center;margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--ink-2)}
+.scan{position:absolute;left:28px;right:28px;height:2px;background:linear-gradient(90deg,transparent,var(--yellow),transparent);top:80px;opacity:0}
+.stage.on .scan{animation:scan 2.2s ease-in-out .2s 1 forwards}
+@keyframes scan{0%{top:84px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:340px;opacity:0}}
+
+/* stage 2: extraction */
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{border:1px solid var(--line);border-radius:10px;padding:10px 12px;opacity:0;transform:translateY(6px)}
+.stage.on .field{animation:fin .4s ease forwards}
+.field label{display:block;font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-family:var(--mono)}
+.field div{font-size:14px;font-weight:500;margin-top:2px}
+.field.adr{border-color:#f6caca;background:#fff8f8}
+@keyframes fin{to{opacity:1;transform:none}}
+.ai-bar{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12.5px;color:var(--ink-2)}
+.ai-bar .meter{flex:1;height:6px;border-radius:9px;background:var(--bg-sunk);overflow:hidden}
+.ai-bar .meter i{display:block;height:100%;width:0;background:var(--yellow);border-radius:9px}
+.stage.on .ai-bar .meter i{animation:grow 2.4s ease forwards}
+@keyframes grow{to{width:100%}}
+
+/* stage 3: board */
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;height:360px}
+.col{background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:8px}
+.col h5{margin:2px 4px 8px;font-size:12px;font-weight:600;color:var(--ink-2);display:flex;justify-content:space-between}
+.col h5 span{color:var(--ink-3);font-weight:400;font-family:var(--mono)}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 9px;margin-bottom:7px;font-size:11.5px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.card b{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
+.card .meta{color:var(--ink-3);display:flex;justify-content:space-between}
+.card.new{border-color:var(--yellow);box-shadow:0 0 0 3px var(--yellow-soft)}
+.stage.on .card.new{animation:drop .6s cubic-bezier(.2,.9,.3,1.3) .3s both}
+@keyframes drop{from{opacity:0;transform:translateY(-24px) scale(.96)}to{opacity:1;transform:none}}
+.ghost{height:46px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--bg-sunk) 0 40%,transparent 40% 100%);opacity:.6;margin-bottom:7px}
+
+/* stage 4: whatsapp */
+.wa{display:grid;grid-template-columns:1fr 280px;gap:22px;align-items:start}
+.phone{border:1px solid var(--line-2);border-radius:26px;padding:10px;background:#fff;box-shadow:var(--shadow)}
+.phone-in{border-radius:18px;background:#efe9df;height:350px;padding:12px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.phone-top{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;background:#fff;margin:-12px -12px 4px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.phone-top i{width:24px;height:24px;border-radius:50%;background:var(--yellow);display:block}
+.bub{background:var(--wa);border-radius:10px 10px 2px 10px;padding:8px 10px;font-size:12px;align-self:flex-end;max-width:92%;box-shadow:0 1px 1px rgba(0,0,0,.06);line-height:1.5}
+.bub b{display:block;margin-bottom:2px}
+.bub.in{background:#fff;align-self:flex-start;border-radius:10px 10px 10px 2px}
+.stage.on .bub{animation:fin .4s ease both}
+.stage.on .bub:nth-child(3){animation-delay:.9s}
+.stage.on .bub:nth-child(4){animation-delay:1.8s}
+.assign{border:1px solid var(--line);border-radius:12px;padding:16px}
+.drv{display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;border:1px solid var(--line);margin-top:8px;font-size:13.5px}
+.drv.sel{border-color:var(--yellow);background:var(--yellow-soft)}
+.drv .avatar{width:28px;height:28px;font-size:11px}
+.drv small{color:var(--ink-3);display:block;font-size:11.5px}
+
+/* stage 5: tracking */
+.map{position:relative;height:300px;border-radius:12px;border:1px solid var(--line);overflow:hidden;background:
+  linear-gradient(var(--bg-sunk) 1px,transparent 1px) 0 0/32px 32px,
+  linear-gradient(90deg,var(--bg-sunk) 1px,transparent 1px) 0 0/32px 32px,#fbfbf9}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.eta{position:absolute;right:14px;top:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;box-shadow:var(--shadow)}
+.eta b{font-size:18px;display:block;font-family:var(--font-display)}
+.share{margin-top:12px;display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--ink-2)}
+.share code{font-family:var(--mono);background:var(--bg-sunk);padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
+
+/* stage 6: invoice */
+.inv{border:1px solid var(--line);border-radius:12px;padding:20px 22px;max-width:520px}
+.inv-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.inv-top b{font-family:var(--font-display);font-size:20px}
+.inv table{width:100%;border-collapse:collapse;font-size:13px}
+.inv td{padding:8px 0;border-bottom:1px solid var(--line)}
+.inv td:last-child{text-align:right;font-family:var(--mono)}
+.inv tr.total td{border:0;font-weight:600;font-size:14.5px;padding-top:12px}
+.sent{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12.5px;color:#0f7a3e}
+.stage.on .sent{animation:fin .4s ease 1.2s both}
+
+/* timeline under window */
+.steps-bar{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);background:var(--bg-soft)}
+.sb{padding:12px 14px;font-size:12.5px;color:var(--ink-3);border-right:1px solid var(--line);cursor:pointer;position:relative;text-align:left;background:none;border-top:0;border-bottom:0;border-left:0;font-family:inherit}
+.sb:last-child{border-right:0}
+.sb b{display:block;color:var(--ink-2);font-weight:500;font-size:13px}
+.sb .pr{position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--yellow)}
+.sb.on b{color:var(--ink)}
+.sb.on .pr{animation:pr var(--dur,3600ms) linear forwards}
+.sb.done .pr{width:100%}
+@keyframes pr{to{width:100%}}
+/* desktop shows progress in the window sidebar; the step bar is for smaller screens only */
+@media (min-width:1021px){.steps-bar{display:none}}
+
+/* ---------- proof ---------- */
+.proof-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+.proof{display:grid;grid-template-columns:1.05fr 1fr;gap:0}
+.proof .ph{min-height:420px;border-right:1px solid var(--line)}
+.placeholder{position:relative;background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px);display:grid;place-items:center;color:var(--ink-3);font-size:13px;font-family:var(--mono);text-align:center;padding:24px}
+.placeholder span{background:#fff;border:1px dashed var(--line-2);border-radius:8px;padding:8px 12px}
+.proof-txt{padding:56px}
+.quote{font-family:var(--font-display);font-size:clamp(22px,2.3vw,28px);line-height:1.3;letter-spacing:-.02em;margin:18px 0 22px}
+.tbc{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--yellow-soft);color:var(--yellow-ink);padding:2px 7px;border-radius:5px;vertical-align:middle}
+.who{display:flex;align-items:center;gap:12px;font-size:14px}
+.who .avatar{width:40px;height:40px;background:var(--yellow-soft);color:var(--yellow-ink)}
+.who small{display:block;color:var(--ink-3)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line)}
+.stat{padding:28px 32px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{font-family:var(--font-display);font-size:40px;letter-spacing:-.04em;line-height:1;display:block}
+.stat span{color:var(--ink-2);font-size:14px}
+
+/* ---------- features ---------- */
+.sec-head{max-width:720px;margin-bottom:56px}
+.sec-head .lead{margin-top:18px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+.feat{padding:30px 28px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .2s}
+.feat:nth-child(3n){border-right:0}
+.feat:nth-last-child(-n+3){border-bottom:0}
+.feat:hover{background:var(--bg-soft)}
+.ico{width:36px;height:36px;border-radius:9px;background:var(--yellow-soft);border:1px solid #f3e2a0;display:grid;place-items:center;margin-bottom:18px;color:var(--yellow-ink)}
+.feat p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
+
+/* ---------- how it works ---------- */
+.how{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.step{border:1px solid var(--line);border-radius:var(--radius);background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.step-txt{padding:28px 28px 22px}
+.step-n{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#e6ad00;margin-bottom:12px}
+.step p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
+.step-vis{margin-top:auto;background:var(--bg-soft);border-top:1px solid var(--line);padding:24px;min-height:210px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.step-vis.placeholder{background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px);aspect-ratio:16/10;min-height:0}
+.mini{background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mini.adr{border-color:#f6caca;color:#b42318;background:#fff8f8}
+.mini .bar{width:60px;height:5px;border-radius:5px;background:var(--bg-sunk);overflow:hidden}
+.mini .bar i{display:block;height:100%;width:8%;background:var(--yellow)}
+.env{width:100%;max-width:340px;background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink-2);box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.env b{color:var(--ink);font-size:13px}
+.env .ln{height:6px;border-radius:4px;background:var(--bg-sunk);margin-top:7px}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- AI block ---------- */
+.ai{background:var(--ink);color:#fff;border-radius:var(--radius);padding:64px;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;position:relative;overflow:hidden}
+.ai > *{position:relative;z-index:1}
+.ai .kicker{color:#a3a7ae}
+.ai h2{color:#fff}
+.ai .lead{color:#b9bcc2;margin-top:18px}
+.ai-list{list-style:none;margin:0;padding:0;display:grid;gap:4px;position:relative;z-index:1}
+.ai-list li{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);color:#b9bcc2;font-size:15.5px}
+.ai-list li:last-child{border-bottom:0}
+.ai-list li b{color:#fff;font-weight:600}
+.ai-list .ico{background:rgba(255,200,0,.12);border-color:rgba(255,200,0,.3);color:var(--yellow);margin:0}
+.ai-list li.new .ico{background:var(--yellow);color:var(--ink)}
+
+/* ---------- integrations ---------- */
+.integ{background:var(--bg-sunk)}
+.integ-inner{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:48px;align-items:center;padding:112px 0 112px 56px}
+.integ h2{font-size:clamp(30px,3.2vw,42px);line-height:1.12}
+.integ h2 .dim{color:var(--ink-3)}
+.integ .lead{margin-top:20px;font-size:17px}
+.integ-legend{display:flex;gap:18px;margin-top:28px;font-size:13px;color:var(--ink-2)}
+.integ-legend span{display:inline-flex;align-items:center;gap:7px}
+.st{width:8px;height:8px;border-radius:50%;background:var(--line-2);display:inline-block}
+.st.on{background:var(--yellow);box-shadow:0 0 0 1px rgba(14,15,16,.25)}
+.marquee{display:grid;gap:16px;overflow:hidden;min-width:0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 88%,transparent)}
+.mq-row{display:flex;overflow:hidden}
+.mq-track{display:flex;gap:16px;padding-right:16px;flex:none;animation:mq 48s linear infinite}
+.mq-row.rev .mq-track{animation-direction:reverse}
+.marquee:hover .mq-track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-100%)}}
+.tile{position:relative;flex:none;width:188px;height:168px;background:#fff;border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;transition:border-color .2s,box-shadow .2s,transform .2s}
+.tile:hover{border-color:var(--line-2);box-shadow:var(--shadow);transform:translateY(-2px)}
+.t-ico{width:40px;height:40px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:12px}
+.t-ico svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-family:var(--font-display);font-size:16px;letter-spacing:-.015em;font-weight:600}
+.tile small{color:var(--ink-3);font-size:12px;margin-top:2px}
+.st-pill{position:absolute;top:10px;right:10px;font-size:10.5px;font-weight:500;color:var(--ink-3);display:inline-flex;align-items:center;gap:5px}
+.st-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--line-2)}
+.st-pill.on{color:var(--ink-2)}
+.st-pill.on::before{background:var(--yellow);box-shadow:0 0 0 1px rgba(14,15,16,.25)}
+
+/* ---------- Antwerp ---------- */
+.ant{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.checks{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.checks li{display:flex;align-items:center;gap:14px;padding:20px 22px;border-bottom:1px solid var(--line);font-weight:500;background:#fff}
+.checks li:last-child{border-bottom:0}
+.checks .ck{width:26px;height:26px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;flex:none}
+.flags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+
+/* ---------- origin ---------- */
+.origin{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.origin .placeholder{min-height:440px;border-right:1px solid var(--line)}
+.origin-txt{padding:56px;display:flex;flex-direction:column;justify-content:center}
+.origin-txt .lead{margin-top:18px}
+.origin blockquote{margin:28px 0 0;padding:0 0 0 18px;border-left:3px solid var(--yellow);font-size:17px;color:var(--ink)}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
+.faq-head{position:sticky;top:104px}
+.faq-head .lead{margin-top:18px}
+.faq-list{border-top:1px solid var(--line)}
+.faq-list details{border-bottom:1px solid var(--line)}
+.faq-list summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:22px 2px;font-weight:500;font-size:17px;letter-spacing:-.01em}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"";flex:none;margin-left:auto;width:28px;height:28px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M10 2v16M2 10h16' stroke='%230e0f10' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/20px no-repeat}
+
+.faq-list details[open] summary::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M2 10h16' stroke='%230e0f10' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")}
+.faq-list details p{margin:0;padding:0 48px 24px 2px;color:var(--ink-2)}
+
+/* ---------- final CTA ---------- */
+.cta{text-align:center;background:linear-gradient(180deg,#fff 0%,#fff7d6 100%)}
+.cta .lead{margin:18px auto 0;max-width:560px}
+.cta .hero-cta{margin-top:32px}
+
+/* ---------- footer ---------- */
+footer{background:linear-gradient(180deg,#fff7d6 0%,#ffeca3 100%)}
+/* tinted sections run under the road gutter, so there's no white strip on the left */
+.hero,.cta,footer{margin-left:calc(-1 * var(--road-gutter));padding-left:var(--road-gutter)}
+/* grid squares like the hero: fade in through the CTA, continue through the footer */
+.cta,footer{position:relative}
+.cta::before,footer::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.7}
+.cta::before{background-position:left bottom;-webkit-mask-image:linear-gradient(180deg,transparent 15%,#000 100%);mask-image:linear-gradient(180deg,transparent 15%,#000 100%)}
+footer::before{background-position:left top}
+.cta .frame,footer .frame{position:relative}
+.foot{display:flex;align-items:center;gap:24px;padding:28px 56px;flex-wrap:wrap;font-size:14px;color:var(--ink-2)}
+.foot nav{display:flex;gap:20px;flex-wrap:wrap}
+.foot nav a:hover{color:var(--ink)}
+.lang{position:relative}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 8px;border:0;border-radius:8px;background:none;font:inherit;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.lang-btn:hover,.lang.open .lang-btn{background:var(--bg-sunk);color:var(--ink)}
+.lang-btn .chev{transition:transform .2s ease}
+.lang.open .chev{transform:rotate(180deg)}
+.lang-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:180px;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line-2);border-radius:12px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s;z-index:50}
+.lang.up .lang-menu{top:auto;bottom:calc(100% + 6px);left:auto;right:0;transform:translateY(4px)}
+.lang.open .lang-menu{opacity:1;visibility:visible;transform:none}
+.lang-menu li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.lang-menu li span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.lang-menu li:hover{background:var(--bg-sunk)}
+.lang-menu li[aria-selected="true"]{font-weight:600}
+.lang-menu li[aria-selected="true"]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--yellow)}
+.lang-menu li:not([aria-selected="true"])::before{content:"";width:6px}
+.nav .lang{margin-right:4px}
+.foot .copy{margin-left:auto;color:var(--ink-3)}
+
+/* ---------- road (scroll progress) ---------- */
+.road{position:fixed;left:0;top:0;width:80px;height:100vh;z-index:30;pointer-events:none}
+.road svg{width:100%;height:100%;overflow:visible}
+.road .base{fill:none;stroke:var(--line-2);stroke-width:3;stroke-dasharray:7 7;stroke-linecap:butt}
+.road .done{fill:none;stroke:var(--yellow);stroke-width:5;stroke-linecap:round}
+.road .stop{fill:#fff;stroke:var(--ink);stroke-width:2;transition:fill .3s,stroke .3s}
+.road .stop.passed{fill:var(--yellow);stroke:var(--yellow)}
+.road .road-hit{pointer-events:all;cursor:pointer}
+.road .hit{fill:transparent}
+.road .stop-g .stop{transform-box:fill-box;transform-origin:center;transition:fill .3s,stroke .3s,transform .2s ease}
+.road .stop-g:hover .stop{transform:scale(1.5)}
+.road .road-hit path{transition:transform .2s ease;transform-box:fill-box;transform-origin:50% 100%}
+.road .road-hit:hover path{transform:scale(1.15)}
+.road .car,.road .car-halo{pointer-events:none}
+.road .car-halo{fill:var(--yellow);opacity:.28;transform-box:fill-box;transform-origin:center;animation:halo 1.8s ease-out infinite}
+.road .car{fill:var(--yellow);stroke:none}
+@keyframes halo{0%{transform:scale(.6);opacity:.45}100%{transform:scale(1.8);opacity:0}}
+.road-label{position:fixed;left:62px;z-index:31;font-family:var(--mono);font-size:11px;background:var(--ink);color:#fff;padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;transform:translateY(-50%);opacity:0;transition:opacity .25s}
+.road-label.show{opacity:1}
+.topbar{display:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:1020px){
+  .wrap{padding:0 32px}
+  .sec-inner{padding:88px 32px}
+  .integ-inner{grid-template-columns:1fr;padding:88px 0;gap:40px}
+  .integ-txt{padding:0 32px}
+  .hero-inner{padding:164px 32px 0}
+  .nav.stuck .wrap{padding:0 32px 0 calc(var(--road-gutter) + 32px)}
+  .proof,.ant,.origin,.ai,.faq{grid-template-columns:1fr}
+  .faq{gap:32px}
+  .faq-head{position:static}
+  .proof .ph,.origin .placeholder{border-right:0;border-bottom:1px solid var(--line);min-height:260px}
+  .ai{padding:44px 32px;gap:32px}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .feat:nth-child(3n){border-right:1px solid var(--line)}
+  .feat:nth-child(2n){border-right:0}
+  .feat:nth-last-child(-n+3){border-bottom:1px solid var(--line)}
+  .feat:nth-last-child(-n+2){border-bottom:0}
+  .win-body{grid-template-columns:1fr}
+  .win-side{display:none}
+  .nav-links{display:none}
+}
+@media (max-width:760px){
+  :root{--road-gutter:0px}
+  .road,.road-label{display:none}
+  .topbar{display:block;position:fixed;top:0;left:0;height:3px;background:var(--yellow);z-index:60;width:0}
+  .wrap{padding:0 16px}
+  .frame{border:0}
+  .sec-inner{padding:72px 16px}
+  .hero-inner{padding:128px 16px 0}
+  .nav{top:12px;left:12px;right:12px}
+  .nav.stuck{top:0;left:0;right:0}
+  .nav .wrap,.nav.stuck .wrap{padding:0 8px 0 14px}
+  .proof-txt,.origin-txt{padding:32px 20px}
+  .integ-inner{padding:72px 0}
+  .integ-txt{padding:0 16px}
+  .tile{width:156px;height:148px}
+  .stats{grid-template-columns:1fr}
+  .stat{border-right:0;border-bottom:1px solid var(--line)}
+  .feat-grid,.how{grid-template-columns:1fr}
+  .feat{border-right:0 !important;border-bottom:1px solid var(--line) !important}
+  .feat:last-child{border-bottom:0 !important}
+  .ai{padding:36px 20px}
+  .win-body{height:420px}
+  .stage{padding:18px 16px}
+  .fields{grid-template-columns:1fr}
+  .board{grid-template-columns:repeat(2,1fr)}
+  .board .col:nth-child(n+3){display:none}
+  .wa{grid-template-columns:1fr}
+  .wa .assign{display:none}
+  .steps-bar{grid-template-columns:repeat(3,1fr)}
+  .sb:nth-child(3){border-right:0}
+  .sb:nth-child(-n+3){border-bottom:1px solid var(--line)}
+  .nav .btn-ghost,.nav-login{display:none}
+  .foot{padding:24px 16px}
+  .foot .copy{margin-left:0;width:100%}
+}
+/* ---------- demo request form (modal, two steps) ---------- */
+.dm{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto;background:rgba(14,15,16,.42);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.dm.open{display:flex;animation:dmFade .2s ease}
+@keyframes dmFade{from{opacity:0}to{opacity:1}}
+.dm-box{position:relative;width:100%;max-width:640px;background:#fff;border:1px solid var(--line-2);border-radius:var(--radius);box-shadow:0 24px 80px -20px rgba(14,15,16,.4);animation:dmUp .25s ease}
+@keyframes dmUp{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+.dm-head{padding:28px 32px 0}
+.dm-head h3{font-size:26px;letter-spacing:-.025em;padding-right:36px}
+.dm-head p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
+.dm-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:0;border-radius:var(--radius);background:none;cursor:pointer;color:var(--ink-2);display:grid;place-items:center}
+.dm-close:hover{background:var(--bg-sunk);color:var(--ink)}
+.dm-prog{display:flex;gap:6px;margin:20px 32px 0}
+.dm-prog i{flex:1;height:3px;border-radius:3px;background:var(--line)}
+.dm-prog i.on{background:var(--yellow)}
+.dm-steplbl{margin:10px 32px 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.dm form{padding:20px 32px 28px}
+.dm-step{display:none}
+.dm-step.on{display:block}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.fgrid .fg{margin-bottom:0}
+.fgrid + .fg,.fgrid + .fgrid{margin-top:18px}
+.fg > label,.fg > .flbl{font-size:13.5px;font-weight:500;color:var(--ink)}
+.fg .opt{color:var(--ink-3);font-weight:400}
+.fg .hint{color:var(--ink-3);font-weight:400;font-size:12.5px}
+.fg input[type=text],.fg input[type=email],.fg input[type=tel]{height:42px;padding:0 12px;border:1px solid var(--line-2);border-radius:var(--radius);font:inherit;font-size:15px;color:var(--ink);background:#fff;transition:border-color .15s,box-shadow .15s}
+.fg input:hover{border-color:var(--yellow)}
+.fg input:focus{outline:0;border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
+.fg.err input{border-color:var(--red)}
+.fg .emsg{display:none;color:#b42318;font-size:12.5px}
+.fg.err .emsg{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-flex;align-items:center;height:36px;padding:0 13px;border:1px solid var(--line-2);border-radius:var(--radius);font-size:14px;color:var(--ink-2);background:#fff;cursor:pointer;transition:all .15s;user-select:none}
+.chip span:hover{border-color:var(--ink-3);color:var(--ink)}
+.chip input:checked + span{background:var(--yellow-soft);border-color:var(--yellow);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--yellow)}
+.chip input:focus-visible + span{outline:2px solid var(--ink);outline-offset:2px}
+.fg.err .chips span{border-color:#f6caca}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2);cursor:pointer}
+.consent input{width:16px;height:16px;margin:2px 0 0;accent-color:var(--ink);flex:none;cursor:pointer}
+.consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+.fg.err .consent{color:#b42318}
+.dm-actions{display:flex;align-items:center;gap:10px;margin-top:6px}
+.dm-actions .btn-back{background:none;border:0;font:inherit;font-size:14.5px;color:var(--ink-2);cursor:pointer;padding:0 6px;height:42px}
+.dm-actions .btn-back:hover{color:var(--ink)}
+.dm-actions .btn{margin-left:auto}
+
+.dm-note{margin:14px 0 0;font-size:12.5px;color:var(--ink-3)}
+.dm-done{display:none;padding:44px 32px 36px;text-align:center}
+.dm-done.on{display:block}
+.dm-done .ok{width:52px;height:52px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;margin:0 auto 18px}
+.dm-done h3{font-size:24px}
+.dm-done p{color:var(--ink-2);margin:10px auto 24px;max-width:400px}
+.dm-demo{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.dm-box.wide{max-width:960px}
+.dm.pilot .demo-only,.dm:not(.pilot) .pilot-only{display:none}
+.bk{display:none;grid-template-columns:250px 1fr 210px;border-top:1px solid var(--line);margin-top:20px}
+.bk.on{display:grid}
+.bk-host{padding:24px 24px 28px 32px;border-right:1px solid var(--line)}
+.bk-av{width:48px;height:48px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:20px}
+.bk-who{margin-top:12px;font-weight:600;font-size:14.5px}
+.bk-who span{display:block;font-weight:400;color:var(--ink-3);font-size:13px}
+.bk-host h3{font-size:20px;letter-spacing:-.02em;margin:16px 0 12px}
+.bk-meta{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px;color:var(--ink-2)}
+.bk-meta li{display:flex;align-items:center;gap:8px}
+.bk-meta svg{color:var(--ink-3);flex:none}
+.bk-host p{font-size:13.5px;color:var(--ink-2);margin:16px 0 0;line-height:1.5}
+.bk-cal{padding:24px}
+.bk-mhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.bk-mhead b{font-size:15px}
+.bk-nav{width:32px;height:32px;border:1px solid var(--line-2);background:#fff;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;margin-left:6px;color:var(--ink)}
+.bk-nav:disabled{opacity:.35;cursor:default}
+.bk-dow,.bk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.bk-dow span{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);padding-bottom:6px}
+.bk-days button{height:40px;border:0;border-radius:8px;background:none;font:inherit;font-size:14px;color:var(--ink-3);cursor:default}
+.bk-days button.av{background:var(--bg-sunk);color:var(--ink);font-weight:500;cursor:pointer}
+.bk-days button.av:hover{background:var(--yellow-soft)}
+.bk-days button.sel{background:var(--ink) !important;color:#fff}
+.bk-days button.today{box-shadow:inset 0 0 0 1px var(--line-2)}
+.bk-slots{padding:24px 24px 24px 0;display:flex;flex-direction:column;min-height:0}
+.bk-day{font-weight:600;font-size:14.5px;margin-bottom:12px}
+.bk-list{display:grid;gap:6px;max-height:300px;overflow-y:auto;padding-right:4px}
+.bk-list button{height:40px;border:1px solid var(--line-2);border-radius:8px;background:#fff;font:inherit;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink)}
+.bk-list button:hover{border-color:var(--yellow)}
+.bk-list button.sel{background:var(--yellow-soft);border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
+.bk-list .bk-empty{font-size:13.5px;color:var(--ink-3)}
+.bk-go{margin-top:14px;width:100%;justify-content:center}
+.bk-go:disabled{opacity:.45;cursor:default;transform:none}
+.bk-live{grid-column:1/-1}
+.bk-live iframe{width:100%;height:640px;border:0;display:block}
+@media (max-width:860px){
+  .bk{grid-template-columns:1fr}
+  .bk-host{border-right:0;border-bottom:1px solid var(--line);padding:20px;display:grid;grid-template-columns:48px 1fr;column-gap:12px;align-items:center}
+  .bk-who{margin:0}.bk-host h3,.bk-meta,.bk-host p{grid-column:1/-1}
+  .bk-cal{padding:20px}
+  .bk-slots{padding:0 20px 24px}
+  .bk-list{grid-template-columns:repeat(3,1fr);max-height:none}
+}
+body.dm-lock{overflow:hidden}
+.dm [hidden]{display:none !important}
+@media (max-width:760px){
+  .dm{padding:0;align-items:stretch}
+  .dm-box{max-width:none;min-height:100%;border:0;border-radius:0}
+  .dm-head{padding:24px 20px 0}
+  .dm-prog,.dm-steplbl{margin-left:20px;margin-right:20px}
+  .dm form{padding:20px 20px 28px}
+  .fgrid{grid-template-columns:1fr}
+}
+
+/* platform road */
+.pf-ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+.pf-track{--gap:16px;--col:calc((100% - 5 * var(--gap)) / 6);display:grid;grid-template-columns:repeat(6,1fr);gap:var(--gap);position:relative}
+.pf-track::before,.pf-track::after{content:"";position:absolute;top:23px;left:24px;height:0}
+.pf-track::before{width:calc(5 * (var(--col) + var(--gap)));border-top:2px dashed var(--line-2)}
+.pf-track::after{width:calc(var(--p) * (var(--col) + var(--gap)));border-top:2px solid var(--yellow);transition:width .9s cubic-bezier(.65,0,.35,1)}
+.pf-st{position:relative;cursor:pointer}
+.pf-dot{width:48px;height:48px;border-radius:50%;background:#fff;border:2px solid var(--line-2);display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:600;position:relative;z-index:1;margin-bottom:20px;transition:background .35s ease,border-color .35s ease,color .35s ease,transform .35s ease}
+.pf-st.on .pf-dot{background:var(--yellow);border-color:var(--yellow)}
+.pf-st.cur .pf-dot{background:var(--bg-soft);border-color:var(--line-2)}
+.pf-st.cur .pf-dot{transform:scale(1.08)}
+.pf-n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.pf-st h3{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.01em}
+.pf-chips{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:14px}
+.pf-chips span{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--line-2);border-radius:999px;font-size:13px;background:#fff;white-space:nowrap;transition:background .35s ease,color .35s ease,border-color .35s ease}
+.pf-st.cur .pf-chips span{background:var(--bg-soft)}
+.pf-st.cur .pf-chips span:nth-child(2){transition-delay:.05s}.pf-st.cur .pf-chips span:nth-child(3){transition-delay:.1s}.pf-st.cur .pf-chips span:nth-child(4){transition-delay:.15s}.pf-st.cur .pf-chips span:nth-child(5){transition-delay:.2s}
+@media (max-width:1020px){
+  .pf-track{grid-template-columns:repeat(3,1fr);row-gap:40px}
+  .pf-track::before,.pf-track::after{display:none}
+}
+@media (max-width:760px){
+  .pf-ends{display:none}
+  .pf-track{grid-template-columns:1fr;row-gap:28px}
+  .pf-st{display:grid;grid-template-columns:48px 1fr;column-gap:16px}
+  .pf-dot{margin:0;grid-row:1/3}
+  .pf-chips{flex-direction:row;flex-wrap:wrap}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar"></div>
+
+<!-- Road: scroll progress, 40px from the left edge -->
+<div class="road" aria-hidden="true">
+  <svg id="roadSvg">
+    <path class="base" id="roadBase"/>
+    <path class="done" id="roadDone"/>
+    <g id="roadStops"></g>
+    <g id="roadPins"></g>
+    <circle class="car-halo" id="carHalo" r="13"/>
+    <circle class="car" id="car" r="8.5"/>
+  </svg>
+</div>
+<div class="road-label" id="roadLabel"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <span class="logo-mark"><svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 1v14M2 8.5 11 1M5.5 6 12 15" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Kalyd
+    </a>
+    <nav class="nav-links">
+      <a href="#product">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#customers">Customers</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang">
+        <button class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <span class="lang-cur">EN</span>
+          <svg class="chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <ul class="lang-menu" role="listbox">
+          <li role="option" data-lang="EN" aria-selected="true">English<span>EN</span></li>
+          <li role="option" data-lang="NL">Nederlands<span>NL</span></li>
+          <li role="option" data-lang="FR">Français<span>FR</span></li>
+        </ul>
+      </div>
+      <a class="btn btn-primary btn-sm" href="#demo">Book a demo</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- 1. HERO -->
+<section class="hero" data-stop="Start">
+  <div class="hero-grid"></div>
+  <div class="frame">
+    <div class="hero-inner">
+      <span class="eyebrow eyebrow-ai"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--yellow)"><path d="M10 2.5c.3 0 .5.2.6.5l1.3 4.2a4 4 0 0 0 2.6 2.6l4.2 1.3c.6.2.6 1 0 1.2l-4.2 1.3a4 4 0 0 0-2.6 2.6L10.6 20c-.2.6-1 .6-1.2 0l-1.3-4.2a4 4 0 0 0-2.6-2.6L1.3 12c-.6-.2-.6-1 0-1.2l4.2-1.3a4 4 0 0 0 2.6-2.6L9.4 3c.1-.3.3-.5.6-.5z"/><path d="M19 1.5c.2 0 .3.1.4.3l.5 1.6c.1.4.4.7.8.8l1.6.5c.4.1.4.6 0 .8l-1.6.5c-.4.1-.7.4-.8.8l-.5 1.6c-.1.4-.6.4-.8 0l-.5-1.6a1.3 1.3 0 0 0-.8-.8l-1.6-.5c-.4-.1-.4-.6 0-.8l1.6-.5c.4-.1.7-.4.8-.8l.5-1.6c.1-.2.2-.3.4-.3z"/></svg>AI-powered, built for transport</span>
+      <h1>Your customers already <mark>email you orders.</mark><br>Kalyd turns that into dispatch.</h1>
+      <p class="lead">No new inbox to check, no manual order entry. Kalyd reads the emails you already get, creates the order, and puts it on a dispatch board your team assigns in one click.</p>
+      <div class="hero-cta" id="pilot">
+        <a class="btn btn-yellow" href="#demo">Start a free pilot <span class="arr">→</span></a>
+      </div>
+      <div class="trust tagline"><span>Connect</span><i></i><span>Ship</span><i></i><span>Deliver</span></div>
+
+      <!-- Hero media: looping product demo (stand-in for the 30–40s video) -->
+      <div class="window" id="demoWin">
+        <div class="win-bar"><i></i><i></i><i></i><span class="win-title">app.kalyd.app / dispatch</span></div>
+        <div class="win-body">
+          <aside class="win-side">
+            <div class="ws-org"><b>M</b>Masev</div>
+            <div class="ws-item" data-s="0"><span class="dot"></span>AI Inbox<span class="ct">12</span></div>
+            <div class="ws-item" data-s="1"><span class="dot"></span>Orders</div>
+            <div class="ws-item" data-s="2"><span class="dot"></span>Dispatch board<span class="ct">38</span></div>
+            <div class="ws-item" data-s="3"><span class="dot"></span>Drivers</div>
+            <div class="ws-item" data-s="4"><span class="dot"></span>Tracking</div>
+            <div class="ws-item" data-s="5"><span class="dot"></span>Invoices</div>
+          </aside>
+          <div class="win-main">
+
+            <div class="stage" data-stage="0">
+              <div class="stage-h">AI Inbox <span class="tag y">● Reading</span></div>
+              <div class="mail">
+                <div class="mail-head">
+                  <div class="avatar">AC</div>
+                  <div><b style="font-size:14px">Transport order — Antwerp → Lyon</b><small>planning@customer.example · today 08:12</small></div>
+                  <span class="tag">NL · FR · EN</span>
+                </div>
+                <div class="mail-body">
+                  Goedemorgen, please plan the following load:<br>
+                  Loading ref <span class="hl">ANR-58213</span> · pickup <span class="hl">Haven 1025, 2030 Antwerpen</span><br>
+                  Delivery <span class="hl">Rue de Gerland 40, 69007 Lyon</span> on <span class="hl">Thu 14 Nov, 08:00</span><br>
+                  <span class="hl">22 pallets</span>, 1 position contains <span class="hl">UN 1203</span>. Agreed rate €1,180.<br>
+                  <span class="attach">📎 order_ANR-58213.pdf</span>
+                </div>
+              </div>
+              <div class="scan"></div>
+            </div>
+
+            <div class="stage" data-stage="1">
+              <div class="stage-h">New order <span class="tag">ANR-58213</span> <span class="tag y">AI extracted</span></div>
+              <div class="fields">
+                <div class="field" style="animation-delay:.05s"><label>Customer</label><div>Antwerp Chemicals NV</div></div>
+                <div class="field" style="animation-delay:.15s"><label>Loading ref</label><div>ANR-58213</div></div>
+                <div class="field" style="animation-delay:.25s"><label>Pickup</label><div>Antwerpen, BE</div></div>
+                <div class="field" style="animation-delay:.35s"><label>Delivery</label><div>Lyon, FR</div></div>
+                <div class="field" style="animation-delay:.45s"><label>Date</label><div>Thu 14 Nov · 08:00</div></div>
+                <div class="field" style="animation-delay:.55s"><label>Pallets · Price</label><div>22 · €1,180</div></div>
+                <div class="field adr" style="animation-delay:.75s;grid-column:1/-1"><label>Dangerous goods</label><div>⚠ ADR detected · UN 1203 · ADR driver &amp; truck required</div></div>
+              </div>
+              <div class="ai-bar"><span>Extracting</span><div class="meter"><i></i></div><span>7/7 fields</span></div>
+            </div>
+
+            <div class="stage" data-stage="2">
+              <div class="stage-h">Dispatch board <span class="tag">Week 46</span></div>
+              <div class="board">
+                <div class="col"><h5>New <span>4</span></h5>
+                  <div class="card new"><b>ANR-58213</b>Antwerpen → Lyon<div class="meta"><span class="tag r" style="padding:0 5px;font-size:10px">ADR</span><span>22 pal</span></div></div>
+                  <div class="card"><b>GNT-11904</b>Gent → Rotterdam<div class="meta"><span>14 Nov</span><span>8 pal</span></div></div>
+                  <div class="ghost"></div>
+                </div>
+                <div class="col"><h5>Assigned <span>9</span></h5>
+                  <div class="card"><b>ANR-58190</b>Antwerpen → Lille<div class="meta"><span>J. Peeters</span><span>33 pal</span></div></div>
+                  <div class="ghost"></div><div class="ghost"></div>
+                </div>
+                <div class="col"><h5>In transit <span>17</span></h5>
+                  <div class="card"><b>ZEE-30021</b>Zeebrugge → Köln<div class="meta"><span>ETA 15:40</span><span>FTL</span></div></div>
+                  <div class="ghost"></div>
+                </div>
+                <div class="col"><h5>Delivered <span>8</span></h5>
+                  <div class="card"><b>ANR-58122</b>Antwerpen → Paris<div class="meta"><span class="tag g" style="padding:0 5px;font-size:10px">Invoiced</span><span>12 pal</span></div></div>
+                  <div class="ghost"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stage" data-stage="3">
+              <div class="stage-h">Assign driver <span class="tag">ANR-58213</span></div>
+              <div class="wa">
+                <div class="assign">
+                  <div style="font-size:13px;color:var(--ink-3)">Suggested · ADR-certified</div>
+                  <div class="drv sel"><span class="avatar">JP</span><div>Jan Peeters<small>ADR · Truck 1-ABC-221</small></div><span class="tag y" style="margin-left:auto">Assigned</span></div>
+                  <div class="drv"><span class="avatar">MD</span><div>Mehdi Dahmani<small>ADR · Truck 1-XKD-904</small></div></div>
+                  <div class="drv"><span class="avatar">LV</span><div>Lotte Vermeulen<small>Truck 2-PLM-310</small></div></div>
+                </div>
+                <div class="phone"><div class="phone-in">
+                  <div class="phone-top"><i></i>Masev Dispatch</div>
+                  <div class="bub"><b>Masev – New Assignment</b>ANR-58213 · Antwerpen → Lyon<br>Load Thu 08:00 · 22 pal · ⚠ ADR UN 1203</div>
+                  <div class="bub in">👍 Got it, on my way to Haven 1025</div>
+                  <div class="bub">📍 Live tracking started</div>
+                </div></div>
+              </div>
+            </div>
+
+            <div class="stage" data-stage="4">
+              <div class="stage-h">Live tracking <span class="tag g">● In transit</span></div>
+              <div class="map">
+                <svg viewBox="0 0 600 300" preserveAspectRatio="none">
+                  <path id="trkPath" d="M60 60 C 180 40, 220 160, 320 150 S 470 230, 540 250" fill="none" stroke="#0e0f10" stroke-width="3" stroke-dasharray="7 7"/>
+                  <circle cx="60" cy="60" r="7" fill="#0e0f10"/>
+                  <circle cx="540" cy="250" r="7" fill="#ffc800" stroke="#0e0f10" stroke-width="2"/>
+                  <circle r="9" fill="#ffc800" stroke="#0e0f10" stroke-width="2.5"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#trkPath"/></animateMotion></circle>
+                </svg>
+                <div class="eta">ETA Lyon<b>Thu 07:52</b><span style="color:var(--green)">8 min early</span></div>
+              </div>
+              <div class="share">Customer tracking link <code>kalyd.app/t/ANR-58213</code><span class="tag y">Shared</span></div>
+            </div>
+
+            <div class="stage" data-stage="5">
+              <div class="stage-h">Invoice <span class="tag">INV-2026-0418</span></div>
+              <div class="inv">
+                <div class="inv-top"><div><b>€1,427.80</b><div style="font-size:12.5px;color:var(--ink-3)">Antwerp Chemicals NV · from order ANR-58213</div></div><span class="tag g">Delivered · CMR signed</span></div>
+                <table>
+                  <tr><td>Transport Antwerpen → Lyon · 22 pal</td><td>€1,180.00</td></tr>
+                  <tr><td>VAT 21%</td><td>€247.80</td></tr>
+                  <tr class="total"><td>Total</td><td>€1,427.80</td></tr>
+                </table>
+                <div class="sent">✓ Sent via Peppol e-invoicing</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="steps-bar" id="stepsBar">
+          <button class="sb"><span class="pr"></span><b>Email</b>Order arrives</button>
+          <button class="sb"><span class="pr"></span><b>AI extraction</b>Fields filled</button>
+          <button class="sb"><span class="pr"></span><b>Board</b>Card created</button>
+          <button class="sb"><span class="pr"></span><b>WhatsApp</b>Driver assigned</button>
+          <button class="sb"><span class="pr"></span><b>Tracking</b>Customer sees live</button>
+          <button class="sb"><span class="pr"></span><b>Invoice</b>Sent via Peppol</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7b. PLATFORM: modules on one road, auto-advances 01 → 06 -->
+<section class="sec" id="platform" data-stop="Platform">
+  <div class="frame"><div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="kicker">Platform</div>
+      <h2>One platform, from inbox to invoice.</h2>
+      <p class="lead">Run intake, dispatch, drivers, fleet and finance in one place, while AI handles the retyping in between.</p>
+    </div>
+    <div class="pf reveal" id="pf">
+      <div class="pf-ends"><span>Email arrives</span><span>Invoice sent</span></div>
+      <div class="pf-track" style="--p:0">
+        <div class="pf-st"><div class="pf-dot">01</div><div class="pf-t"><div class="pf-n">Inbox</div><h3>Order Intake</h3></div><div class="pf-chips"><span>AI Inbox</span><span>Email Extractor</span><span>Import Doc</span><span>Order requests</span></div></div>
+        <div class="pf-st"><div class="pf-dot">02</div><div class="pf-t"><div class="pf-n">Plan</div><h3>Planning &amp; Dispatch</h3></div><div class="pf-chips"><span>Dispatch board</span><span>Slot planning</span><span>Route optimizer</span><span>Groupage</span><span>Subcontractors</span></div></div>
+        <div class="pf-st"><div class="pf-dot">03</div><div class="pf-t"><div class="pf-n">Drive</div><h3>Driver Hand-off</h3></div><div class="pf-chips"><span>WhatsApp</span><span>Driver portal</span><span>POD capture</span><span>Driver hours</span></div></div>
+        <div class="pf-st"><div class="pf-dot">04</div><div class="pf-t"><div class="pf-n">Fleet</div><h3>Fleet &amp; Compliance</h3></div><div class="pf-chips"><span>Live fleet map</span><span>Maintenance</span><span>ADR</span><span>Reefer temps</span></div></div>
+        <div class="pf-st"><div class="pf-dot">05</div><div class="pf-t"><div class="pf-n">Track</div><h3>Customers</h3></div><div class="pf-chips"><span>Live tracking</span><span>Customer portal</span><span>Auto emails</span><span>CRM</span></div></div>
+        <div class="pf-st"><div class="pf-dot">06</div><div class="pf-t"><div class="pf-n">Bill</div><h3>Finance</h3></div><div class="pf-chips"><span>Invoicing</span><span>Peppol</span><span>Purchase invoices</span><span>P&amp;L</span><span>Sales rates</span></div></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- 6. HOW IT WORKS -->
+<section class="sec" id="how" data-stop="How it works">
+  <div class="frame"><div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="kicker">How it works</div>
+      <h2>From inbox to invoice, in four steps.</h2>
+    </div>
+    <div class="how">
+      <div class="step reveal">
+        <div class="step-txt"><div class="step-n">Step 1</div><h3>An order comes in.</h3><p>By email, exactly how your customers already send it today. Body text, PDF or scan.</p></div>
+        <div class="step-vis placeholder"><span>Image · Step 1 · Order email arrives</span></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-txt"><div class="step-n">Step 2</div><h3>Kalyd builds the order.</h3><p>Parties, loading reference, addresses, dates, pallets and price land on the dispatch board automatically. Dangerous goods are flagged as ADR the moment the order is read.</p></div>
+        <div class="step-vis placeholder"><span>Image · Step 2 · Order on the dispatch board, ADR flag</span></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-txt"><div class="step-n">Step 3</div><h3>You assign a driver.</h3><p>One click on the dispatch board. WhatsApp opens with the job pre-filled.</p></div>
+        <div class="step-vis placeholder"><span>Image · Step 3 · WhatsApp assignment to driver</span></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-txt"><div class="step-n">Step 4</div><h3>It gets invoiced.</h3><p>Delivery confirmed, invoice generated from the same order record and sent via Peppol.</p></div>
+        <div class="step-vis placeholder"><span>Image · Step 4 · Delivered, invoice sent via Peppol</span></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- 7. AI BLOCK -->
+<!-- hidden for now: remove the "hidden" attribute to bring it back -->
+<section class="sec" data-stop="AI" hidden>
+  <div class="frame"><div class="sec-inner">
+    <div class="ai reveal">
+      <div>
+        <div class="kicker">The AI inside</div>
+        <h2>It reads orders the way your best dispatcher does.</h2>
+        <p class="lead">No templates to set up and no new inbox. Kalyd works on the emails you already get.</p>
+      </div>
+      <ul class="ai-list">
+        <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>It reads any order.</b> Email body, PDF attachment or scan, in Dutch, French or English.</div></li>
+        <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="m9 15 2 2 4-4"/></svg></span><div><b>It builds the order.</b> Parties, loading reference, addresses, dates, pallets and price, filled in for you.</div></li>
+        <li class="new"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span><div><b>It spots dangerous goods.</b> ADR loads are flagged automatically, so the right driver and truck get assigned.</div></li>
+        <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>You stay in control.</b> Unclear fields are highlighted for a quick check before anything reaches a driver.</div></li>
+      </ul>
+    </div>
+  </div></div>
+</section>
+
+<!-- 3. SOCIAL PROOF -->
+<section class="sec" id="customers" data-stop="Customers">
+  <div class="frame"><div class="sec-inner"><div class="proof-card">
+    <div class="proof">
+      <div class="placeholder ph"><span>Photo · Masev dispatch desk</span></div>
+      <div class="proof-txt reveal">
+        <div class="kicker">Running live operations at Masev</div>
+        <p class="quote">“Customer quote about how Kalyd changed the dispatch day at Masev.” <span class="tbc">Quote TBC</span></p>
+        <div class="who"><span class="avatar">M</span><div><b>Name, role</b><small>Masev · Port of Antwerp</small></div></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><b>100+</b><span>orders read by AI every month</span></div>
+      <div class="stat reveal"><b>1 min</b><span>average time from email to driver assigned</span></div>
+    </div>
+  </div></div></div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="product" data-stop="Product">
+  <div class="frame"><div class="sec-inner">
+    <div class="sec-head reveal">
+      <div class="kicker">Product</div>
+      <h2>Everything dispatch needs. Nothing it doesn't.</h2>
+      <p class="lead">One board, one record per order. A dispatcher only has to assign a driver. The rest runs itself.</p>
+    </div>
+    <div class="feat-grid reveal">
+      <div class="feat"><div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m4 7 8 6 8-6"/></svg></div><h3>AI Inbox</h3><p>Kalyd reads booking emails and creates the order. No retyping.</p></div>
+      <div class="feat"><div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><h3>Dispatch board</h3><p>New to Delivered on one board. One click to assign a driver.</p></div>
+      <div class="feat"><div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg></div><h3>Groupage</h3><p>Small loads share one run, each with its own invoice.</p></div>
+      <div class="feat"><div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Driver hand-off</h3><p>Jobs go out on WhatsApp. No app to install, no login.</p></div>
+      <div class="feat"><div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2h14v20l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M14.5 8.5c-.5-.7-1.4-1-2.5-1-1.4 0-2.5.7-2.5 1.8 0 2.6 5 1.4 5 4 0 1.1-1.1 1.8-2.5 1.8-1.1 0-2-.3-2.5-1M12 6v1.5M12 16v1.5"/></svg></div><h3>Invoicing</h3><p>VAT and PDF straight from the dispatched order.</p></div>
+      <div class="feat"><div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div><h3>Built multi-tenant</h3><p>Each company has its own isolated database and login.</p></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- INTEGRATIONS -->
+<!-- hidden for now: remove the "hidden" attribute to bring it back -->
+<section class="sec integ" id="integrations" data-stop="Integrations" hidden>
+  <div class="integ-inner">
+    <div class="integ-txt reveal">
+      <h2><span class="dim">Keep the tools you use.</span><br>Connect every tool you rely on.</h2>
+      <p class="lead">Kalyd plugs into the carriers, accounting, messaging and telematics your operation already runs on. No rip-and-replace.</p>
+      <div class="integ-legend"><span><i class="st on"></i>Available</span><span><i class="st"></i>Coming soon</span></div>
+    </div>
+    <div class="marquee" aria-label="Integrations">
+      <div class="mq-row"><div class="mq-track">
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M3 15h18l-2 5H5zM6 15V9h12v6M9 9V5h6v4"/></svg></div><b>MSC</b><small>Container tracking</small><span class="st-pill on">Available</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M12 3v18M8 7h8M5 13a7 7 0 0 0 14 0M5 13H3M19 13h2"/></svg></div><b>Maersk</b><small>Container tracking</small><span class="st-pill on">Available</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg></div><b>SendGrid</b><small>Customer notifications</small><span class="st-pill on">Available</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/></svg></div><b>FMS telematics</b><small>Vehicle GPS hardware</small><span class="st-pill on">Available</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M4 18a14 14 0 0 1 14-14M4 13a9 9 0 0 1 9-9M4 8a4 4 0 0 1 4-4"/><circle cx="17" cy="17" r="3"/></svg></div><b>project44</b><small>Real-time visibility</small><span class="st-pill">Coming soon</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg></div><b>WhatsApp Business</b><small>Driver &amp; customer messaging</small><span class="st-pill">Coming soon</span></div>
+      </div></div>
+      <div class="mq-row rev"><div class="mq-track">
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/></svg></div><b>Exact</b><small>Accounting sync</small><span class="st-pill">Coming soon</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/></svg></div><b>Octopus</b><small>Accounting sync</small><span class="st-pill">Coming soon</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/></svg></div><b>Sage</b><small>Accounting sync</small><span class="st-pill">Coming soon</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M7 7h10M7 12h10M7 17h6"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><b>EDI / EDIFACT</b><small>IFTMIN · IFTSTA · DESADV</small><span class="st-pill">Coming soon</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div><b>Customs / PLDA</b><small>Belgian customs</small><span class="st-pill">Coming soon</span></div>
+        <div class="tile"><div class="t-ico"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><b>Twilio SMS</b><small>Driver &amp; ETA alerts</small><span class="st-pill">Coming soon</span></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. ANTWERP -->
+<section class="sec" data-stop="Antwerp">
+  <div class="frame"><div class="sec-inner">
+    <div class="ant">
+      <div class="reveal">
+        <div class="kicker">Made in Europe</div>
+        <h2>Built in the Port of Antwerp. Made for European road freight.</h2>
+      </div>
+      <ul class="checks reveal">
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Peppol e-invoicing, EU VAT, CMR workflow</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Automatic ADR flagging</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Orders in Dutch, French and English</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>An isolated database and login for every company</li>
+      </ul>
+    </div>
+  </div></div>
+</section>
+
+<!-- 9. ORIGIN -->
+<!-- hidden for now: remove the "hidden" attribute to bring it back -->
+<section class="sec" data-stop="Origin" hidden>
+  <div class="frame"><div class="sec-inner">
+    <div class="origin reveal">
+      <div class="placeholder"><span>Photo · team or dispatch room</span></div>
+      <div class="origin-txt">
+        <div class="kicker">Our story</div>
+        <h2>Built inside a working transport company.</h2>
+        <p class="lead">Kalyd was built at Masev, in the Port of Antwerp, for the problems a real dispatch desk has every day.</p>
+        <blockquote>“Quote from Valentin or Anand.” <span class="tbc">TBC</span><br><small style="color:var(--ink-3)">Name, role · Masev</small></blockquote>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq" data-stop="FAQ">
+  <div class="frame"><div class="sec-inner">
+    <div class="faq">
+      <div class="faq-head reveal">
+        <div class="kicker">FAQ</div>
+        <h2>Questions, answered.</h2>
+        <p class="lead">Something else on your mind? We'll walk you through it on a real dispatch board.</p>
+        <a class="btn btn-ghost" href="#demo" style="margin-top:24px">Book a demo <span class="arr">→</span></a>
+      </div>
+      <div class="faq-list reveal">
+        <details><summary>How much does Kalyd cost?</summary><p>Pricing depends on your fleet size and order volume. Start with a free pilot on your real orders, and we'll agree a price that fits your operation.</p></details>
+        <details><summary>Do we need to change our email or set up a new inbox?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>Can we import our customers, drivers and trucks from Excel or another system?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>What happens if the AI reads an order wrong?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>Which order formats can Kalyd read?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>Do drivers need to install an app?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>Does Kalyd support Peppol e-invoicing?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>What fleet size is Kalyd built for?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- 10. FINAL CTA -->
+<section class="sec cta" id="demo" data-stop="Finish">
+  <div class="frame"><div class="sec-inner reveal">
+    <h2>See Kalyd running your operation.</h2>
+    <p class="lead">Run a free pilot on your real orders, or let us show you on a live dispatch board.</p>
+    <div class="hero-cta">
+      <a class="btn btn-yellow" href="#demo">Start a free pilot <span class="arr">→</span></a>
+      <a class="btn btn-ghost" href="#demo">Book a demo</a>
+    </div>
+  </div></div>
+</section>
+
+</main>
+
+<!-- 11. FOOTER -->
+<footer>
+  <div class="frame">
+    <div class="foot">
+      <a class="logo" href="#top" style="font-size:16px"><span class="logo-mark" style="width:22px;height:22px;border-radius:6px"><svg width="11" height="13" viewBox="0 0 14 16" fill="none"><path d="M2 1v14M2 8.5 11 1M5.5 6 12 15" stroke="#0e0f10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Kalyd</a>
+      <nav><a href="#product">Product</a><a href="#how">How it works</a><a href="#customers">Customers</a><a href="#">Log in</a><a href="#">Privacy</a></nav>
+      <div class="lang up">
+        <button class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <span class="lang-cur">EN</span>
+          <svg class="chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <ul class="lang-menu" role="listbox">
+          <li role="option" data-lang="EN" aria-selected="true">English<span>EN</span></li>
+          <li role="option" data-lang="NL">Nederlands<span>NL</span></li>
+          <li role="option" data-lang="FR">Français<span>FR</span></li>
+        </ul>
+      </div>
+      <span class="copy">© 2026 Kalyd</span>
+    </div>
+  </div>
+</footer>
+
+<!-- DEMO REQUEST FORM (modal). Set FORM_ENDPOINT in the script to send real submissions. -->
+<div class="dm" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="dmTitle" hidden>
+  <div class="dm-box">
+    <button class="dm-close" type="button" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="dm-head" id="dmHead">
+      <h3 id="dmTitle">See Kalyd on your own orders.</h3>
+      <p>Tell us how your dispatch runs today. We'll show you Kalyd on a real board, with an order like the ones you get every day.</p>
+    </div>
+    <div class="dm-prog" id="dmProg"><i class="on"></i><i class="pilot-only"></i><i class="demo-only"></i></div>
+    <div class="dm-steplbl" id="dmStepLbl">Step 1 of 2 · About you</div>
+    <form id="demoForm" novalidate>
+      <div class="dm-step on" data-step="1">
+        <div class="fg"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required><span class="emsg">Please enter your name.</span></div>
+        <div class="fg"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="emsg">Please enter a valid email.</span></div>
+        <div class="fg"><label for="f-company">Company <span class="opt">(optional)</span></label><input id="f-company" name="company" type="text" autocomplete="organization"></div>
+        <div class="fg"><span class="flbl">Your role <span class="opt">(optional)</span></span><div class="chips"><label class="chip"><input type="radio" name="role" value="Owner"><span>Owner</span></label><label class="chip"><input type="radio" name="role" value="Operations manager"><span>Operations manager</span></label><label class="chip"><input type="radio" name="role" value="Dispatcher"><span>Dispatcher</span></label><label class="chip"><input type="radio" name="role" value="Finance"><span>Finance</span></label><label class="chip"><input type="radio" name="role" value="Other"><span>Other</span></label></div></div>
+
+        <div class="fg demo-only" data-group="consent_demo"><label class="consent"><input type="checkbox" name="privacy" value="accepted"><span>I agree to the <a href="#privacy" target="_blank">Privacy Policy</a>.</span></label><span class="emsg">Please accept the Privacy Policy to continue.</span></div>
+        <div class="dm-actions"><button class="btn btn-primary" type="button" data-next><span id="dmNextTxt">Continue</span> <span class="arr">→</span></button></div>
+      </div>
+
+      <div class="dm-step" data-step="2">
+        <div class="fg" data-group="company_type"><span class="flbl">Your company</span><div class="chips"><label class="chip"><input type="radio" name="company_type" value="Carrier with own fleet" required><span>Carrier with own fleet</span></label><label class="chip"><input type="radio" name="company_type" value="Freight forwarder"><span>Freight forwarder</span></label><label class="chip"><input type="radio" name="company_type" value="Both"><span>Both</span></label></div><span class="emsg">Please choose one.</span></div>
+
+        <div class="fg" data-group="fleet"><span class="flbl">Fleet size</span><div class="chips"><label class="chip"><input type="radio" name="fleet" value="1–5 trucks" required><span>1–5 trucks</span></label><label class="chip"><input type="radio" name="fleet" value="6–20"><span>6–20</span></label><label class="chip"><input type="radio" name="fleet" value="21–50"><span>21–50</span></label><label class="chip"><input type="radio" name="fleet" value="50+"><span>50+</span></label></div><span class="emsg">Please choose one.</span></div>
+
+        <div class="fg" data-group="orders_week"><span class="flbl">Orders per week</span><div class="chips"><label class="chip"><input type="radio" name="orders_week" value="Under 50" required><span>Under 50</span></label><label class="chip"><input type="radio" name="orders_week" value="50–200"><span>50–200</span></label><label class="chip"><input type="radio" name="orders_week" value="200–500"><span>200–500</span></label><label class="chip"><input type="radio" name="orders_week" value="500+"><span>500+</span></label></div><span class="emsg">Please choose one.</span></div>
+
+        <div class="fg" data-group="channels"><span class="flbl">How orders arrive today <span class="hint">Pick all that apply</span></span><div class="chips"><label class="chip"><input type="checkbox" name="channels" value="Email"><span>Email</span></label><label class="chip"><input type="checkbox" name="channels" value="PDF attachment"><span>PDF attachment</span></label><label class="chip"><input type="checkbox" name="channels" value="Customer portals"><span>Customer portals</span></label><label class="chip"><input type="checkbox" name="channels" value="Phone"><span>Phone</span></label><label class="chip"><input type="checkbox" name="channels" value="EDI"><span>EDI</span></label></div><span class="emsg">Pick at least one.</span></div>
+
+
+
+
+        <div style="height:18px"></div>
+        <input type="hidden" name="source" id="f-source" value="demo">
+        <div class="fg" data-group="consent"><label class="consent"><input type="checkbox" name="privacy" value="accepted"><span>I agree to the <a href="#privacy" target="_blank">Privacy Policy</a>.</span></label><span class="emsg">Please accept the Privacy Policy to continue.</span></div>
+        <div class="dm-actions"><button class="btn-back" type="button" data-back>← Back</button><button class="btn btn-yellow" type="submit"><span id="dmSubmitTxt">Pick a time</span> <span class="arr">→</span></button></div>
+        <p class="dm-note">Your answers only go to the Kalyd team.</p>
+      </div>
+    </form>
+    <!-- step 3 (demo only): pick a slot in Valentin's calendar.
+         Mock UI for now. To go live, create a free Cal.com account and set CAL_LINK in the script (e.g. 'valentin-kalyd/demo'):
+         the mock is then swapped for Cal.com's real booking page, prefilled with the visitor's name and email. -->
+    <div class="bk" id="dmBook">
+      <aside class="bk-host">
+        <div class="bk-av" aria-hidden="true">V</div>
+        <div class="bk-who">Valentin <span>Sales · Kalyd</span></div>
+        <h3>Kalyd demo call</h3>
+        <ul class="bk-meta">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>30 min</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>Google Meet</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Brussels time (CET)</li>
+        </ul>
+        <p>We'll walk through Kalyd on a live dispatch board, using an order like the ones you get every day.</p>
+      </aside>
+      <div class="bk-cal">
+        <div class="bk-mhead"><b id="bkMonth"></b><div><button type="button" class="bk-nav" id="bkPrev" aria-label="Previous month">‹</button><button type="button" class="bk-nav" id="bkNext" aria-label="Next month">›</button></div></div>
+        <div class="bk-dow"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+        <div class="bk-days" id="bkDays"></div>
+      </div>
+      <div class="bk-slots">
+        <div class="bk-day" id="bkDay">Pick a day</div>
+        <div class="bk-list" id="bkList"></div>
+        <button class="btn btn-yellow bk-go" type="button" id="bkGo" disabled>Confirm <span class="arr">→</span></button>
+      </div>
+      <div class="bk-live" id="bkLive" hidden></div>
+    </div>
+    <div class="dm-done" id="dmDone">
+      <div class="ok"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3 id="dmDoneT">Thanks, we've got it.</h3>
+      <p id="dmDoneP">We'll reach out within one business day to set up your pilot.</p>
+      <button class="btn btn-primary" type="button" data-close>Back to the site</button><br>
+      <span class="dm-demo" id="dmDemoNote" hidden>Demo mode: no data was sent.</span>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ---------- hero demo loop ---------- */
+(() => {
+  const stages = [...document.querySelectorAll('.stage')];
+  const tabs = [...document.querySelectorAll('#stepsBar .sb')];
+  const side = [...document.querySelectorAll('.ws-item')];
+  const DUR = 3600;
+  let i = 0, t;
+  function show(n){
+    i = n;
+    stages.forEach((s,k)=>s.classList.toggle('on',k===n));
+    side.forEach(s=>s.classList.toggle('on',+s.dataset.s===n));
+    tabs.forEach((b,k)=>{
+      b.classList.remove('on');
+      b.classList.toggle('done',k<n);
+    });
+    void tabs[n].offsetWidth;            // restart progress animation
+    tabs[n].style.setProperty('--dur',DUR+'ms');
+    tabs[n].classList.add('on');
+    clearTimeout(t);
+    t = setTimeout(()=>show((i+1)%stages.length), DUR);
+  }
+  tabs.forEach((b,k)=>b.addEventListener('click',()=>show(k)));
+  show(0);
+})();
+
+/* ---------- language switchers (header + footer stay in sync) ---------- */
+(() => {
+  const groups = [...document.querySelectorAll('.lang')];
+  const close = () => groups.forEach(g=>{g.classList.remove('open');g.querySelector('.lang-btn').setAttribute('aria-expanded','false')});
+  groups.forEach(g=>{
+    const btn = g.querySelector('.lang-btn');
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const open = !g.classList.contains('open');
+      close();
+      g.classList.toggle('open',open);
+      btn.setAttribute('aria-expanded',open);
+    });
+    g.querySelectorAll('li').forEach(li=>li.addEventListener('click',()=>{
+      const code = li.dataset.lang;
+      groups.forEach(gr=>{
+        gr.querySelector('.lang-cur').textContent = code;
+        gr.querySelectorAll('li').forEach(x=>x.setAttribute('aria-selected',x.dataset.lang===code));
+      });
+      document.documentElement.lang = code.toLowerCase();
+      close();
+    }));
+  });
+  document.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+})();
+
+/* ---------- integrations marquee: duplicate each track for a seamless loop ---------- */
+document.querySelectorAll('.mq-row').forEach(row=>{
+  const t = row.querySelector('.mq-track');
+  const copy = t.cloneNode(true);
+  copy.setAttribute('aria-hidden','true');
+  row.appendChild(copy);
+});
+
+/* ---------- header docks to the top once the page scrolls ---------- */
+(() => {
+  const nav = document.querySelector('.nav');
+  const set = () => nav.classList.toggle('stuck', scrollY > 8);
+  addEventListener('scroll', set, {passive:true});
+  set();
+})();
+
+/* ---------- demo request form ---------- */
+(() => {
+  // Paste a form endpoint here (Formspree, HubSpot, your own API) to send real submissions.
+  // While it's empty the form runs in demo mode and only shows the thank-you screen.
+  const FORM_ENDPOINT = '';
+
+  const modal = document.getElementById('demoModal');
+  const form = document.getElementById('demoForm');
+  const steps = [...form.querySelectorAll('.dm-step')];
+  const prog = [...document.querySelectorAll('#dmProg i')];
+  const stepLbl = document.getElementById('dmStepLbl');
+  const done = document.getElementById('dmDone');
+  const head = [document.getElementById('dmHead'), document.getElementById('dmProg'), stepLbl];
+  // Cal.com booking link for the demo call, e.g. 'valentin-kalyd/demo'. Empty = show the mock calendar.
+  const CAL_LINK = '';
+  const book = document.getElementById('dmBook');
+  const box = modal.querySelector('.dm-box');
+  let pilot = false;
+  const HEAD_T = document.getElementById('dmTitle').textContent;
+  const HEAD_P = document.querySelector('#dmHead p').textContent;
+  const labels = () => pilot
+    ? ['Step 1 of 2 · About you', 'Step 2 of 2 · Your operation']
+    : ['Step 1 of 2 · About you', '', 'Step 2 of 2 · Pick a time'];
+  let lastFocus = null;
+
+  function go(n){
+    steps.forEach((s,k)=>s.classList.toggle('on',k===n));
+    prog.forEach((p,k)=>p.classList.toggle('on',k<=n));
+    stepLbl.textContent = labels()[n];
+    modal.scrollTop = 0;
+    const first = steps[n].querySelector('input');
+    if(first) first.focus({preventScroll:true});
+  }
+
+  function open(isPilot){
+    pilot = isPilot;
+    lastFocus = document.activeElement;
+    form.reset();
+    form.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
+    form.hidden = false; done.classList.remove('on');
+    book.classList.remove('on'); box.classList.remove('wide');
+    modal.classList.toggle('pilot', pilot);
+    document.getElementById('dmTitle').textContent = pilot ? HEAD_T : 'Book a demo with Valentin.';
+    document.querySelector('#dmHead p').textContent = pilot ? HEAD_P : 'Tell us who you are, then pick a time that suits you.';
+    document.getElementById('dmSubmitTxt').textContent = 'Start my pilot';
+    document.getElementById('dmNextTxt').textContent = pilot ? 'Continue' : 'Pick a time';
+    head.forEach(h=>h.hidden=false);
+    document.getElementById('f-source').value = pilot ? 'free pilot' : 'demo';
+    modal.hidden = false;
+    modal.classList.add('open');
+    document.body.classList.add('dm-lock');
+    go(0);
+  }
+  function close(){
+    modal.classList.remove('open');
+    modal.hidden = true;
+    document.body.classList.remove('dm-lock');
+    if(lastFocus) lastFocus.focus({preventScroll:true});
+  }
+
+  // every "Book a demo" / "Start a free pilot" button opens the form
+  document.querySelectorAll('a[href="#demo"]').forEach(a=>a.addEventListener('click',e=>{
+    e.preventDefault();
+    open(/pilot/i.test(a.textContent));
+  }));
+  modal.querySelector('.dm-close').addEventListener('click',close);
+  modal.querySelector('[data-close]').addEventListener('click',close);
+  modal.addEventListener('mousedown',e=>{ if(e.target===modal) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !modal.hidden) close(); });
+
+  // clear an error as soon as the field is fixed
+  form.addEventListener('input',e=>{ const g=e.target.closest('.fg'); if(g) g.classList.remove('err'); });
+  form.addEventListener('change',e=>{ const g=e.target.closest('.fg'); if(g) g.classList.remove('err'); });
+
+  function valid(step){
+    let ok = true;
+    step.querySelectorAll('input[type=text][required],input[type=email]').forEach(inp=>{
+      const bad = !inp.value.trim() || (inp.type==='email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value.trim()));
+      inp.closest('.fg').classList.toggle('err',bad);
+      if(bad) ok = false;
+    });
+    step.querySelectorAll('.fg[data-group]').forEach(g=>{
+      if(!g.offsetParent) return;   // skip groups hidden for this flow
+      const bad = !g.querySelector('input:checked');
+      g.classList.toggle('err',bad);
+      if(bad) ok = false;
+    });
+    if(!ok){ const f = step.querySelector('.err'); f.scrollIntoView({block:'center',behavior:'smooth'}); }
+    return ok;
+  }
+
+  // pilot: step 1 → step 2 (operation questions). demo: step 1 → Valentin's calendar.
+  form.querySelector('[data-next]').addEventListener('click',async ()=>{
+    if(!valid(steps[0])) return;
+    if(pilot) return go(1);
+    const data = collect();
+    try{ await send(data); }catch(err){ alert('Something went wrong sending the form. Please try again.'); return; }
+    document.getElementById('dmDemoNote').hidden = !!FORM_ENDPOINT;
+    openBooking(data);
+  });
+  form.querySelector('[data-back]').addEventListener('click',()=>go(0));
+
+  function collect(){
+    const data = {};
+    for(const el of form.elements){
+      if(!el.name || (el.type==='checkbox'||el.type==='radio') && !el.checked) continue;
+      data[el.name] = data[el.name] ? [].concat(data[el.name], el.value) : el.value;
+    }
+    data.page = location.href;
+    return data;
+  }
+  async function send(data){
+    if(!FORM_ENDPOINT) return;
+    const r = await fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok) throw new Error(r.status);
+  }
+
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(!valid(steps[1])) return;
+    const data = collect();
+    const btn = form.querySelector('[type=submit]');
+    btn.disabled = true;
+    try{
+      await send(data);
+      document.getElementById('dmDemoNote').hidden = !!FORM_ENDPOINT;
+      form.hidden = true;
+      if(pilot){
+        head.forEach(h=>h.hidden=true);
+        document.getElementById('dmDoneT').textContent = "Thanks, we've got it.";
+        document.getElementById('dmDoneP').textContent = "We'll reach out within one business day to set up your pilot.";
+        done.classList.add('on');
+      } else {
+        openBooking(data);
+      }
+    }catch(err){
+      alert('Something went wrong sending the form. Please try again.');
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  /* ---- step 3: Valentin's calendar (mock until CAL_LINK is set) ---- */
+  const TZ_NOTE = 'Brussels time';
+  const fmtDay = d => d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  let lead = {}, view, selDay = null, selTime = null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstBookable = new Date(today); firstBookable.setDate(today.getDate()+1);
+  const lastBookable = new Date(today); lastBookable.setDate(today.getDate()+42);
+  const isOpen = d => d >= firstBookable && d <= lastBookable && d.getDay()%6 !== 0;
+  // fake "already booked" slots so the calendar looks real
+  const taken = (d,t) => ((d.getDate()*7 + t*13) % 5) === 0;
+  const TIMES = ['09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30'];
+
+  function openBooking(data){
+    lead = data;
+    head.forEach(h=>h.hidden=false);
+    steps.forEach(s=>s.classList.remove('on'));
+    prog.forEach(p=>p.classList.add('on'));
+    stepLbl.textContent = labels()[2];
+    modal.scrollTop = 0;
+    document.getElementById('dmTitle').textContent = 'Book a call with Valentin.';
+    document.querySelector('#dmHead p').textContent = 'Pick a time that suits you. You’ll get a calendar invite with a video link.';
+    box.classList.add('wide');
+    book.classList.add('on');
+    const live = document.getElementById('bkLive');
+    if(CAL_LINK){
+      [...book.children].forEach(c=>{ if(c!==live) c.hidden = true; });
+      live.hidden = false;
+      const q = new URLSearchParams({embed:'true', name:data.name||'', email:data.email||''});
+      live.innerHTML = `<iframe title="Book a call with Valentin" src="https://cal.com/${CAL_LINK}?${q}"></iframe>`;
+      return;
+    }
+    selDay = null; selTime = null;
+    view = new Date(firstBookable.getFullYear(), firstBookable.getMonth(), 1);
+    // jump to the first day with free slots
+    for(let d = new Date(firstBookable); d <= lastBookable; d.setDate(d.getDate()+1)){ if(isOpen(d)){ selDay = new Date(d); break; } }
+    if(selDay) view = new Date(selDay.getFullYear(), selDay.getMonth(), 1);
+    drawMonth(); drawSlots();
+  }
+
+  function drawMonth(){
+    document.getElementById('bkMonth').textContent = view.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+    const days = document.getElementById('bkDays');
+    const lead0 = (view.getDay()+6)%7;
+    const n = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+    let html = '<span></span>'.repeat(lead0);
+    for(let i=1;i<=n;i++){
+      const d = new Date(view.getFullYear(), view.getMonth(), i);
+      const cls = [isOpen(d)?'av':'', +d===+today?'today':'', selDay && +d===+selDay?'sel':''].join(' ');
+      html += `<button type="button" class="${cls}" data-d="${i}" ${isOpen(d)?'':'disabled'} aria-label="${fmtDay(d)}">${i}</button>`;
+    }
+    days.innerHTML = html;
+    document.getElementById('bkPrev').disabled = view <= new Date(today.getFullYear(), today.getMonth(), 1);
+    document.getElementById('bkNext').disabled = view >= new Date(lastBookable.getFullYear(), lastBookable.getMonth(), 1);
+  }
+  function drawSlots(){
+    const list = document.getElementById('bkList');
+    document.getElementById('bkGo').disabled = !selTime;
+    if(!selDay){ document.getElementById('bkDay').textContent = 'Pick a day'; list.innerHTML = ''; return; }
+    document.getElementById('bkDay').textContent = selDay.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    const free = TIMES.filter((t,i)=>!taken(selDay,i));
+    list.innerHTML = free.length ? free.map(t=>`<button type="button" class="${t===selTime?'sel':''}">${t}</button>`).join('') : '<p class="bk-empty">No free times this day.</p>';
+  }
+  document.getElementById('bkDays').addEventListener('click',e=>{
+    const b = e.target.closest('button.av'); if(!b) return;
+    selDay = new Date(view.getFullYear(), view.getMonth(), +b.dataset.d); selTime = null;
+    drawMonth(); drawSlots();
+  });
+  document.getElementById('bkList').addEventListener('click',e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    selTime = b.textContent; drawSlots();
+  });
+  document.getElementById('bkPrev').addEventListener('click',()=>{ view.setMonth(view.getMonth()-1); drawMonth(); });
+  document.getElementById('bkNext').addEventListener('click',()=>{ view.setMonth(view.getMonth()+1); drawMonth(); });
+  document.getElementById('bkGo').addEventListener('click',()=>{
+    if(!selDay || !selTime) return;
+    book.classList.remove('on'); box.classList.remove('wide');
+    head.forEach(h=>h.hidden=true);
+    document.getElementById('dmDoneT').textContent = `You're booked with Valentin.`;
+    document.getElementById('dmDoneP').textContent = `${fmtDay(selDay)} at ${selTime} (${TZ_NOTE}). A calendar invite with the video link is on its way to ${lead.email || 'your inbox'}.`;
+    done.classList.add('on');
+  });
+})();
+
+/* ---------- platform road: highlight modules 01 → 06, then loop ---------- */
+(() => {
+  const track = document.querySelector('.pf-track');
+  if(!track) return;
+  const steps = [...track.querySelectorAll('.pf-st')];
+  const STEP = 2600, HOLD = 1800;  // ms per module, pause on Finance before restarting
+  let i = 0, timer = null, visible = false, paused = false;
+  function show(n){
+    i = n;
+    track.style.setProperty('--p', n);
+    steps.forEach((s,k)=>{s.classList.toggle('on', k<=n); s.classList.toggle('cur', k===n)});
+  }
+  function tick(){
+    clearTimeout(timer);
+    if(!visible || paused) return;
+    timer = setTimeout(()=>{ show(i < steps.length-1 ? i+1 : 0); tick(); }, i === steps.length-1 ? STEP + HOLD : STEP);
+  }
+  steps.forEach((s,k)=>{
+    s.addEventListener('mouseenter',()=>{paused=true; clearTimeout(timer); show(k)});
+    s.addEventListener('mouseleave',()=>{paused=false; tick()});
+    s.addEventListener('click',()=>show(k));
+  });
+  new IntersectionObserver(([e])=>{visible = e.isIntersecting; if(visible) tick(); else clearTimeout(timer);},{threshold:.35}).observe(track);
+  show(0);
+})();
+
+/* ---------- reveal on scroll ---------- */
+(() => {
+  const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+
+/* ---------- road: yellow dot drives down as you scroll ---------- */
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const X = 40;                // road centre: 40px from the left edge of the screen
+  const AMP = 12;              // how far the road bends left/right
+  const svg = document.getElementById('roadSvg');
+  const base = document.getElementById('roadBase');
+  const done = document.getElementById('roadDone');
+  const car = document.getElementById('car');
+  const halo = document.getElementById('carHalo');
+  const stopsG = document.getElementById('roadStops');
+  const pinsG = document.getElementById('roadPins');
+  const label = document.getElementById('roadLabel');
+  const topbar = document.getElementById('topbar');
+  const sections = [...document.querySelectorAll('[data-stop]:not([hidden])')];
+  let len = 0, stops = [], lastLabel = '', labelTimer;
+
+  function pin(x,y,fill,stroke){
+    const g = document.createElementNS(NS,'g');
+    g.setAttribute('transform',`translate(${x} ${y})`);
+    g.innerHTML = `<path d="M0 0 C-2 -6 -9 -10 -9 -17 a9 9 0 0 1 18 0 c0 7 -7 11 -9 17z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/><circle cy="-17" r="3.6" fill="#fff"/>`;
+    return g;
+  }
+
+  function build(){
+    const h = window.innerHeight;
+    const y0 = 96, y1 = h - 28;            // below the sticky nav, above the bottom edge
+    const n = 4;                           // number of gentle S-bends
+    const seg = (y1 - y0) / n;
+    let d = `M${X} ${y0}`;
+    for(let k=0;k<n;k++){
+      const ya = y0 + seg*k, yb = ya + seg, dir = k%2 ? -1 : 1;
+      d += ` C${X+AMP*dir} ${ya+seg*.35}, ${X+AMP*dir} ${yb-seg*.35}, ${X} ${yb}`;
+    }
+    base.setAttribute('d',d);
+    done.setAttribute('d',d);
+    len = base.getTotalLength();
+    done.style.strokeDasharray = len;
+
+    // start / finish pins jump to the first / last section
+    const first = sections[0], last = sections[sections.length-1];
+    pinsG.innerHTML = '';
+    const startPin = pin(X,y0-4,'#0e0f10','#0e0f10');
+    const endPin = pin(X,y1,'#ffc800','#0e0f10');
+    pinsG.appendChild(startPin);
+    pinsG.appendChild(endPin);
+    interactive(startPin, first, y0-21);
+    interactive(endPin, last, y1-17);
+
+    // one stop per section in between, placed where that section starts in scroll terms
+    const max = document.documentElement.scrollHeight - h;
+    stopsG.innerHTML = '';
+    stops = sections.slice(1, -1).map(s=>{
+      const top = s.getBoundingClientRect().top + scrollY - h*.35;
+      const p = Math.min(1,Math.max(0,top/max));
+      const pt = base.getPointAtLength(p*len);
+      const g = document.createElementNS(NS,'g');
+      g.setAttribute('class','stop-g');
+      g.innerHTML = `<circle class="hit" r="12" cx="${pt.x}" cy="${pt.y}"/><circle class="stop" r="4.5" cx="${pt.x}" cy="${pt.y}"/>`;
+      stopsG.appendChild(g);
+      interactive(g, s, pt.y);
+      return {p, el:g.querySelector('.stop'), name:s.dataset.stop};
+    });
+    update();
+  }
+
+  // hover shows the section name, click scrolls to it
+  let hovering = false;
+  function interactive(el, section, y){
+    el.classList.add('road-hit');
+    el.addEventListener('mouseenter',()=>{
+      hovering = true;
+      clearTimeout(labelTimer);
+      label.textContent = section.dataset.stop;
+      label.style.top = y+'px';
+      label.classList.add('show');
+    });
+    el.addEventListener('mouseleave',()=>{
+      hovering = false;
+      label.classList.remove('show');
+    });
+    el.addEventListener('click',()=>{
+      const navH = document.querySelector('.nav').offsetHeight;
+      const top = section === sections[0] ? 0 : section.getBoundingClientRect().top + scrollY - navH;
+      window.scrollTo({top, behavior:'smooth'});
+    });
+  }
+
+  function update(){
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const p = max > 0 ? Math.min(1,Math.max(0,scrollY/max)) : 0;
+    const pt = base.getPointAtLength(p*len);
+    car.setAttribute('cx',pt.x); car.setAttribute('cy',pt.y);
+    halo.setAttribute('cx',pt.x); halo.setAttribute('cy',pt.y);
+    done.style.strokeDashoffset = len*(1-p);
+    topbar.style.width = (p*100)+'%';
+
+    let current = 'Start';
+    stops.forEach(s=>{const on = p >= s.p - .002; s.el.classList.toggle('passed',on); if(on) current = s.name;});
+    if(p > .995) current = sections[sections.length-1].dataset.stop;
+    if(hovering) return;
+    label.style.top = pt.y+'px';
+    if(current !== lastLabel){
+      lastLabel = current;
+      label.textContent = current;
+      label.classList.add('show');
+      clearTimeout(labelTimer);
+      labelTimer = setTimeout(()=>label.classList.remove('show'),1400);
+    }
+  }
+
+  let raf;
+  addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(update)},{passive:true});
+  addEventListener('resize',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(build)});
+  addEventListener('load',build);
+  build();
+})();
+</script>
+</body>
+</html>
