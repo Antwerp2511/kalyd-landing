@@ -8,9 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>try{if(localStorage.getItem('kalyd-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <style>
 :root{
   --bg:#ffffff;
+  --surface:#ffffff;
+  --card-line:#edf1f8;
+  --card-shadow:0 1px 0 rgba(0,92,184,.04),0 3px 12px rgba(2,28,77,.16);
   --bg-soft:#fafaf8;
   --bg-sunk:#f4f4f1;
   --ink:#0e0f10;
@@ -18,10 +22,32 @@
   --ink-3:#8b9099;
   --line:#ebebe7;
   --line-2:#dfdfd9;
-  --yellow:#ffc800;
-  --yellow-2:#ffd94d;
-  --yellow-soft:#fff6d1;
-  --yellow-ink:#7a5800;
+  --brand:#02379d;
+  --brand-2:#0a4bc4;
+  --brand-tint:#c9d9f7;
+  --brand-soft:#e9f0fc;
+  --brand-ink:#02379d;
+  --brand-on-dark:#8fb2f5;
+  --solid:#0e0f10;
+  --on-solid:#ffffff;
+  --solid-hover:#26282b;
+  --panel:#0e0f10;
+  --nav-bg:rgba(255,255,255,.62);
+  --nav-bg-stuck:rgba(255,255,255,.85);
+  --cta-end:#e9f0fc;
+  --foot-end:#d5e2f9;
+  --ok-bg:#e7f7ee;
+  --ok-line:#c5ebd5;
+  --ok-ink:#0f7a3e;
+  --bad-bg:#fdecec;
+  --bad-bg-2:var(--bad-bg-2);
+  --bad-line:var(--bad-line);
+  --bad-ink:var(--bad-ink);
+  --avatar-bg:#e9eef7;
+  --avatar-ink:#3b5aa8;
+  --chat-bg:#efe9df;
+  --map-bg:#fbfbf9;
+  --dot:#e2e2dd;
   --green:#18a957;
   --red:#e5484d;
   --wa:#dcf8c6;
@@ -35,7 +61,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:72px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-left:var(--road-gutter)}
-::selection{background:var(--yellow-2);color:var(--ink)}
+::selection{background:var(--brand);color:#fff}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .wrap{padding:0 56px}
@@ -44,11 +70,11 @@ img{max-width:100%;display:block}
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:12px;font-weight:500;font-size:15px;border:1px solid transparent;transition:transform .15s ease,background .15s ease,box-shadow .15s ease;cursor:pointer;white-space:nowrap}
 .btn:active{transform:translateY(1px)}
-.btn-primary{background:var(--ink);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 2px 6px rgba(14,15,16,.18)}
-.btn-primary:hover{background:#26282b}
-.btn-yellow{background:var(--yellow);color:var(--ink);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 2px 8px rgba(255,200,0,.35)}
-.btn-yellow:hover{background:var(--yellow-2)}
-.btn-ghost{background:#fff;border-color:var(--line-2);color:var(--ink)}
+.btn-primary{background:var(--solid);color:var(--on-solid);box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 2px 6px rgba(14,15,16,.18)}
+.btn-primary:hover{background:var(--solid-hover)}
+.btn-brand{background:var(--brand);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 2px 8px rgba(2,55,157,.35)}
+.btn-brand:hover{background:var(--brand-2)}
+.btn-ghost{background:var(--surface);border-color:var(--line-2);color:var(--ink)}
 .btn-ghost:hover{background:var(--bg-soft)}
 .btn-sm{height:34px;padding:0 13px;font-size:14px;border-radius:12px}
 .btn .arr{transition:transform .2s ease}
@@ -56,13 +82,13 @@ img{max-width:100%;display:block}
 
 /* ---------- nav ---------- */
 /* header floats 20px below the top with a blurred glass background; once you scroll it docks full width */
-.nav{position:fixed;z-index:40;top:20px;left:calc(var(--road-gutter) + 24px);right:24px;border:1px solid var(--line-2);border-radius:var(--radius);background:rgba(255,255,255,.62);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);box-shadow:0 8px 28px -12px rgba(14,15,16,.18);transition:top .3s ease,left .3s ease,right .3s ease,border-radius .3s ease,background .3s ease,box-shadow .3s ease,border-color .3s ease}
-.nav.stuck{top:0;left:0;right:0;border-radius:0;border-color:transparent transparent var(--line);background:rgba(255,255,255,.85);box-shadow:none}
+.nav{position:fixed;z-index:40;top:20px;left:calc(var(--road-gutter) + 24px);right:24px;border:1px solid var(--line-2);border-radius:var(--radius);background:var(--nav-bg);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);box-shadow:0 8px 28px -12px rgba(14,15,16,.18);transition:top .3s ease,left .3s ease,right .3s ease,border-radius .3s ease,background .3s ease,box-shadow .3s ease,border-color .3s ease}
+.nav.stuck{top:0;left:0;right:0;border-radius:0;border-color:transparent transparent var(--line);background:var(--nav-bg-stuck);box-shadow:none}
 .nav .wrap{display:flex;align-items:center;height:60px;gap:32px;padding:0 12px 0 20px;transition:padding .3s ease}
 .nav.stuck .wrap{padding:0 56px 0 calc(var(--road-gutter) + 56px)}
-.nav .logo-mark{border-radius:var(--radius)}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:-.02em}
-.logo-mark{width:28px;height:28px;border-radius:8px;background:var(--yellow);display:grid;place-items:center;box-shadow:0 0 0 1px rgba(14,15,16,.08) inset}
+.logo{display:flex;align-items:center}
+.logo img{height:34px;width:auto}
+footer .logo img{height:26px}
 .nav-links{display:flex;gap:4px;font-size:14.5px;color:var(--ink-2)}
 .nav-links a{padding:6px 12px;border-radius:8px}
 .nav-links a:hover{background:var(--bg-sunk);color:var(--ink)}
@@ -74,25 +100,25 @@ img{max-width:100%;display:block}
 section{position:relative}
 .sec{border-top:1px solid var(--line)}
 .sec-inner{padding:112px 56px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);background:#fff;border:1px solid var(--line-2);padding:5px 12px 5px 6px;border-radius:999px}
-.eyebrow .pill{background:var(--yellow);color:var(--ink);font-weight:600;font-size:11.5px;padding:2px 8px;border-radius:999px;letter-spacing:.01em}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--line-2);padding:5px 12px 5px 6px;border-radius:999px}
+.eyebrow .pill{background:var(--brand);color:#fff;font-weight:600;font-size:11.5px;padding:2px 8px;border-radius:999px;letter-spacing:.01em}
 .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.kicker::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--yellow);box-shadow:0 0 0 1px rgba(14,15,16,.12) inset}
+.kicker::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--brand);box-shadow:0 0 0 1px rgba(14,15,16,.12) inset}
 h1,h2,h3{font-family:var(--font-display);letter-spacing:-.035em;margin:0;font-weight:600}
 h1{font-size:clamp(40px,6.2vw,76px);line-height:1.02}
 h2{font-size:clamp(32px,4.2vw,52px);line-height:1.06}
 h3{font-size:19px;letter-spacing:-.015em;line-height:1.3}
 .lead{font-size:clamp(17px,1.5vw,19.5px);color:var(--ink-2);line-height:1.55}
 .muted{color:var(--ink-2)}
-mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow-2) 92%,transparent 92%);color:inherit;padding:0 .04em}
+mark{background:linear-gradient(transparent 58%,var(--brand-tint) 58%,var(--brand-tint) 92%,transparent 92%);color:inherit;padding:0 .04em}
 
 /* ---------- hero ---------- */
-.hero{background:radial-gradient(1200px 500px at 50% -10%,var(--yellow-soft),transparent 70%),var(--bg);overflow:hidden}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 30%,transparent 75%);opacity:.7;pointer-events:none}
-.hero-inner{position:relative;padding:188px 56px 0;text-align:center}
+.hero{background:radial-gradient(1200px 500px at 50% -10%,var(--brand-soft),transparent 70%),var(--bg);overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 70% 1134px at 50% 0%,#000 46%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 1134px at 50% 0%,#000 46%,transparent 75%);opacity:.7;pointer-events:none}
+.hero-inner{position:relative;padding:128px 56px 0;text-align:center}
 .hero h1{max-width:1240px;margin:28px auto 0;font-weight:700;letter-spacing:-.045em;font-size:clamp(36px,4.6vw,76px);text-wrap:balance}
-.h1-accent{background:linear-gradient(90deg,#f0b400 0%,#e0a000 55%,#c88a00 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.eyebrow-ai{gap:8px;padding:6px 14px 6px 12px;color:#fff;background:var(--ink);border-color:var(--ink);font-weight:500;box-shadow:0 4px 14px -4px rgba(14,15,16,.35)}
+.h1-accent{background:linear-gradient(90deg,var(--brand) 0%,var(--brand-2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow-ai{gap:8px;padding:6px 14px 6px 12px;color:var(--on-solid);background:var(--solid);border-color:var(--solid);font-weight:500;box-shadow:0 4px 14px -4px rgba(14,15,16,.35)}
 .hero .lead{max-width:640px;margin:24px auto 0}
 .hero-cta{display:flex;gap:10px;justify-content:center;margin-top:36px;flex-wrap:wrap}
 .hero-cta .btn{height:48px;padding:0 22px;font-size:15.5px}
@@ -100,140 +126,27 @@ mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow
 .trust span{display:inline-flex;align-items:center;gap:6px}
 .trust svg{color:var(--green)}
 .tagline{align-items:center;gap:12px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
-.tagline i{width:5px;height:5px;border-radius:50%;background:var(--yellow)}
+.tagline i{width:5px;height:5px;border-radius:50%;background:var(--brand)}
 
 /* ---------- product window (hero media) ---------- */
-.window{margin:64px auto 0;max-width:1040px;background:#fff;border:1px solid var(--line-2);border-radius:16px 16px 0 0;border-bottom:0;box-shadow:var(--shadow);text-align:left;overflow:hidden}
-.win-bar{height:42px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
-.win-bar i{width:11px;height:11px;border-radius:50%;background:#e2e2dd;display:block}
-.win-title{margin:0 auto;font-size:12.5px;color:var(--ink-3);font-family:var(--mono)}
-.win-body{display:grid;grid-template-columns:200px 1fr;height:460px}
-.win-side{border-right:1px solid var(--line);padding:14px 10px;background:var(--bg-soft);font-size:13.5px}
-.win-side .ws-org{display:flex;align-items:center;gap:8px;padding:6px 8px 14px;font-weight:600}
-.win-side .ws-org b{width:22px;height:22px;border-radius:6px;background:var(--ink);color:var(--yellow);display:grid;place-items:center;font-size:11px}
-.ws-item{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:7px;color:var(--ink-2);transition:background .3s,color .3s}
-.ws-item.on{background:#fff;color:var(--ink);box-shadow:0 0 0 1px var(--line-2),0 1px 2px rgba(0,0,0,.04)}
-.ws-item .dot{width:7px;height:7px;border-radius:50%;background:var(--line-2)}
-.ws-item.on .dot{background:var(--yellow)}
-.ws-item .ct{margin-left:auto;font-size:11px;font-family:var(--mono);color:var(--ink-3)}
-.win-main{position:relative;overflow:hidden;background:#fff}
-.stage{position:absolute;inset:0;padding:26px 28px;opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
-.stage.on{opacity:1;transform:none}
-.stage-h{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;margin-bottom:18px}
-.tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:3px 8px;border-radius:6px;background:var(--bg-sunk);color:var(--ink-2);border:1px solid var(--line)}
-.tag.y{background:var(--yellow-soft);border-color:#f3e2a0;color:var(--yellow-ink)}
-.tag.g{background:#e7f7ee;border-color:#c5ebd5;color:#0f7a3e}
-.tag.r{background:#fdecec;border-color:#f6caca;color:#b42318}
-
-/* stage 1: email */
-.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.mail-head{padding:14px 16px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
-.avatar{width:32px;height:32px;border-radius:50%;background:#e9eef7;display:grid;place-items:center;font-size:12px;font-weight:600;color:#3b5aa8}
-.mail-head small{display:block;color:var(--ink-3);font-size:12px}
-.mail-body{padding:16px;font-size:13.5px;color:var(--ink-2);line-height:1.7}
-.mail-body .hl{background:transparent;border-radius:3px;transition:background .4s}
-.stage.on .mail-body .hl{animation:hl 2.6s ease forwards}
-.stage.on .mail-body .hl:nth-of-type(2){animation-delay:.25s}
-.stage.on .mail-body .hl:nth-of-type(3){animation-delay:.5s}
-.stage.on .mail-body .hl:nth-of-type(4){animation-delay:.75s}
-.stage.on .mail-body .hl:nth-of-type(5){animation-delay:1s}
-.stage.on .mail-body .hl:nth-of-type(6){animation-delay:1.25s}
-@keyframes hl{0%,30%{background:transparent}50%,100%{background:var(--yellow-soft);box-shadow:0 0 0 2px var(--yellow-soft)}}
-.attach{display:inline-flex;gap:8px;align-items:center;margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--ink-2)}
-.scan{position:absolute;left:28px;right:28px;height:2px;background:linear-gradient(90deg,transparent,var(--yellow),transparent);top:80px;opacity:0}
-.stage.on .scan{animation:scan 2.2s ease-in-out .2s 1 forwards}
-@keyframes scan{0%{top:84px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:340px;opacity:0}}
-
-/* stage 2: extraction */
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.field{border:1px solid var(--line);border-radius:10px;padding:10px 12px;opacity:0;transform:translateY(6px)}
-.stage.on .field{animation:fin .4s ease forwards}
-.field label{display:block;font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-family:var(--mono)}
-.field div{font-size:14px;font-weight:500;margin-top:2px}
-.field.adr{border-color:#f6caca;background:#fff8f8}
-@keyframes fin{to{opacity:1;transform:none}}
-.ai-bar{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12.5px;color:var(--ink-2)}
-.ai-bar .meter{flex:1;height:6px;border-radius:9px;background:var(--bg-sunk);overflow:hidden}
-.ai-bar .meter i{display:block;height:100%;width:0;background:var(--yellow);border-radius:9px}
-.stage.on .ai-bar .meter i{animation:grow 2.4s ease forwards}
-@keyframes grow{to{width:100%}}
-
-/* stage 3: board */
-.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;height:360px}
-.col{background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:8px}
-.col h5{margin:2px 4px 8px;font-size:12px;font-weight:600;color:var(--ink-2);display:flex;justify-content:space-between}
-.col h5 span{color:var(--ink-3);font-weight:400;font-family:var(--mono)}
-.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 9px;margin-bottom:7px;font-size:11.5px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.card b{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
-.card .meta{color:var(--ink-3);display:flex;justify-content:space-between}
-.card.new{border-color:var(--yellow);box-shadow:0 0 0 3px var(--yellow-soft)}
-.stage.on .card.new{animation:drop .6s cubic-bezier(.2,.9,.3,1.3) .3s both}
-@keyframes drop{from{opacity:0;transform:translateY(-24px) scale(.96)}to{opacity:1;transform:none}}
-.ghost{height:46px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--bg-sunk) 0 40%,transparent 40% 100%);opacity:.6;margin-bottom:7px}
-
-/* stage 4: whatsapp */
-.wa{display:grid;grid-template-columns:1fr 280px;gap:22px;align-items:start}
-.phone{border:1px solid var(--line-2);border-radius:26px;padding:10px;background:#fff;box-shadow:var(--shadow)}
-.phone-in{border-radius:18px;background:#efe9df;height:350px;padding:12px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
-.phone-top{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;background:#fff;margin:-12px -12px 4px;padding:10px 12px;border-bottom:1px solid var(--line)}
-.phone-top i{width:24px;height:24px;border-radius:50%;background:var(--yellow);display:block}
-.bub{background:var(--wa);border-radius:10px 10px 2px 10px;padding:8px 10px;font-size:12px;align-self:flex-end;max-width:92%;box-shadow:0 1px 1px rgba(0,0,0,.06);line-height:1.5}
-.bub b{display:block;margin-bottom:2px}
-.bub.in{background:#fff;align-self:flex-start;border-radius:10px 10px 10px 2px}
-.stage.on .bub{animation:fin .4s ease both}
-.stage.on .bub:nth-child(3){animation-delay:.9s}
-.stage.on .bub:nth-child(4){animation-delay:1.8s}
-.assign{border:1px solid var(--line);border-radius:12px;padding:16px}
-.drv{display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;border:1px solid var(--line);margin-top:8px;font-size:13.5px}
-.drv.sel{border-color:var(--yellow);background:var(--yellow-soft)}
-.drv .avatar{width:28px;height:28px;font-size:11px}
-.drv small{color:var(--ink-3);display:block;font-size:11.5px}
-
-/* stage 5: tracking */
-.map{position:relative;height:300px;border-radius:12px;border:1px solid var(--line);overflow:hidden;background:
-  linear-gradient(var(--bg-sunk) 1px,transparent 1px) 0 0/32px 32px,
-  linear-gradient(90deg,var(--bg-sunk) 1px,transparent 1px) 0 0/32px 32px,#fbfbf9}
-.map svg{position:absolute;inset:0;width:100%;height:100%}
-.eta{position:absolute;right:14px;top:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;box-shadow:var(--shadow)}
-.eta b{font-size:18px;display:block;font-family:var(--font-display)}
-.share{margin-top:12px;display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--ink-2)}
-.share code{font-family:var(--mono);background:var(--bg-sunk);padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
-
-/* stage 6: invoice */
-.inv{border:1px solid var(--line);border-radius:12px;padding:20px 22px;max-width:520px}
-.inv-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
-.inv-top b{font-family:var(--font-display);font-size:20px}
-.inv table{width:100%;border-collapse:collapse;font-size:13px}
-.inv td{padding:8px 0;border-bottom:1px solid var(--line)}
-.inv td:last-child{text-align:right;font-family:var(--mono)}
-.inv tr.total td{border:0;font-weight:600;font-size:14.5px;padding-top:12px}
-.sent{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12.5px;color:#0f7a3e}
-.stage.on .sent{animation:fin .4s ease 1.2s both}
-
-/* timeline under window */
-.steps-bar{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);background:var(--bg-soft)}
-.sb{padding:12px 14px;font-size:12.5px;color:var(--ink-3);border-right:1px solid var(--line);cursor:pointer;position:relative;text-align:left;background:none;border-top:0;border-bottom:0;border-left:0;font-family:inherit}
-.sb:last-child{border-right:0}
-.sb b{display:block;color:var(--ink-2);font-weight:500;font-size:13px}
-.sb .pr{position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--yellow)}
-.sb.on b{color:var(--ink)}
-.sb.on .pr{animation:pr var(--dur,3600ms) linear forwards}
-.sb.done .pr{width:100%}
+.app-demo{position:relative;max-width:1040px;margin:64px auto 0;aspect-ratio:1040/504;border-radius:16px;box-shadow:var(--shadow)}
+.app-demo iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s .5s}
+.app-demo iframe.on{opacity:1;visibility:visible;transition:opacity .5s ease}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--avatar-bg);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--avatar-ink)}
 @keyframes pr{to{width:100%}}
 /* desktop shows progress in the window sidebar; the step bar is for smaller screens only */
-@media (min-width:1021px){.steps-bar{display:none}}
 
 /* ---------- proof ---------- */
-.proof-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+.proof-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
 .proof{display:grid;grid-template-columns:1.05fr 1fr;gap:0}
 .proof .ph{min-height:420px;border-right:1px solid var(--line)}
 .placeholder{position:relative;background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px);display:grid;place-items:center;color:var(--ink-3);font-size:13px;font-family:var(--mono);text-align:center;padding:24px}
-.placeholder span{background:#fff;border:1px dashed var(--line-2);border-radius:8px;padding:8px 12px}
+.placeholder span{background:var(--surface);border:1px dashed var(--line-2);border-radius:8px;padding:8px 12px}
 .proof-txt{padding:56px}
 .quote{font-family:var(--font-display);font-size:clamp(22px,2.3vw,28px);line-height:1.3;letter-spacing:-.02em;margin:18px 0 22px}
-.tbc{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--yellow-soft);color:var(--yellow-ink);padding:2px 7px;border-radius:5px;vertical-align:middle}
+.tbc{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--brand-soft);color:var(--brand-ink);padding:2px 7px;border-radius:5px;vertical-align:middle}
 .who{display:flex;align-items:center;gap:12px;font-size:14px}
-.who .avatar{width:40px;height:40px;background:var(--yellow-soft);color:var(--yellow-ink)}
+.who .avatar{width:40px;height:40px;background:var(--brand-soft);color:var(--brand-ink)}
 .who small{display:block;color:var(--ink-3)}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line)}
 .stat{padding:28px 32px;border-right:1px solid var(--line)}
@@ -244,44 +157,38 @@ mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow
 /* ---------- features ---------- */
 .sec-head{max-width:720px;margin-bottom:56px}
 .sec-head .lead{margin-top:18px}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
 .feat{padding:30px 28px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .2s}
 .feat:nth-child(3n){border-right:0}
 .feat:nth-last-child(-n+3){border-bottom:0}
 .feat:hover{background:var(--bg-soft)}
-.ico{width:36px;height:36px;border-radius:9px;background:var(--yellow-soft);border:1px solid #f3e2a0;display:grid;place-items:center;margin-bottom:18px;color:var(--yellow-ink)}
+.ico{width:36px;height:36px;border-radius:9px;background:var(--brand-soft);border:1px solid var(--brand-tint);display:grid;place-items:center;margin-bottom:18px;color:var(--brand-ink)}
 .feat p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
 
 /* ---------- how it works ---------- */
-.how{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.step{border:1px solid var(--line);border-radius:var(--radius);background:#fff;overflow:hidden;display:flex;flex-direction:column}
-.step-txt{padding:28px 28px 22px}
-.step-n{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#e6ad00;margin-bottom:12px}
-.step p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
-.step-vis{margin-top:auto;background:var(--bg-soft);border-top:1px solid var(--line);padding:24px;min-height:210px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.step-vis.placeholder{background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px);aspect-ratio:16/10;min-height:0}
-.mini{background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.mini.adr{border-color:#f6caca;color:#b42318;background:#fff8f8}
+.mini{background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mini.adr{border-color:var(--bad-line);color:var(--bad-ink);background:var(--bad-bg-2)}
 .mini .bar{width:60px;height:5px;border-radius:5px;background:var(--bg-sunk);overflow:hidden}
-.mini .bar i{display:block;height:100%;width:8%;background:var(--yellow)}
-.env{width:100%;max-width:340px;background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink-2);box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mini .bar i{display:block;height:100%;width:8%;background:var(--brand)}
+.env{width:100%;max-width:340px;background:var(--surface);border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink-2);box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .env b{color:var(--ink);font-size:13px}
 .env .ln{height:6px;border-radius:4px;background:var(--bg-sunk);margin-top:7px}
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 
 /* ---------- AI block ---------- */
-.ai{background:var(--ink);color:#fff;border-radius:var(--radius);padding:64px;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;position:relative;overflow:hidden}
+.ai{background:var(--panel);color:#fff;border-radius:var(--radius);padding:64px;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;position:relative;overflow:hidden}
 .ai > *{position:relative;z-index:1}
 .ai .kicker{color:#a3a7ae}
+.ai .kicker::before{background:var(--brand-on-dark)}
 .ai h2{color:#fff}
 .ai .lead{color:#b9bcc2;margin-top:18px}
 .ai-list{list-style:none;margin:0;padding:0;display:grid;gap:4px;position:relative;z-index:1}
 .ai-list li{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);color:#b9bcc2;font-size:15.5px}
 .ai-list li:last-child{border-bottom:0}
 .ai-list li b{color:#fff;font-weight:600}
-.ai-list .ico{background:rgba(255,200,0,.12);border-color:rgba(255,200,0,.3);color:var(--yellow);margin:0}
-.ai-list li.new .ico{background:var(--yellow);color:var(--ink)}
+.ai-list .ico{background:rgba(143,178,245,.12);border-color:rgba(143,178,245,.3);color:var(--brand-on-dark);margin:0}
+.ai-list li.new .ico{background:var(--brand-on-dark);color:var(--ink)}
 
 /* ---------- integrations ---------- */
 .integ{background:var(--bg-sunk)}
@@ -292,14 +199,14 @@ mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow
 .integ-legend{display:flex;gap:18px;margin-top:28px;font-size:13px;color:var(--ink-2)}
 .integ-legend span{display:inline-flex;align-items:center;gap:7px}
 .st{width:8px;height:8px;border-radius:50%;background:var(--line-2);display:inline-block}
-.st.on{background:var(--yellow);box-shadow:0 0 0 1px rgba(14,15,16,.25)}
+.st.on{background:var(--brand);box-shadow:0 0 0 1px rgba(14,15,16,.25)}
 .marquee{display:grid;gap:16px;overflow:hidden;min-width:0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 88%,transparent)}
 .mq-row{display:flex;overflow:hidden}
 .mq-track{display:flex;gap:16px;padding-right:16px;flex:none;animation:mq 48s linear infinite}
 .mq-row.rev .mq-track{animation-direction:reverse}
 .marquee:hover .mq-track{animation-play-state:paused}
 @keyframes mq{to{transform:translateX(-100%)}}
-.tile{position:relative;flex:none;width:188px;height:168px;background:#fff;border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;transition:border-color .2s,box-shadow .2s,transform .2s}
+.tile{position:relative;flex:none;width:188px;height:168px;background:var(--surface);border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;transition:border-color .2s,box-shadow .2s,transform .2s}
 .tile:hover{border-color:var(--line-2);box-shadow:var(--shadow);transform:translateY(-2px)}
 .t-ico{width:40px;height:40px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);display:grid;place-items:center;margin-bottom:12px}
 .t-ico svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -308,14 +215,14 @@ mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow
 .st-pill{position:absolute;top:10px;right:10px;font-size:10.5px;font-weight:500;color:var(--ink-3);display:inline-flex;align-items:center;gap:5px}
 .st-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--line-2)}
 .st-pill.on{color:var(--ink-2)}
-.st-pill.on::before{background:var(--yellow);box-shadow:0 0 0 1px rgba(14,15,16,.25)}
+.st-pill.on::before{background:var(--brand);box-shadow:0 0 0 1px rgba(14,15,16,.25)}
 
 /* ---------- Antwerp ---------- */
 .ant{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
 .checks{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-.checks li{display:flex;align-items:center;gap:14px;padding:20px 22px;border-bottom:1px solid var(--line);font-weight:500;background:#fff}
+.checks li{display:flex;align-items:center;gap:14px;padding:20px 22px;border-bottom:1px solid var(--line);font-weight:500;background:var(--surface)}
 .checks li:last-child{border-bottom:0}
-.checks .ck{width:26px;height:26px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;flex:none}
+.checks .ck{width:26px;height:26px;border-radius:50%;background:var(--brand);display:grid;place-items:center;flex:none}
 .flags{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
 
 /* ---------- origin ---------- */
@@ -323,7 +230,7 @@ mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow
 .origin .placeholder{min-height:440px;border-right:1px solid var(--line)}
 .origin-txt{padding:56px;display:flex;flex-direction:column;justify-content:center}
 .origin-txt .lead{margin-top:18px}
-.origin blockquote{margin:28px 0 0;padding:0 0 0 18px;border-left:3px solid var(--yellow);font-size:17px;color:var(--ink)}
+.origin blockquote{margin:28px 0 0;padding:0 0 0 18px;border-left:3px solid var(--brand);font-size:17px;color:var(--ink)}
 
 /* ---------- FAQ ---------- */
 .faq{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
@@ -339,12 +246,12 @@ mark{background:linear-gradient(transparent 58%,var(--yellow-2) 58%,var(--yellow
 .faq-list details p{margin:0;padding:0 48px 24px 2px;color:var(--ink-2)}
 
 /* ---------- final CTA ---------- */
-.cta{text-align:center;background:linear-gradient(180deg,#fff 0%,#fff7d6 100%)}
+.cta{text-align:center;background:linear-gradient(180deg,var(--bg) 0%,var(--cta-end) 100%)}
 .cta .lead{margin:18px auto 0;max-width:560px}
 .cta .hero-cta{margin-top:32px}
 
 /* ---------- footer ---------- */
-footer{background:linear-gradient(180deg,#fff7d6 0%,#ffeca3 100%)}
+footer{background:linear-gradient(180deg,var(--cta-end) 0%,var(--foot-end) 100%)}
 /* tinted sections run under the road gutter, so there's no white strip on the left */
 .hero,.cta,footer{margin-left:calc(-1 * var(--road-gutter));padding-left:var(--road-gutter)}
 /* grid squares like the hero: fade in through the CTA, continue through the footer */
@@ -361,14 +268,14 @@ footer::before{background-position:left top}
 .lang-btn:hover,.lang.open .lang-btn{background:var(--bg-sunk);color:var(--ink)}
 .lang-btn .chev{transition:transform .2s ease}
 .lang.open .chev{transform:rotate(180deg)}
-.lang-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:180px;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line-2);border-radius:12px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s;z-index:50}
+.lang-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:180px;margin:0;padding:6px;list-style:none;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s;z-index:50}
 .lang.up .lang-menu{top:auto;bottom:calc(100% + 6px);left:auto;right:0;transform:translateY(4px)}
 .lang.open .lang-menu{opacity:1;visibility:visible;transform:none}
 .lang-menu li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:14px;color:var(--ink);cursor:pointer}
 .lang-menu li span{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 .lang-menu li:hover{background:var(--bg-sunk)}
 .lang-menu li[aria-selected="true"]{font-weight:600}
-.lang-menu li[aria-selected="true"]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--yellow)}
+.lang-menu li[aria-selected="true"]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand)}
 .lang-menu li:not([aria-selected="true"])::before{content:"";width:6px}
 .nav .lang{margin-right:4px}
 .foot .copy{margin-left:auto;color:var(--ink-3)}
@@ -377,9 +284,9 @@ footer::before{background-position:left top}
 .road{position:fixed;left:0;top:0;width:80px;height:100vh;z-index:30;pointer-events:none}
 .road svg{width:100%;height:100%;overflow:visible}
 .road .base{fill:none;stroke:var(--line-2);stroke-width:3;stroke-dasharray:7 7;stroke-linecap:butt}
-.road .done{fill:none;stroke:var(--yellow);stroke-width:5;stroke-linecap:round}
-.road .stop{fill:#fff;stroke:var(--ink);stroke-width:2;transition:fill .3s,stroke .3s}
-.road .stop.passed{fill:var(--yellow);stroke:var(--yellow)}
+.road .done{fill:none;stroke:var(--brand);stroke-width:5;stroke-linecap:round}
+.road .stop{fill:var(--surface);stroke:var(--ink);stroke-width:2;transition:fill .3s,stroke .3s}
+.road .stop.passed{fill:var(--brand);stroke:var(--brand)}
 .road .road-hit{pointer-events:all;cursor:pointer}
 .road .hit{fill:transparent}
 .road .stop-g .stop{transform-box:fill-box;transform-origin:center;transition:fill .3s,stroke .3s,transform .2s ease}
@@ -387,10 +294,10 @@ footer::before{background-position:left top}
 .road .road-hit path{transition:transform .2s ease;transform-box:fill-box;transform-origin:50% 100%}
 .road .road-hit:hover path{transform:scale(1.15)}
 .road .car,.road .car-halo{pointer-events:none}
-.road .car-halo{fill:var(--yellow);opacity:.28;transform-box:fill-box;transform-origin:center;animation:halo 1.8s ease-out infinite}
-.road .car{fill:var(--yellow);stroke:none}
+.road .car-halo{fill:var(--brand);opacity:.28;transform-box:fill-box;transform-origin:center;animation:halo 1.8s ease-out infinite}
+.road .car{fill:var(--brand);stroke:none}
 @keyframes halo{0%{transform:scale(.6);opacity:.45}100%{transform:scale(1.8);opacity:0}}
-.road-label{position:fixed;left:62px;z-index:31;font-family:var(--mono);font-size:11px;background:var(--ink);color:#fff;padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;transform:translateY(-50%);opacity:0;transition:opacity .25s}
+.road-label{position:fixed;left:62px;z-index:31;font-family:var(--mono);font-size:11px;background:var(--solid);color:var(--on-solid);padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;transform:translateY(-50%);opacity:0;transition:opacity .25s}
 .road-label.show{opacity:1}
 .topbar{display:none}
 
@@ -400,7 +307,7 @@ footer::before{background-position:left top}
   .sec-inner{padding:88px 32px}
   .integ-inner{grid-template-columns:1fr;padding:88px 0;gap:40px}
   .integ-txt{padding:0 32px}
-  .hero-inner{padding:164px 32px 0}
+  .hero-inner{padding:112px 32px 0}
   .nav.stuck .wrap{padding:0 32px 0 calc(var(--road-gutter) + 32px)}
   .proof,.ant,.origin,.ai,.faq{grid-template-columns:1fr}
   .faq{gap:32px}
@@ -412,18 +319,16 @@ footer::before{background-position:left top}
   .feat:nth-child(2n){border-right:0}
   .feat:nth-last-child(-n+3){border-bottom:1px solid var(--line)}
   .feat:nth-last-child(-n+2){border-bottom:0}
-  .win-body{grid-template-columns:1fr}
-  .win-side{display:none}
   .nav-links{display:none}
 }
 @media (max-width:760px){
   :root{--road-gutter:0px}
   .road,.road-label{display:none}
-  .topbar{display:block;position:fixed;top:0;left:0;height:3px;background:var(--yellow);z-index:60;width:0}
+  .topbar{display:block;position:fixed;top:0;left:0;height:3px;background:var(--brand);z-index:60;width:0}
   .wrap{padding:0 16px}
   .frame{border:0}
   .sec-inner{padding:72px 16px}
-  .hero-inner{padding:128px 16px 0}
+  .hero-inner{padding:96px 16px 0}
   .nav{top:12px;left:12px;right:12px}
   .nav.stuck{top:0;left:0;right:0}
   .nav .wrap,.nav.stuck .wrap{padding:0 8px 0 14px}
@@ -437,16 +342,6 @@ footer::before{background-position:left top}
   .feat{border-right:0 !important;border-bottom:1px solid var(--line) !important}
   .feat:last-child{border-bottom:0 !important}
   .ai{padding:36px 20px}
-  .win-body{height:420px}
-  .stage{padding:18px 16px}
-  .fields{grid-template-columns:1fr}
-  .board{grid-template-columns:repeat(2,1fr)}
-  .board .col:nth-child(n+3){display:none}
-  .wa{grid-template-columns:1fr}
-  .wa .assign{display:none}
-  .steps-bar{grid-template-columns:repeat(3,1fr)}
-  .sb:nth-child(3){border-right:0}
-  .sb:nth-child(-n+3){border-bottom:1px solid var(--line)}
   .nav .btn-ghost,.nav-login{display:none}
   .foot{padding:24px 16px}
   .foot .copy{margin-left:0;width:100%}
@@ -455,7 +350,7 @@ footer::before{background-position:left top}
 .dm{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto;background:rgba(14,15,16,.42);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .dm.open{display:flex;animation:dmFade .2s ease}
 @keyframes dmFade{from{opacity:0}to{opacity:1}}
-.dm-box{position:relative;width:100%;max-width:640px;background:#fff;border:1px solid var(--line-2);border-radius:var(--radius);box-shadow:0 24px 80px -20px rgba(14,15,16,.4);animation:dmUp .25s ease}
+.dm-box{position:relative;width:100%;max-width:640px;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--radius);box-shadow:0 24px 80px -20px rgba(14,15,16,.4);animation:dmUp .25s ease}
 @keyframes dmUp{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 .dm-head{padding:28px 32px 0}
 .dm-head h3{font-size:26px;letter-spacing:-.025em;padding-right:36px}
@@ -464,7 +359,7 @@ footer::before{background-position:left top}
 .dm-close:hover{background:var(--bg-sunk);color:var(--ink)}
 .dm-prog{display:flex;gap:6px;margin:20px 32px 0}
 .dm-prog i{flex:1;height:3px;border-radius:3px;background:var(--line)}
-.dm-prog i.on{background:var(--yellow)}
+.dm-prog i.on{background:var(--brand)}
 .dm-steplbl{margin:10px 32px 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .dm form{padding:20px 32px 28px}
 .dm-step{display:none}
@@ -476,24 +371,24 @@ footer::before{background-position:left top}
 .fg > label,.fg > .flbl{font-size:13.5px;font-weight:500;color:var(--ink)}
 .fg .opt{color:var(--ink-3);font-weight:400}
 .fg .hint{color:var(--ink-3);font-weight:400;font-size:12.5px}
-.fg input[type=text],.fg input[type=email],.fg input[type=tel]{height:42px;padding:0 12px;border:1px solid var(--line-2);border-radius:var(--radius);font:inherit;font-size:15px;color:var(--ink);background:#fff;transition:border-color .15s,box-shadow .15s}
-.fg input:hover{border-color:var(--yellow)}
-.fg input:focus{outline:0;border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
+.fg input[type=text],.fg input[type=email],.fg input[type=tel]{height:42px;padding:0 12px;border:1px solid var(--line-2);border-radius:var(--radius);font:inherit;font-size:15px;color:var(--ink);background:var(--surface);transition:border-color .15s,box-shadow .15s}
+.fg input:hover{border-color:var(--brand)}
+.fg input:focus{outline:0;border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
 .fg.err input{border-color:var(--red)}
-.fg .emsg{display:none;color:#b42318;font-size:12.5px}
+.fg .emsg{display:none;color:var(--bad-ink);font-size:12.5px}
 .fg.err .emsg{display:block}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{position:relative}
 .chip input{position:absolute;opacity:0;pointer-events:none}
-.chip span{display:inline-flex;align-items:center;height:36px;padding:0 13px;border:1px solid var(--line-2);border-radius:var(--radius);font-size:14px;color:var(--ink-2);background:#fff;cursor:pointer;transition:all .15s;user-select:none}
+.chip span{display:inline-flex;align-items:center;height:36px;padding:0 13px;border:1px solid var(--line-2);border-radius:var(--radius);font-size:14px;color:var(--ink-2);background:var(--surface);cursor:pointer;transition:all .15s;user-select:none}
 .chip span:hover{border-color:var(--ink-3);color:var(--ink)}
-.chip input:checked + span{background:var(--yellow-soft);border-color:var(--yellow);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--yellow)}
+.chip input:checked + span{background:var(--brand-soft);border-color:var(--brand);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--brand)}
 .chip input:focus-visible + span{outline:2px solid var(--ink);outline-offset:2px}
-.fg.err .chips span{border-color:#f6caca}
+.fg.err .chips span{border-color:var(--bad-line)}
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2);cursor:pointer}
 .consent input{width:16px;height:16px;margin:2px 0 0;accent-color:var(--ink);flex:none;cursor:pointer}
 .consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
-.fg.err .consent{color:#b42318}
+.fg.err .consent{color:var(--bad-ink)}
 .dm-actions{display:flex;align-items:center;gap:10px;margin-top:6px}
 .dm-actions .btn-back{background:none;border:0;font:inherit;font-size:14.5px;color:var(--ink-2);cursor:pointer;padding:0 6px;height:42px}
 .dm-actions .btn-back:hover{color:var(--ink)}
@@ -502,7 +397,7 @@ footer::before{background-position:left top}
 .dm-note{margin:14px 0 0;font-size:12.5px;color:var(--ink-3)}
 .dm-done{display:none;padding:44px 32px 36px;text-align:center}
 .dm-done.on{display:block}
-.dm-done .ok{width:52px;height:52px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;margin:0 auto 18px}
+.dm-done .ok{width:52px;height:52px;border-radius:50%;background:var(--brand);display:grid;place-items:center;margin:0 auto 18px}
 .dm-done h3{font-size:24px}
 .dm-done p{color:var(--ink-2);margin:10px auto 24px;max-width:400px}
 .dm-demo{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
@@ -511,7 +406,7 @@ footer::before{background-position:left top}
 .bk{display:none;grid-template-columns:250px 1fr 210px;border-top:1px solid var(--line);margin-top:20px}
 .bk.on{display:grid}
 .bk-host{padding:24px 24px 28px 32px;border-right:1px solid var(--line)}
-.bk-av{width:48px;height:48px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:20px}
+.bk-av{width:48px;height:48px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:20px}
 .bk-who{margin-top:12px;font-weight:600;font-size:14.5px}
 .bk-who span{display:block;font-weight:400;color:var(--ink-3);font-size:13px}
 .bk-host h3{font-size:20px;letter-spacing:-.02em;margin:16px 0 12px}
@@ -522,21 +417,21 @@ footer::before{background-position:left top}
 .bk-cal{padding:24px}
 .bk-mhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .bk-mhead b{font-size:15px}
-.bk-nav{width:32px;height:32px;border:1px solid var(--line-2);background:#fff;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;margin-left:6px;color:var(--ink)}
+.bk-nav{width:32px;height:32px;border:1px solid var(--line-2);background:var(--surface);border-radius:8px;font-size:18px;line-height:1;cursor:pointer;margin-left:6px;color:var(--ink)}
 .bk-nav:disabled{opacity:.35;cursor:default}
 .bk-dow,.bk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .bk-dow span{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);padding-bottom:6px}
 .bk-days button{height:40px;border:0;border-radius:8px;background:none;font:inherit;font-size:14px;color:var(--ink-3);cursor:default}
 .bk-days button.av{background:var(--bg-sunk);color:var(--ink);font-weight:500;cursor:pointer}
-.bk-days button.av:hover{background:var(--yellow-soft)}
-.bk-days button.sel{background:var(--ink) !important;color:#fff}
+.bk-days button.av:hover{background:var(--brand-soft)}
+.bk-days button.sel{background:var(--brand) !important;color:#fff}
 .bk-days button.today{box-shadow:inset 0 0 0 1px var(--line-2)}
 .bk-slots{padding:24px 24px 24px 0;display:flex;flex-direction:column;min-height:0}
 .bk-day{font-weight:600;font-size:14.5px;margin-bottom:12px}
 .bk-list{display:grid;gap:6px;max-height:300px;overflow-y:auto;padding-right:4px}
-.bk-list button{height:40px;border:1px solid var(--line-2);border-radius:8px;background:#fff;font:inherit;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink)}
-.bk-list button:hover{border-color:var(--yellow)}
-.bk-list button.sel{background:var(--yellow-soft);border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
+.bk-list button{height:40px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);font:inherit;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink)}
+.bk-list button:hover{border-color:var(--brand)}
+.bk-list button.sel{background:var(--brand-soft);border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
 .bk-list .bk-empty{font-size:13.5px;color:var(--ink-3)}
 .bk-go{margin-top:14px;width:100%;justify-content:center}
 .bk-go:disabled{opacity:.45;cursor:default;transform:none}
@@ -566,34 +461,195 @@ body.dm-lock{overflow:hidden}
 .pf-track{--gap:16px;--col:calc((100% - 5 * var(--gap)) / 6);display:grid;grid-template-columns:repeat(6,1fr);gap:var(--gap);position:relative}
 .pf-track::before,.pf-track::after{content:"";position:absolute;top:23px;left:24px;height:0}
 .pf-track::before{width:calc(5 * (var(--col) + var(--gap)));border-top:2px dashed var(--line-2)}
-.pf-track::after{width:calc(var(--p) * (var(--col) + var(--gap)));border-top:2px solid var(--yellow);transition:width .9s cubic-bezier(.65,0,.35,1)}
+.pf-track::after{width:calc(var(--p) * (var(--col) + var(--gap)));border-top:2px solid var(--brand);transition:width .9s cubic-bezier(.65,0,.35,1)}
 .pf-st{position:relative;cursor:pointer}
-.pf-dot{width:48px;height:48px;border-radius:50%;background:#fff;border:2px solid var(--line-2);display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:600;position:relative;z-index:1;margin-bottom:20px;transition:background .35s ease,border-color .35s ease,color .35s ease,transform .35s ease}
-.pf-st.on .pf-dot{background:var(--yellow);border-color:var(--yellow)}
-.pf-st.cur .pf-dot{background:var(--bg-soft);border-color:var(--line-2)}
+.pf-dot{width:48px;height:48px;border-radius:50%;background:var(--surface);border:2px solid var(--line-2);display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:600;position:relative;z-index:1;margin-bottom:20px;transition:background .35s ease,border-color .35s ease,color .35s ease,transform .35s ease}
+.pf-st.on .pf-dot{background:var(--brand);border-color:var(--brand);color:#fff}
+.pf-st.cur .pf-dot{background:var(--bg-soft);border-color:var(--line-2);color:var(--ink)}
 .pf-st.cur .pf-dot{transform:scale(1.08)}
-.pf-n{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
 .pf-st h3{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.01em}
 .pf-chips{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:14px}
-.pf-chips span{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--line-2);border-radius:999px;font-size:13px;background:#fff;white-space:nowrap;transition:background .35s ease,color .35s ease,border-color .35s ease}
+.pf-chips span{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--line-2);border-radius:999px;font-size:13px;background:var(--surface);white-space:nowrap;transition:background .35s ease,color .35s ease,border-color .35s ease}
 .pf-st.cur .pf-chips span{background:var(--bg-soft)}
 .pf-st.cur .pf-chips span:nth-child(2){transition-delay:.05s}.pf-st.cur .pf-chips span:nth-child(3){transition-delay:.1s}.pf-st.cur .pf-chips span:nth-child(4){transition-delay:.15s}.pf-st.cur .pf-chips span:nth-child(5){transition-delay:.2s}
+/* tablet and phone: one column, the road runs down through the numbers */
 @media (max-width:1020px){
-  .pf-track{grid-template-columns:repeat(3,1fr);row-gap:40px}
-  .pf-track::before,.pf-track::after{display:none}
-}
-@media (max-width:760px){
   .pf-ends{display:none}
   .pf-track{grid-template-columns:1fr;row-gap:28px}
-  .pf-st{display:grid;grid-template-columns:48px 1fr;column-gap:16px}
-  .pf-dot{margin:0;grid-row:1/3}
+  .pf-st{display:grid;grid-template-columns:36px 1fr;column-gap:14px}
+  .pf-dot{margin:0;grid-row:1/3;width:36px;height:36px;font-size:11.5px}
+  .pf-st h3{line-height:36px}
   .pf-chips{flex-direction:row;flex-wrap:wrap}
+  .pf-track::before,.pf-track::after{top:var(--y0,18px);left:17px;width:0;border-top:0}
+  .pf-track::before{height:calc(var(--y1,0px) - var(--y0,0px));border-left:2px dashed var(--line-2)}
+  .pf-track::after{height:var(--yp,0px);border-left:2px solid var(--brand);transition:height .9s cubic-bezier(.65,0,.35,1)}
 }
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
   html{scroll-behavior:auto}
 }
+
+.how{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:stretch}
+.how-media{position:relative;display:flex;align-items:center;padding:28px 28px 28px 0}
+.how-media::before{content:"";position:absolute;inset:0 0 0 24px;background:var(--brand);border-radius:16px}
+.how-video{position:relative;width:100%;aspect-ratio:16/10;border-radius:10px;overflow:hidden;display:grid;place-items:center;background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px)}
+.how-video img,.how-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.how-video img{transform:scale(1.4);transform-origin:54% 46%}
+.how-play{position:relative;width:64px;height:64px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px -6px rgba(2,55,157,.5)}
+.how-steps{list-style:none;margin:0;padding:0;display:grid;gap:6px;align-content:center}
+.hs{--dur:4600ms;position:relative;display:grid;grid-template-columns:56px 1fr;gap:16px;width:100%;padding:14px 0 14px 22px;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.hs::before,.hs::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--line-2)}
+.hs::after{background:var(--brand);transform:scaleY(0);transform-origin:top}
+.hs.on::after{transform:scaleY(1);transition:transform var(--dur) linear}
+.hs-ico{width:56px;height:56px;border-radius:10px;color:var(--ink);display:grid;place-items:center;font-family:var(--font-display);font-size:32px;font-weight:700;letter-spacing:-.04em;line-height:1;transition:background .25s,color .25s}
+.hs.on .hs-ico{background:var(--brand);color:#fff}
+.hs-body{display:block;min-width:0}
+.hs strong{display:block;font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.25}
+.hs-p{display:block;margin-top:6px;color:var(--ink-2);font-size:15px;line-height:1.5}
+@media (max-width:1020px){
+  .how{grid-template-columns:1fr;gap:32px}
+}
+@media (max-width:760px){
+  .how-media{padding:16px 16px 16px 0}
+  .how-media::before{left:14px;border-radius:12px}
+  .hs{grid-template-columns:48px 1fr;gap:12px;padding-left:16px}
+  .hs-ico{width:48px;height:48px;font-size:27px}
+}
+
+.vm{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(14,15,16,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.vm.open{display:flex}
+.vm-box{position:relative;width:100%;max-width:960px}
+.vm-media{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
+.vm-media video,.vm-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vm-soon{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:#fff;background:rgba(14,15,16,.72);border-radius:var(--radius);padding:6px 10px;white-space:nowrap}
+.vm-close{top:-44px;right:0;color:#fff}
+.vm-close:hover{background:rgba(255,255,255,.14);color:#fff}
+.hx{position:relative;min-height:640px;padding:128px 0 40px}
+.hx-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hx-lines path{fill:none;stroke:var(--brand-tint);stroke-width:1.6;stroke-dasharray:6 6}
+.hx-lines .hx-draw{stroke:#fff;stroke-width:6;stroke-dasharray:1;stroke-dashoffset:1;animation:hxDraw 1.1s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes hxDraw{to{stroke-dashoffset:0}}
+.hx-pulse{fill:var(--brand);opacity:0}
+.hx-hub{position:absolute;left:50%;top:16px;transform:translateX(-50%);width:64px;height:64px;justify-content:center;background:var(--surface);border:1px solid var(--brand-tint);border-radius:16px;box-shadow:0 0 0 5px rgba(2,55,157,.06),0 9px 22px -8px rgba(2,55,157,.4);z-index:2}
+.hx-hub img{width:41px;height:auto}
+.hx-card{position:absolute;z-index:2;background:var(--surface);border:1px solid var(--card-line);border-radius:10px;box-shadow:var(--card-shadow);text-align:left}
+.hx-chip{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;font-size:13px;font-weight:500}
+.hx-ico{width:30px;height:30px;flex:none;border-radius:8px;background:var(--brand-soft);color:var(--brand-ink);display:grid;place-items:center}
+.hx-orders{left:6%;top:16%;transform:rotate(-3deg)}
+.hx-inv{right:6%;top:76%;transform:rotate(-2deg)}
+.hx-board{left:7%;top:82%;transform:rotate(2deg)}
+.hx-vid{left:2%;top:47%;width:184px;padding:4px 4px 6px;font:inherit;color:inherit;text-align:center;cursor:pointer;transform:rotate(2deg);transition:transform .2s ease}
+.hx-vid:hover{transform:rotate(2deg) scale(1.03)}
+.hx-frame{position:relative;display:block;aspect-ratio:16/10;border-radius:7px;overflow:hidden}
+.hx-frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.4);transform-origin:54% 46%}
+.hx-play{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center}
+.hx-vid b{display:block;margin-top:4px;font-size:11px;font-weight:600;color:var(--brand-ink)}
+.hx-drv{right:0;top:5%;width:284px;padding:14px;transform:rotate(2deg) scale(.6);transform-origin:top right}
+.hx-drv-top{display:flex;align-items:center;gap:10px}
+.hx-av{width:44px;height:44px;flex:none;border-radius:10px;object-fit:cover}
+.hx-name{font-family:var(--font-display);font-size:15px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.hx-tel{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.hx-status{display:inline-flex;align-items:center;gap:6px;flex:none;height:24px;margin-left:auto;padding:0 9px;white-space:nowrap;border-radius:999px;background:var(--brand-soft);color:var(--brand-ink);font-size:12px;font-weight:600}
+.hx-status i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.hx-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.hx-cap{display:block;margin-bottom:10px;font-size:18px;font-weight:600;color:var(--brand-ink)}
+.hx-grid span{display:block;line-height:1.35}
+.hx-grid .k{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.hx-grid .v{font-size:13px;font-weight:600}
+.hx-copy{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.hx-copy h1{margin:0 auto}
+@keyframes hxIn{from{opacity:0;translate:0 18px;scale:.96}to{opacity:1;translate:0 0;scale:1}}
+@keyframes hxFade{from{opacity:0}to{opacity:1}}
+.hx-hub,.hx-copy,.hx-card{animation:hxIn .8s cubic-bezier(.2,.7,.2,1) both}
+.hx-hub{animation-delay:.05s}
+.hx-copy{animation-delay:.15s}
+.hx-orders{animation-delay:.45s}
+.hx-drv{animation-delay:.55s}
+.hx-vid{animation-delay:.65s}
+.hx-inv{animation-delay:.75s}
+.hx-board{animation-delay:.85s}
+@media (prefers-reduced-motion:reduce){.hx-hub,.hx-copy,.hx-card{animation:none}.hx-lines .hx-draw{animation:none;stroke-dashoffset:0}.hx-pulses{display:none}}
+@media (max-width:1360px){
+  .hx-copy{max-width:520px}
+  .hero .hx-copy h1{font-size:clamp(36px,3.5vw,48px)}
+}
+@media (max-width:1180px){
+  .hx{min-height:0;display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 0 0}
+  .hx-hub{display:none}
+  .hx-lines{display:none}
+  .hx-copy{order:-1;max-width:640px;margin-bottom:22px}
+  .hero .hx-copy h1{font-size:clamp(34px,6vw,52px)}
+  .hx-card{display:none}            /* the floating cards only work around the headline on wide screens */
+}
+
+
+/* phones: show the product before the button — headline, text, demo, then "Start a free pilot" */
+@media (max-width:760px){
+  .hero-inner{display:flex;flex-direction:column;align-items:center}
+  .hx,.hx-copy{display:contents}
+  .hx-copy h1{order:1}
+  .hx-copy .lead{order:2}
+  .app-demo{order:3;width:100%;margin:28px 0 0}
+  .hx-copy .hero-cta{order:4}
+  .hero-inner{padding-bottom:56px}
+  .hero + .sec{border-top:0}
+}
+
+/* dark theme: set by the footer switch through data-theme on <html> */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1116;
+  --surface:#161a21;
+  --card-line:#262b34;
+  --card-shadow:0 1px 0 rgba(0,0,0,.3),0 3px 14px rgba(0,0,0,.5);
+  --bg-soft:#141820;
+  --bg-sunk:#1e232c;
+  --ink:#f1f3f6;
+  --ink-2:#b3b8c2;
+  --ink-3:#858c99;
+  --line:#262b34;
+  --line-2:#343b47;
+  --brand:#2e66e6;
+  --brand-2:#4a7df0;
+  --brand-tint:#27457f;
+  --brand-soft:#16233e;
+  --brand-ink:#8fb2f5;
+  --solid:#f1f3f6;
+  --on-solid:#0e0f10;
+  --solid-hover:#d6dae1;
+  --panel:#161a21;
+  --nav-bg:rgba(22,26,33,.62);
+  --nav-bg-stuck:rgba(14,17,22,.85);
+  --cta-end:#111a2c;
+  --foot-end:#14213b;
+  --ok-bg:#12301f;
+  --ok-line:#1f5135;
+  --ok-ink:#6fd69b;
+  --bad-bg:#3a1a1a;
+  --bad-bg-2:#2a1718;
+  --bad-line:#6b2c2c;
+  --bad-ink:#f59a93;
+  --avatar-bg:#1e2a44;
+  --avatar-ink:#a9c0f2;
+  --chat-bg:#1b1f26;
+  --map-bg:#141820;
+  --dot:#343b47;
+  --wa:#17473a;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 24px -8px rgba(0,0,0,.5),0 24px 64px -24px rgba(0,0,0,.6);
+}
+:root[data-theme="dark"] .eyebrow-ai{background:var(--bg-sunk);border-color:var(--line-2);color:var(--ink);box-shadow:none}
+:root[data-theme="dark"] .road-label{background:var(--bg-sunk);color:var(--ink)}
+.logo .on-dark{display:none}
+:root[data-theme="dark"] .logo .on-light{display:none}
+:root[data-theme="dark"] .logo .on-dark{display:block}
+.theme-btn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 8px;border:0;border-radius:8px;background:none;font:inherit;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.theme-btn:hover{background:var(--bg-sunk);color:var(--ink)}
+.theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:block}
+:root[data-theme="dark"] .faq-list summary::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M10 2v16M2 10h16' stroke='%23f1f3f6' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")}
+:root[data-theme="dark"] .faq-list details[open] summary::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M2 10h16' stroke='%23f1f3f6' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E")}
 </style>
 </head>
 <body>
@@ -615,10 +671,7 @@ body.dm-lock{overflow:hidden}
 
 <header class="nav">
   <div class="wrap">
-    <a class="logo" href="#top">
-      <span class="logo-mark"><svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 1v14M2 8.5 11 1M5.5 6 12 15" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      Kalyd
-    </a>
+    <a class="logo" href="#top"><img class="on-light" src="kalyd-logo.svg" alt="Kalyd" width="100" height="34"><img class="on-dark" src="kalyd-logo-dark.svg" alt="Kalyd" width="100" height="34"></a>
     <nav class="nav-links">
       <a href="#product">Product</a>
       <a href="#how">How it works</a>
@@ -650,140 +703,43 @@ body.dm-lock{overflow:hidden}
   <div class="hero-grid"></div>
   <div class="frame">
     <div class="hero-inner">
-      <span class="eyebrow eyebrow-ai"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--yellow)"><path d="M10 2.5c.3 0 .5.2.6.5l1.3 4.2a4 4 0 0 0 2.6 2.6l4.2 1.3c.6.2.6 1 0 1.2l-4.2 1.3a4 4 0 0 0-2.6 2.6L10.6 20c-.2.6-1 .6-1.2 0l-1.3-4.2a4 4 0 0 0-2.6-2.6L1.3 12c-.6-.2-.6-1 0-1.2l4.2-1.3a4 4 0 0 0 2.6-2.6L9.4 3c.1-.3.3-.5.6-.5z"/><path d="M19 1.5c.2 0 .3.1.4.3l.5 1.6c.1.4.4.7.8.8l1.6.5c.4.1.4.6 0 .8l-1.6.5c-.4.1-.7.4-.8.8l-.5 1.6c-.1.4-.6.4-.8 0l-.5-1.6a1.3 1.3 0 0 0-.8-.8l-1.6-.5c-.4-.1-.4-.6 0-.8l1.6-.5c.4-.1.7-.4.8-.8l.5-1.6c.1-.2.2-.3.4-.3z"/></svg>AI-powered, built for transport</span>
-      <h1>Your customers already <mark>email you orders.</mark><br>Kalyd turns that into dispatch.</h1>
-      <p class="lead">No new inbox to check, no manual order entry. Kalyd reads the emails you already get, creates the order, and puts it on a dispatch board your team assigns in one click.</p>
-      <div class="hero-cta" id="pilot">
-        <a class="btn btn-yellow" href="#demo">Start a free pilot <span class="arr">→</span></a>
-      </div>
-      <div class="trust tagline"><span>Connect</span><i></i><span>Ship</span><i></i><span>Deliver</span></div>
-
-      <!-- Hero media: looping product demo (stand-in for the 30–40s video) -->
-      <div class="window" id="demoWin">
-        <div class="win-bar"><i></i><i></i><i></i><span class="win-title">app.kalyd.app / dispatch</span></div>
-        <div class="win-body">
-          <aside class="win-side">
-            <div class="ws-org"><b>M</b>Masev</div>
-            <div class="ws-item" data-s="0"><span class="dot"></span>AI Inbox<span class="ct">12</span></div>
-            <div class="ws-item" data-s="1"><span class="dot"></span>Orders</div>
-            <div class="ws-item" data-s="2"><span class="dot"></span>Dispatch board<span class="ct">38</span></div>
-            <div class="ws-item" data-s="3"><span class="dot"></span>Drivers</div>
-            <div class="ws-item" data-s="4"><span class="dot"></span>Tracking</div>
-            <div class="ws-item" data-s="5"><span class="dot"></span>Invoices</div>
-          </aside>
-          <div class="win-main">
-
-            <div class="stage" data-stage="0">
-              <div class="stage-h">AI Inbox <span class="tag y">● Reading</span></div>
-              <div class="mail">
-                <div class="mail-head">
-                  <div class="avatar">AC</div>
-                  <div><b style="font-size:14px">Transport order — Antwerp → Lyon</b><small>planning@customer.example · today 08:12</small></div>
-                  <span class="tag">NL · FR · EN</span>
-                </div>
-                <div class="mail-body">
-                  Goedemorgen, please plan the following load:<br>
-                  Loading ref <span class="hl">ANR-58213</span> · pickup <span class="hl">Haven 1025, 2030 Antwerpen</span><br>
-                  Delivery <span class="hl">Rue de Gerland 40, 69007 Lyon</span> on <span class="hl">Thu 14 Nov, 08:00</span><br>
-                  <span class="hl">22 pallets</span>, 1 position contains <span class="hl">UN 1203</span>. Agreed rate €1,180.<br>
-                  <span class="attach">📎 order_ANR-58213.pdf</span>
-                </div>
-              </div>
-              <div class="scan"></div>
-            </div>
-
-            <div class="stage" data-stage="1">
-              <div class="stage-h">New order <span class="tag">ANR-58213</span> <span class="tag y">AI extracted</span></div>
-              <div class="fields">
-                <div class="field" style="animation-delay:.05s"><label>Customer</label><div>Antwerp Chemicals NV</div></div>
-                <div class="field" style="animation-delay:.15s"><label>Loading ref</label><div>ANR-58213</div></div>
-                <div class="field" style="animation-delay:.25s"><label>Pickup</label><div>Antwerpen, BE</div></div>
-                <div class="field" style="animation-delay:.35s"><label>Delivery</label><div>Lyon, FR</div></div>
-                <div class="field" style="animation-delay:.45s"><label>Date</label><div>Thu 14 Nov · 08:00</div></div>
-                <div class="field" style="animation-delay:.55s"><label>Pallets · Price</label><div>22 · €1,180</div></div>
-                <div class="field adr" style="animation-delay:.75s;grid-column:1/-1"><label>Dangerous goods</label><div>⚠ ADR detected · UN 1203 · ADR driver &amp; truck required</div></div>
-              </div>
-              <div class="ai-bar"><span>Extracting</span><div class="meter"><i></i></div><span>7/7 fields</span></div>
-            </div>
-
-            <div class="stage" data-stage="2">
-              <div class="stage-h">Dispatch board <span class="tag">Week 46</span></div>
-              <div class="board">
-                <div class="col"><h5>New <span>4</span></h5>
-                  <div class="card new"><b>ANR-58213</b>Antwerpen → Lyon<div class="meta"><span class="tag r" style="padding:0 5px;font-size:10px">ADR</span><span>22 pal</span></div></div>
-                  <div class="card"><b>GNT-11904</b>Gent → Rotterdam<div class="meta"><span>14 Nov</span><span>8 pal</span></div></div>
-                  <div class="ghost"></div>
-                </div>
-                <div class="col"><h5>Assigned <span>9</span></h5>
-                  <div class="card"><b>ANR-58190</b>Antwerpen → Lille<div class="meta"><span>J. Peeters</span><span>33 pal</span></div></div>
-                  <div class="ghost"></div><div class="ghost"></div>
-                </div>
-                <div class="col"><h5>In transit <span>17</span></h5>
-                  <div class="card"><b>ZEE-30021</b>Zeebrugge → Köln<div class="meta"><span>ETA 15:40</span><span>FTL</span></div></div>
-                  <div class="ghost"></div>
-                </div>
-                <div class="col"><h5>Delivered <span>8</span></h5>
-                  <div class="card"><b>ANR-58122</b>Antwerpen → Paris<div class="meta"><span class="tag g" style="padding:0 5px;font-size:10px">Invoiced</span><span>12 pal</span></div></div>
-                  <div class="ghost"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="stage" data-stage="3">
-              <div class="stage-h">Assign driver <span class="tag">ANR-58213</span></div>
-              <div class="wa">
-                <div class="assign">
-                  <div style="font-size:13px;color:var(--ink-3)">Suggested · ADR-certified</div>
-                  <div class="drv sel"><span class="avatar">JP</span><div>Jan Peeters<small>ADR · Truck 1-ABC-221</small></div><span class="tag y" style="margin-left:auto">Assigned</span></div>
-                  <div class="drv"><span class="avatar">MD</span><div>Mehdi Dahmani<small>ADR · Truck 1-XKD-904</small></div></div>
-                  <div class="drv"><span class="avatar">LV</span><div>Lotte Vermeulen<small>Truck 2-PLM-310</small></div></div>
-                </div>
-                <div class="phone"><div class="phone-in">
-                  <div class="phone-top"><i></i>Masev Dispatch</div>
-                  <div class="bub"><b>Masev – New Assignment</b>ANR-58213 · Antwerpen → Lyon<br>Load Thu 08:00 · 22 pal · ⚠ ADR UN 1203</div>
-                  <div class="bub in">👍 Got it, on my way to Haven 1025</div>
-                  <div class="bub">📍 Live tracking started</div>
-                </div></div>
-              </div>
-            </div>
-
-            <div class="stage" data-stage="4">
-              <div class="stage-h">Live tracking <span class="tag g">● In transit</span></div>
-              <div class="map">
-                <svg viewBox="0 0 600 300" preserveAspectRatio="none">
-                  <path id="trkPath" d="M60 60 C 180 40, 220 160, 320 150 S 470 230, 540 250" fill="none" stroke="#0e0f10" stroke-width="3" stroke-dasharray="7 7"/>
-                  <circle cx="60" cy="60" r="7" fill="#0e0f10"/>
-                  <circle cx="540" cy="250" r="7" fill="#ffc800" stroke="#0e0f10" stroke-width="2"/>
-                  <circle r="9" fill="#ffc800" stroke="#0e0f10" stroke-width="2.5"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#trkPath"/></animateMotion></circle>
-                </svg>
-                <div class="eta">ETA Lyon<b>Thu 07:52</b><span style="color:var(--green)">8 min early</span></div>
-              </div>
-              <div class="share">Customer tracking link <code>kalyd.app/t/ANR-58213</code><span class="tag y">Shared</span></div>
-            </div>
-
-            <div class="stage" data-stage="5">
-              <div class="stage-h">Invoice <span class="tag">INV-2026-0418</span></div>
-              <div class="inv">
-                <div class="inv-top"><div><b>€1,427.80</b><div style="font-size:12.5px;color:var(--ink-3)">Antwerp Chemicals NV · from order ANR-58213</div></div><span class="tag g">Delivered · CMR signed</span></div>
-                <table>
-                  <tr><td>Transport Antwerpen → Lyon · 22 pal</td><td>€1,180.00</td></tr>
-                  <tr><td>VAT 21%</td><td>€247.80</td></tr>
-                  <tr class="total"><td>Total</td><td>€1,427.80</td></tr>
-                </table>
-                <div class="sent">✓ Sent via Peppol e-invoicing</div>
-              </div>
-            </div>
-
+      <!-- Hero stage: Kalyd linked to orders, the video, a driver card and invoices. Driver data is sample data. -->
+      <div class="hx">
+        <svg class="hx-lines" viewBox="0 0 1240 640" preserveAspectRatio="none" aria-hidden="true">
+          <defs><mask id="hxMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1240" height="640"><path class="hx-draw" d="M620 48 C 460 48, 330 90, 205 122" pathLength="1" style="animation-delay:0.40s"/><path class="hx-draw" d="M620 48 C 380 130, 300 230, 190 310" pathLength="1" style="animation-delay:0.52s"/><path class="hx-draw" d="M620 48 C 340 180, 280 400, 200 530" pathLength="1" style="animation-delay:0.64s"/><path class="hx-draw" d="M620 48 C 790 48, 950 60, 1072 94" pathLength="1" style="animation-delay:0.76s"/><path class="hx-draw" d="M620 48 C 920 150, 1010 330, 1100 490" pathLength="1" style="animation-delay:0.88s"/></mask></defs>
+          <g mask="url(#hxMask)"><path id="hxp0" d="M620 48 C 460 48, 330 90, 205 122"/><path id="hxp1" d="M620 48 C 380 130, 300 230, 190 310"/><path id="hxp2" d="M620 48 C 340 180, 280 400, 200 530"/><path id="hxp3" d="M620 48 C 790 48, 950 60, 1072 94"/><path id="hxp4" d="M620 48 C 920 150, 1010 330, 1100 490"/></g>
+          <g class="hx-pulses"><circle class="hx-pulse" r="4"><animateMotion dur="2.6s" begin="1.45s" repeatCount="1" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#hxp0"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="2.6s" begin="1.45s" repeatCount="1"/></circle><circle class="hx-pulse" r="4"><animateMotion dur="2.6s" begin="1.60s" repeatCount="1" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#hxp1"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="2.6s" begin="1.60s" repeatCount="1"/></circle><circle class="hx-pulse" r="4"><animateMotion dur="2.6s" begin="1.75s" repeatCount="1" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#hxp2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="2.6s" begin="1.75s" repeatCount="1"/></circle><circle class="hx-pulse" r="4"><animateMotion dur="2.6s" begin="1.90s" repeatCount="1" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#hxp3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="2.6s" begin="1.90s" repeatCount="1"/></circle><circle class="hx-pulse" r="4"><animateMotion dur="2.6s" begin="2.05s" repeatCount="1" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href="#hxp4"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="2.6s" begin="2.05s" repeatCount="1"/></circle></g>
+        </svg>
+        <div class="hx-hub logo"><img class="on-light" src="kalyd-logo.svg" alt="Kalyd" width="62" height="21"><img class="on-dark" src="kalyd-logo-dark.svg" alt="Kalyd" width="62" height="21"></div>
+        <div class="hx-card hx-chip hx-orders"><span class="hx-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>Orders</div>
+        <div class="hx-card hx-chip hx-board"><span class="hx-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>Dispatch board</div>
+        <button class="hx-card hx-vid" type="button" id="watchBtn" aria-label="Play the About us video"><span class="hx-frame"><img src="how-video-poster.webp" alt=""><span class="hx-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg></span></span><b>About us</b></button>
+        <div class="hx-card hx-drv">
+          <b class="hx-cap">Driver profile</b>
+          <div class="hx-drv-top"><img class="hx-av" src="hero-driver.png" alt="" width="44" height="44"><div><div class="hx-name">Jan Peeters</div><div class="hx-tel">+32 470 00 00 00</div></div><span class="hx-status"><i></i>On route</span></div>
+          <div class="hx-grid">
+            <div><span class="k">License</span><span class="v">2028-06-12</span></div>
+            <div><span class="k">ADR</span><span class="v">2026-11-19</span></div>
+            <div><span class="k">Tacho</span><span class="v">2026-12-25</span></div>
+            <div><span class="k">Medical</span><span class="v">2027-03-02</span></div>
           </div>
         </div>
-        <div class="steps-bar" id="stepsBar">
-          <button class="sb"><span class="pr"></span><b>Email</b>Order arrives</button>
-          <button class="sb"><span class="pr"></span><b>AI extraction</b>Fields filled</button>
-          <button class="sb"><span class="pr"></span><b>Board</b>Card created</button>
-          <button class="sb"><span class="pr"></span><b>WhatsApp</b>Driver assigned</button>
-          <button class="sb"><span class="pr"></span><b>Tracking</b>Customer sees live</button>
-          <button class="sb"><span class="pr"></span><b>Invoice</b>Sent via Peppol</button>
+        <div class="hx-card hx-chip hx-inv"><span class="hx-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>Invoices</div>
+        <div class="hx-copy">
+          <h1>Your customers already <mark>email you orders.</mark><br>Kalyd turns that into dispatch.</h1>
+          <p class="lead">No new inbox to check, no manual order entry.</p>
+          <div class="hero-cta" id="pilot">
+            <a class="btn btn-brand" href="#demo">Start a free pilot <span class="arr">→</span></a>
+          </div>
         </div>
+      </div>
+
+      <!-- Hero media: the product, screen by screen (Inbox → Dispatch → Drivers → Invoices). Each screen is its own demo-*.html. -->
+      <div class="app-demo" id="appDemo">
+        <iframe src="demo-inbox.html?embed" title="Kalyd inbox demo" class="on" tabindex="-1"></iframe>
+        <iframe src="demo-dispatch.html?embed" title="Kalyd dispatch board demo" tabindex="-1"></iframe>
+        <iframe src="demo-drivers.html?embed" title="Kalyd drivers demo" tabindex="-1"></iframe>
+        <iframe src="demo-invoices.html?embed" title="Kalyd invoices demo" tabindex="-1"></iframe>
       </div>
     </div>
   </div>
@@ -800,12 +756,12 @@ body.dm-lock{overflow:hidden}
     <div class="pf reveal" id="pf">
       <div class="pf-ends"><span>Email arrives</span><span>Invoice sent</span></div>
       <div class="pf-track" style="--p:0">
-        <div class="pf-st"><div class="pf-dot">01</div><div class="pf-t"><div class="pf-n">Inbox</div><h3>Order Intake</h3></div><div class="pf-chips"><span>AI Inbox</span><span>Email Extractor</span><span>Import Doc</span><span>Order requests</span></div></div>
-        <div class="pf-st"><div class="pf-dot">02</div><div class="pf-t"><div class="pf-n">Plan</div><h3>Planning &amp; Dispatch</h3></div><div class="pf-chips"><span>Dispatch board</span><span>Slot planning</span><span>Route optimizer</span><span>Groupage</span><span>Subcontractors</span></div></div>
-        <div class="pf-st"><div class="pf-dot">03</div><div class="pf-t"><div class="pf-n">Drive</div><h3>Driver Hand-off</h3></div><div class="pf-chips"><span>WhatsApp</span><span>Driver portal</span><span>POD capture</span><span>Driver hours</span></div></div>
-        <div class="pf-st"><div class="pf-dot">04</div><div class="pf-t"><div class="pf-n">Fleet</div><h3>Fleet &amp; Compliance</h3></div><div class="pf-chips"><span>Live fleet map</span><span>Maintenance</span><span>ADR</span><span>Reefer temps</span></div></div>
-        <div class="pf-st"><div class="pf-dot">05</div><div class="pf-t"><div class="pf-n">Track</div><h3>Customers</h3></div><div class="pf-chips"><span>Live tracking</span><span>Customer portal</span><span>Auto emails</span><span>CRM</span></div></div>
-        <div class="pf-st"><div class="pf-dot">06</div><div class="pf-t"><div class="pf-n">Bill</div><h3>Finance</h3></div><div class="pf-chips"><span>Invoicing</span><span>Peppol</span><span>Purchase invoices</span><span>P&amp;L</span><span>Sales rates</span></div></div>
+        <div class="pf-st"><div class="pf-dot">01</div><div class="pf-t"><h3>Order Intake</h3></div><div class="pf-chips"><span>AI Inbox</span><span>Email Extractor</span><span>Import Doc</span><span>Order requests</span></div></div>
+        <div class="pf-st"><div class="pf-dot">02</div><div class="pf-t"><h3>Planning &amp; Dispatch</h3></div><div class="pf-chips"><span>Dispatch board</span><span>Slot planning</span><span>Route optimizer</span><span>Groupage</span><span>Subcontractors</span></div></div>
+        <div class="pf-st"><div class="pf-dot">03</div><div class="pf-t"><h3>Driver Hand-off</h3></div><div class="pf-chips"><span>WhatsApp</span><span>Driver portal</span><span>POD capture</span><span>Driver hours</span></div></div>
+        <div class="pf-st"><div class="pf-dot">04</div><div class="pf-t"><h3>Fleet &amp; Compliance</h3></div><div class="pf-chips"><span>Live fleet map</span><span>Maintenance</span><span>ADR</span><span>Reefer temps</span></div></div>
+        <div class="pf-st"><div class="pf-dot">05</div><div class="pf-t"><h3>Customers</h3></div><div class="pf-chips"><span>Live tracking</span><span>Customer portal</span><span>Auto emails</span><span>CRM</span></div></div>
+        <div class="pf-st"><div class="pf-dot">06</div><div class="pf-t"><h3>Finance</h3></div><div class="pf-chips"><span>Invoicing</span><span>Peppol</span><span>Purchase invoices</span><span>P&amp;L</span><span>Sales rates</span></div></div>
       </div>
     </div>
   </div></div>
@@ -818,23 +774,18 @@ body.dm-lock{overflow:hidden}
       <div class="kicker">How it works</div>
       <h2>From inbox to invoice, in four steps.</h2>
     </div>
-    <div class="how">
-      <div class="step reveal">
-        <div class="step-txt"><div class="step-n">Step 1</div><h3>An order comes in.</h3><p>By email, exactly how your customers already send it today. Body text, PDF or scan.</p></div>
-        <div class="step-vis placeholder"><span>Image · Step 1 · Order email arrives</span></div>
-      </div>
-      <div class="step reveal">
-        <div class="step-txt"><div class="step-n">Step 2</div><h3>Kalyd builds the order.</h3><p>Parties, loading reference, addresses, dates, pallets and price land on the dispatch board automatically. Dangerous goods are flagged as ADR the moment the order is read.</p></div>
-        <div class="step-vis placeholder"><span>Image · Step 2 · Order on the dispatch board, ADR flag</span></div>
-      </div>
-      <div class="step reveal">
-        <div class="step-txt"><div class="step-n">Step 3</div><h3>You assign a driver.</h3><p>One click on the dispatch board. WhatsApp opens with the job pre-filled.</p></div>
-        <div class="step-vis placeholder"><span>Image · Step 3 · WhatsApp assignment to driver</span></div>
-      </div>
-      <div class="step reveal">
-        <div class="step-txt"><div class="step-n">Step 4</div><h3>It gets invoiced.</h3><p>Delivery confirmed, invoice generated from the same order record and sent via Peppol.</p></div>
-        <div class="step-vis placeholder"><span>Image · Step 4 · Delivered, invoice sent via Peppol</span></div>
-      </div>
+    <div class="how reveal">
+      <!-- poster for now: swap the img and play button for <video src="..." poster="how-video-poster.webp" autoplay muted loop playsinline></video> -->
+      <div class="how-media"><div class="how-video">
+        <img src="how-video-poster.webp" alt="Kalyd dashboard on a laptop" loading="lazy">
+        <span class="how-play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg></span>
+      </div></div>
+      <ol class="how-steps" id="howSteps">
+        <li><button class="hs on" type="button"><span class="hs-ico">01</span><span class="hs-body"><strong>An order comes in.</strong><span class="hs-p">By email, exactly how your customers already send it today. Body text or PDF.</span></span></button></li>
+        <li><button class="hs" type="button"><span class="hs-ico">02</span><span class="hs-body"><strong>Kalyd builds the order.</strong><span class="hs-p">Parties, loading reference, addresses, dates, pallets and price land on the dispatch board automatically. Dangerous goods are flagged as ADR the moment the order is read.</span></span></button></li>
+        <li><button class="hs" type="button"><span class="hs-ico">03</span><span class="hs-body"><strong>You assign a driver.</strong><span class="hs-p">One click on the dispatch board. WhatsApp opens with the job pre-filled.</span></span></button></li>
+        <li><button class="hs" type="button"><span class="hs-ico">04</span><span class="hs-body"><strong>It gets invoiced.</strong><span class="hs-p">Delivery confirmed, invoice generated from the same order record and sent via Peppol.</span></span></button></li>
+      </ol>
     </div>
   </div></div>
 </section>
@@ -850,7 +801,7 @@ body.dm-lock{overflow:hidden}
         <p class="lead">No templates to set up and no new inbox. Kalyd works on the emails you already get.</p>
       </div>
       <ul class="ai-list">
-        <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>It reads any order.</b> Email body, PDF attachment or scan, in Dutch, French or English.</div></li>
+        <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>It reads any order.</b> Email body or PDF attachment, in Dutch or English.</div></li>
         <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="m9 15 2 2 4-4"/></svg></span><div><b>It builds the order.</b> Parties, loading reference, addresses, dates, pallets and price, filled in for you.</div></li>
         <li class="new"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span><div><b>It spots dangerous goods.</b> ADR loads are flagged automatically, so the right driver and truck get assigned.</div></li>
         <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>You stay in control.</b> Unclear fields are highlighted for a quick check before anything reaches a driver.</div></li>
@@ -863,11 +814,11 @@ body.dm-lock{overflow:hidden}
 <section class="sec" id="customers" data-stop="Customers">
   <div class="frame"><div class="sec-inner"><div class="proof-card">
     <div class="proof">
-      <div class="placeholder ph"><span>Photo · Masev dispatch desk</span></div>
+      <div class="placeholder ph"><span>Photo · Masev team · TBC: ask Sergio for a team photo</span></div>
       <div class="proof-txt reveal">
         <div class="kicker">Running live operations at Masev</div>
-        <p class="quote">“Customer quote about how Kalyd changed the dispatch day at Masev.” <span class="tbc">Quote TBC</span></p>
-        <div class="who"><span class="avatar">M</span><div><b>Name, role</b><small>Masev · Port of Antwerp</small></div></div>
+        <p class="quote">“As an owner, I need to know where things stand. Now I open Kalyd and I see it all: every order from email, every driver on the road, every invoice. One app, and I don’t need to call my dispatchers anymore.” <span class="tbc">Draft · pending approval</span></p>
+        <div class="who"><span class="avatar">S</span><div><b>Sergio</b><small>CEO · Masev, Port of Antwerp</small></div></div>
       </div>
     </div>
     <div class="stats">
@@ -935,10 +886,10 @@ body.dm-lock{overflow:hidden}
         <h2>Built in the Port of Antwerp. Made for European road freight.</h2>
       </div>
       <ul class="checks reveal">
-        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Peppol e-invoicing, EU VAT, CMR workflow</li>
-        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Automatic ADR flagging</li>
-        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Orders in Dutch, French and English</li>
-        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>An isolated database and login for every company</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Peppol e-invoicing, EU VAT, CMR workflow</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Automatic ADR flagging</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Orders in Dutch and English</li>
+        <li><span class="ck"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>An isolated database and login for every company</li>
       </ul>
     </div>
   </div></div>
@@ -972,13 +923,13 @@ body.dm-lock{overflow:hidden}
       </div>
       <div class="faq-list reveal">
         <details><summary>How much does Kalyd cost?</summary><p>Pricing depends on your fleet size and order volume. Start with a free pilot on your real orders, and we'll agree a price that fits your operation.</p></details>
-        <details><summary>Do we need to change our email or set up a new inbox?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
-        <details><summary>Can we import our customers, drivers and trucks from Excel or another system?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
-        <details><summary>What happens if the AI reads an order wrong?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
-        <details><summary>Which order formats can Kalyd read?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
-        <details><summary>Do drivers need to install an app?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
-        <details><summary>Does Kalyd support Peppol e-invoicing?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
-        <details><summary>What fleet size is Kalyd built for?</summary><p>Answer placeholder. <span class="tbc">TBC</span></p></details>
+        <details><summary>Do we need to change our email or set up a new inbox?</summary><p>No. Kalyd works on the emails you already get. Your customers keep sending orders to the same address, and nothing changes on their side.</p></details>
+        <details><summary>Can we import our customers, drivers and trucks from Excel or another system?</summary><p>Yes. Send us your data as an Excel or CSV file and our team will load it for you during your pilot, so you can start working with your real customers, drivers and trucks from day one.</p></details>
+        <details><summary>What happens if the AI reads an order wrong?</summary><p>Nothing goes out on its own. Every order Kalyd reads lands on your dispatch board, where your team can review it and fix any field in seconds before assigning a driver.</p></details>
+        <details><summary>Which order formats can Kalyd read?</summary><p>Email text and PDF attachments, in Dutch or English. No templates to set up: Kalyd reads each order as it arrives.</p></details>
+        <details><summary>Do drivers need to install an app?</summary><p>No. Jobs go out on WhatsApp, with no app to install and no login. Drivers use the tool they already have on their phone.</p></details>
+        <details><summary>Does Kalyd support Peppol e-invoicing?</summary><p>Yes. You can send invoices through Peppol straight from a dispatched order, with VAT included.</p></details>
+        <details><summary>What fleet size is Kalyd built for?</summary><p>Kalyd is built for small and mid-sized road freight companies, from a handful of trucks to larger fleets. It was shaped inside a working transport company, so it fits how real dispatch teams run. Each company gets its own isolated database and login.</p></details>
       </div>
     </div>
   </div></div>
@@ -990,7 +941,7 @@ body.dm-lock{overflow:hidden}
     <h2>See Kalyd running your operation.</h2>
     <p class="lead">Run a free pilot on your real orders, or let us show you on a live dispatch board.</p>
     <div class="hero-cta">
-      <a class="btn btn-yellow" href="#demo">Start a free pilot <span class="arr">→</span></a>
+      <a class="btn btn-brand" href="#demo">Start a free pilot <span class="arr">→</span></a>
       <a class="btn btn-ghost" href="#demo">Book a demo</a>
     </div>
   </div></div>
@@ -1002,7 +953,7 @@ body.dm-lock{overflow:hidden}
 <footer>
   <div class="frame">
     <div class="foot">
-      <a class="logo" href="#top" style="font-size:16px"><span class="logo-mark" style="width:22px;height:22px;border-radius:6px"><svg width="11" height="13" viewBox="0 0 14 16" fill="none"><path d="M2 1v14M2 8.5 11 1M5.5 6 12 15" stroke="#0e0f10" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Kalyd</a>
+      <a class="logo" href="#top"><img class="on-light" src="kalyd-logo.svg" alt="Kalyd" width="77" height="26"><img class="on-dark" src="kalyd-logo-dark.svg" alt="Kalyd" width="77" height="26"></a>
       <nav><a href="#product">Product</a><a href="#how">How it works</a><a href="#customers">Customers</a><a href="#">Log in</a><a href="#">Privacy</a></nav>
       <div class="lang up">
         <button class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
@@ -1016,12 +967,24 @@ body.dm-lock{overflow:hidden}
           <li role="option" data-lang="FR">Français<span>FR</span></li>
         </ul>
       </div>
+      <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false">
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <span id="themeLbl">Dark mode</span>
+      </button>
       <span class="copy">© 2026 Kalyd</span>
     </div>
   </div>
 </footer>
 
 <!-- DEMO REQUEST FORM (modal). Set FORM_ENDPOINT in the script to send real submissions. -->
+<div class="vm" id="vidModal" role="dialog" aria-modal="true" aria-label="Kalyd video" hidden>
+  <div class="vm-box">
+    <button class="dm-close vm-close" type="button" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="vm-media" id="vidMedia"></div>
+  </div>
+</div>
+
 <div class="dm" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="dmTitle" hidden>
   <div class="dm-box">
     <button class="dm-close" type="button" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -1057,7 +1020,7 @@ body.dm-lock{overflow:hidden}
         <div style="height:18px"></div>
         <input type="hidden" name="source" id="f-source" value="demo">
         <div class="fg" data-group="consent"><label class="consent"><input type="checkbox" name="privacy" value="accepted"><span>I agree to the <a href="#privacy" target="_blank">Privacy Policy</a>.</span></label><span class="emsg">Please accept the Privacy Policy to continue.</span></div>
-        <div class="dm-actions"><button class="btn-back" type="button" data-back>← Back</button><button class="btn btn-yellow" type="submit"><span id="dmSubmitTxt">Pick a time</span> <span class="arr">→</span></button></div>
+        <div class="dm-actions"><button class="btn-back" type="button" data-back>← Back</button><button class="btn btn-brand" type="submit"><span id="dmSubmitTxt">Pick a time</span> <span class="arr">→</span></button></div>
         <p class="dm-note">Your answers only go to the Kalyd team.</p>
       </div>
     </form>
@@ -1084,12 +1047,12 @@ body.dm-lock{overflow:hidden}
       <div class="bk-slots">
         <div class="bk-day" id="bkDay">Pick a day</div>
         <div class="bk-list" id="bkList"></div>
-        <button class="btn btn-yellow bk-go" type="button" id="bkGo" disabled>Confirm <span class="arr">→</span></button>
+        <button class="btn btn-brand bk-go" type="button" id="bkGo" disabled>Confirm <span class="arr">→</span></button>
       </div>
       <div class="bk-live" id="bkLive" hidden></div>
     </div>
     <div class="dm-done" id="dmDone">
-      <div class="ok"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#0e0f10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ok"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h3 id="dmDoneT">Thanks, we've got it.</h3>
       <p id="dmDoneP">We'll reach out within one business day to set up your pilot.</p>
       <button class="btn btn-primary" type="button" data-close>Back to the site</button><br>
@@ -1100,29 +1063,23 @@ body.dm-lock{overflow:hidden}
 
 
 <script>
-/* ---------- hero demo loop ---------- */
+/* ---------- hero demo: play the four screens one after another ---------- */
 (() => {
-  const stages = [...document.querySelectorAll('.stage')];
-  const tabs = [...document.querySelectorAll('#stepsBar .sb')];
-  const side = [...document.querySelectorAll('.ws-item')];
-  const DUR = 3600;
-  let i = 0, t;
-  function show(n){
+  const box = document.getElementById('appDemo');
+  if(!box) return;
+  const frames = [...box.querySelectorAll('iframe')];
+  let i = 0, loaded = 0, started = false;
+  function play(n){
     i = n;
-    stages.forEach((s,k)=>s.classList.toggle('on',k===n));
-    side.forEach(s=>s.classList.toggle('on',+s.dataset.s===n));
-    tabs.forEach((b,k)=>{
-      b.classList.remove('on');
-      b.classList.toggle('done',k<n);
-    });
-    void tabs[n].offsetWidth;            // restart progress animation
-    tabs[n].style.setProperty('--dur',DUR+'ms');
-    tabs[n].classList.add('on');
-    clearTimeout(t);
-    t = setTimeout(()=>show((i+1)%stages.length), DUR);
+    frames.forEach((f,k) => f.classList.toggle('on', k === n));
+    frames[n].contentWindow.postMessage('kalyd-demo-start', '*');
   }
-  tabs.forEach((b,k)=>b.addEventListener('click',()=>show(k)));
-  show(0);
+  addEventListener('message', e => {
+    if(e.data === 'kalyd-demo-done' && e.source === frames[i].contentWindow) play((i + 1) % frames.length);
+  });
+  frames.forEach(f => f.addEventListener('load', () => {
+    if(++loaded === frames.length && !started){ started = true; play(0); }
+  }));
 })();
 
 /* ---------- language switchers (header + footer stay in sync) ---------- */
@@ -1325,6 +1282,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
   function openBooking(data){
     lead = data;
     head.forEach(h=>h.hidden=false);
+    form.hidden = true;
     steps.forEach(s=>s.classList.remove('on'));
     prog.forEach(p=>p.classList.add('on'));
     stepLbl.textContent = labels()[2];
@@ -1400,9 +1358,21 @@ document.querySelectorAll('.mq-row').forEach(row=>{
   const steps = [...track.querySelectorAll('.pf-st')];
   const STEP = 2600, HOLD = 1800;  // ms per module, pause on Finance before restarting
   let i = 0, timer = null, visible = false, paused = false;
+  // vertical layout: where each number sits, so the line can run from one to the next
+  let ys = [];
+  function measure(){
+    const t = track.getBoundingClientRect();
+    ys = steps.map(s => { const d = s.querySelector('.pf-dot').getBoundingClientRect(); return d.top - t.top + d.height/2; });
+    track.style.setProperty('--y0', ys[0] + 'px');
+    track.style.setProperty('--y1', ys[ys.length-1] + 'px');
+    track.style.setProperty('--yp', (ys[i] - ys[0]) + 'px');
+  }
+  addEventListener('resize', measure);
+  addEventListener('load', measure);
   function show(n){
     i = n;
     track.style.setProperty('--p', n);
+    if(ys.length) track.style.setProperty('--yp', (ys[n] - ys[0]) + 'px');
     steps.forEach((s,k)=>{s.classList.toggle('on', k<=n); s.classList.toggle('cur', k===n)});
   }
   function tick(){
@@ -1416,7 +1386,78 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     s.addEventListener('click',()=>show(k));
   });
   new IntersectionObserver(([e])=>{visible = e.isIntersecting; if(visible) tick(); else clearTimeout(timer);},{threshold:.35}).observe(track);
+  measure(); show(0);
+})();
+
+/* ---------- dark mode switch (footer) ---------- */
+(() => {
+  const root = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const lbl = document.getElementById('themeLbl');
+  function paint(){
+    const dark = root.dataset.theme === 'dark';
+    btn.setAttribute('aria-pressed', dark);
+    lbl.textContent = dark ? 'Light mode' : 'Dark mode';
+  }
+  btn.addEventListener('click',()=>{
+    const dark = root.dataset.theme !== 'dark';
+    if(dark) root.dataset.theme = 'dark'; else delete root.dataset.theme;
+    try{ localStorage.setItem('kalyd-theme', dark ? 'dark' : 'light'); }catch(e){}
+    paint();
+  });
+  paint();
+})();
+
+/* ---------- how it works: steps advance next to the video ---------- */
+(() => {
+  const list = document.getElementById('howSteps');
+  if(!list) return;
+  const steps = [...list.querySelectorAll('.hs')];
+  const DUR = 4600;
+  const still = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let i = 0, timer = null, visible = false;
+  function show(n){
+    i = n;
+    steps.forEach((s,k)=>{ s.classList.remove('on'); s.setAttribute('aria-current', k===n ? 'step' : 'false'); });
+    void steps[n].offsetWidth;             // restart the progress line
+    steps[n].classList.add('on');
+  }
+  function tick(){
+    clearTimeout(timer);
+    if(!visible || still) return;
+    timer = setTimeout(()=>{ show((i+1)%steps.length); tick(); }, DUR);
+  }
+  steps.forEach((s,k)=>s.addEventListener('click',()=>{ show(k); tick(); }));
+  new IntersectionObserver(([e])=>{ visible = e.isIntersecting; if(visible){ show(i); tick(); } else clearTimeout(timer); },{threshold:.35}).observe(list);
   show(0);
+})();
+
+/* ---------- hero video: opens only from the Watch button ---------- */
+(() => {
+  // Path to the Kalyd video, e.g. 'kalyd-intro.mp4'. Empty = show the poster with a note.
+  const VIDEO_SRC = '';
+  const modal = document.getElementById('vidModal');
+  const media = document.getElementById('vidMedia');
+  let last = null;
+  function open(){
+    last = document.activeElement;
+    media.innerHTML = VIDEO_SRC
+      ? `<video src="${VIDEO_SRC}" poster="how-video-poster.webp" controls autoplay playsinline></video>`
+      : '<img src="how-video-poster.webp" alt="Kalyd dashboard on a laptop"><span class="vm-soon">Video coming soon</span>';
+    modal.hidden = false; modal.classList.add('open');
+    document.body.classList.add('dm-lock');
+    modal.querySelector('.vm-close').focus({preventScroll:true});
+  }
+  function close(){
+    media.innerHTML = '';                  // stops playback
+    modal.classList.remove('open'); modal.hidden = true;
+    document.body.classList.remove('dm-lock');
+    if(last) last.focus({preventScroll:true});
+  }
+  document.getElementById('watchBtn').addEventListener('click',open);
+  modal.querySelector('.vm-close').addEventListener('click',close);
+  modal.addEventListener('mousedown',e=>{ if(e.target===modal) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !modal.hidden) close(); });
 })();
 
 /* ---------- reveal on scroll ---------- */
@@ -1425,7 +1466,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
 
-/* ---------- road: yellow dot drives down as you scroll ---------- */
+/* ---------- road: blue dot drives down as you scroll ---------- */
 (() => {
   const NS = 'http://www.w3.org/2000/svg';
   const X = 40;                // road centre: 40px from the left edge of the screen
@@ -1445,7 +1486,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
   function pin(x,y,fill,stroke){
     const g = document.createElementNS(NS,'g');
     g.setAttribute('transform',`translate(${x} ${y})`);
-    g.innerHTML = `<path d="M0 0 C-2 -6 -9 -10 -9 -17 a9 9 0 0 1 18 0 c0 7 -7 11 -9 17z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/><circle cy="-17" r="3.6" fill="#fff"/>`;
+    g.innerHTML = `<path d="M0 0 C-2 -6 -9 -10 -9 -17 a9 9 0 0 1 18 0 c0 7 -7 11 -9 17z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/><circle cy="-17" r="3.6" fill="var(--surface)"/>`;
     return g;
   }
 
@@ -1467,8 +1508,8 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     // start / finish pins jump to the first / last section
     const first = sections[0], last = sections[sections.length-1];
     pinsG.innerHTML = '';
-    const startPin = pin(X,y0-4,'#0e0f10','#0e0f10');
-    const endPin = pin(X,y1,'#ffc800','#0e0f10');
+    const startPin = pin(X,y0-4,'var(--ink)','var(--ink)');
+    const endPin = pin(X,y1,'var(--brand)','var(--brand)');
     pinsG.appendChild(startPin);
     pinsG.appendChild(endPin);
     interactive(startPin, first, y0-21);

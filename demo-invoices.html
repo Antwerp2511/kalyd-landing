@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalyd demo · Invoices</title>
+<script>if(/[?&]embed/.test(location.search))document.documentElement.classList.add("embed")</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e0f10;--ink-2:#4b4f56;--ink-3:#8b9099;--line:#ebebe7;--line-2:#dfdfd9;--bg-soft:#fafaf8;--bg-sunk:#f4f4f1;--brand:#02379d;--brand-soft:#e9f0fc;--brand-tint:#c9d9f7;--brand-ink:#02379d;--card-line:#edf1f8;--ok-bg:#e7f7ee;--ok-line:#c5ebd5;--ok-ink:#0f7a3e;--bad-bg:#fdecec;--bad-line:#f6caca;--bad-ink:#b42318;--mono:"JetBrains Mono",monospace;--display:"Inter Tight","Inter",sans-serif}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,sans-serif;color:var(--ink);background:#f3f5f9;-webkit-font-smoothing:antialiased;min-height:100vh;display:grid;place-items:center;padding:40px 16px}
+
+/* app window */
+.stage{width:min(1040px,100%);overflow:hidden}
+.win{width:1040px;transform:scale(var(--s,1));transform-origin:0 0;background:#fff;border:1px solid var(--card-line);border-radius:16px;box-shadow:0 1px 0 rgba(14,15,16,.04),0 8px 24px -8px rgba(14,15,16,.1),0 24px 64px -24px rgba(14,15,16,.14);overflow:hidden}
+.bar{display:flex;align-items:center;gap:8px;height:42px;padding:0 14px;background:#fbfcfe;border-bottom:1px solid var(--line)}
+.bar i{width:11px;height:11px;border-radius:50%;background:#e2e2dd}
+.bar span{flex:1;text-align:center;font:400 12.5px var(--mono);color:var(--ink-3);margin-right:50px}
+.body{display:grid;grid-template-columns:200px minmax(0,1fr);height:460px}
+
+/* sidebar */
+.side{background:#fbfcfe;border-right:1px solid var(--brand-soft);padding:14px 10px;font-size:13.5px}
+.org{display:flex;align-items:center;gap:8px;padding:6px 8px 14px;font-weight:600}
+.co-logo{flex:none}
+.org b{width:22px;height:22px;border-radius:6px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:11px}
+.nav{position:relative;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;color:var(--ink-2)}
+.nav svg{flex:none;color:var(--ink-3)}
+.lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav.on{background:var(--brand-soft);color:var(--ink);font-weight:500}
+.nav.on svg{color:var(--brand-ink)}
+.nav.on::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:3px;border-radius:3px;background:var(--brand)}
+
+/* invoices */
+.main{position:relative;padding:22px 24px;overflow:hidden}
+.head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.head h3{font-size:15px;font-weight:600}
+.wk{font-size:13px;color:var(--ink-3)}
+.tools{margin-left:auto;display:flex;align-items:center;gap:8px}
+.seg{display:inline-flex;padding:2px;border:1px solid var(--brand-soft);border-radius:8px;background:#f1f4f9}
+.seg button{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 9px;border:0;border-radius:6px;background:none;font:500 12px Inter;color:var(--ink-3);cursor:default}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(2,28,77,.08)}
+.seg em{font:400 11px var(--mono);font-style:normal;color:var(--ink-3)}
+.tb{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:8px;border:1px solid var(--line-2);background:#fff;font:500 12px Inter;color:var(--ink);cursor:default}
+.tb.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.tag{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:6px;border:1px solid var(--line);background:var(--bg-sunk);font-size:11.5px;font-weight:500;color:var(--ink-2);white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
+.tag.b{background:var(--brand-soft);border-color:var(--brand-tint);color:var(--brand-ink)}
+.tag.g{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.cur{position:absolute;left:0;top:0;width:18px;height:18px;z-index:5;pointer-events:none;transition:transform .9s cubic-bezier(.45,0,.2,1),opacity .3s;opacity:0}
+.cur svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.note{margin:18px auto 0;font:400 12px var(--mono);color:var(--ink-3);text-align:center}
+
+.tag.r{background:var(--bad-bg);border-color:var(--bad-line);color:var(--bad-ink)}
+.dash{background:#fbfcfe;border:1px solid var(--brand-soft);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.dash-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.dk{min-width:0}
+.dk > span{display:flex;align-items:center;gap:6px;font:500 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.dk > span i{width:8px;height:8px;border-radius:2px}
+.dk b .v{display:inline}
+.dk em{margin-left:6px;font:400 12.5px Inter;font-style:normal;letter-spacing:0;color:var(--ink-3)}
+.dk b{display:block;margin-top:3px;font:700 20px var(--display);letter-spacing:-.02em;color:var(--brand);font-variant-numeric:tabular-nums}
+.c-pen{background:var(--brand)}.c-ovr{background:#e5484d}.c-pd{background:#2fa36b}
+.tbl{height:264px;overflow:hidden;background:#fbfcfe;border:1px solid var(--brand-soft);border-radius:10px}
+table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px}
+col.c-n{width:17%}col.c-o{width:13%}col.c-a{width:14%}col.c-d{width:11%}col.c-s{width:20%}
+th{text-align:left;font:500 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);padding:10px;border-bottom:1px solid var(--brand-soft)}
+td{height:42px;padding:0 10px;border-bottom:1px solid var(--brand-soft);background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .3s}
+tr:last-child td{border-bottom:0}
+td b{font-weight:600}
+th.r,td.amt{text-align:right}
+td.amt{font-variant-numeric:tabular-nums;font-weight:500}
+.mono{font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.due{color:var(--ink-2)}
+tr.hl td{background:var(--brand-soft)}
+.stc{display:flex;align-items:center;gap:6px;height:42px}
+.compact .body{grid-template-columns:64px minmax(0,1fr)}
+.compact .side{padding:14px 10px}
+.compact .side .lbl{display:none}
+.compact .org{justify-content:center;padding:6px 0 14px}
+.compact .nav{justify-content:center;padding:10px 0}
+.compact .nav svg{width:20px;height:20px}
+/* embedded in the landing page: no page chrome, the window fills the frame */
+.embed body{background:transparent;padding:0;min-height:0;display:block}
+.embed .stage{width:100%}
+.embed .win{box-shadow:none}
+.embed .note{display:none}
+</style></head><body>
+<div class="stage">
+<div class="win">
+  <div class="bar"><i></i><i></i><i></i><span>app.kalyd.app / invoices</span></div>
+  <div class="body">
+    <aside class="side">
+      <div class="org"><svg class="co-logo" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect width="22" height="22" rx="6" fill="#0f8f7e"/><path d="M8 5h4l-3 12H5z" fill="#fff"/><path d="M14 5h3.5l-3 12H11z" fill="#fff" opacity=".6"/></svg><span class="lbl">Veldhaven</span></div>
+      <div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span class="lbl">Inbox</span></div>
+      <div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><span class="lbl">Dispatch</span></div>
+      <div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg><span class="lbl">Drivers</span></div>
+      <div class="nav on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg><span class="lbl">Invoices</span></div>
+    </aside>
+    <section class="main" id="main">
+      <div class="head"><h3>Invoices</h3><span class="wk">November</span>
+        <div class="tools">
+          <div class="seg" aria-label="Filter: All"><button class="on" type="button"><span>All</span></button><button type="button"><span>Unpaid</span></button><button type="button"><span>Overdue</span></button></div>
+          <button class="tb" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg><span>Export CSV</span></button>
+          <button class="tb pri" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>New invoice</span></button>
+        </div>
+      </div>
+      <div class="dash">
+        <div class="dash-row">
+          <div class="dk"><span><i class="c-pen"></i>Pending</span><b><span class="v" id="vPen">2</span><em id="wPen">invoices</em></b></div>
+          <div class="dk"><span><i class="c-ovr"></i>Overdue</span><b><span class="v" id="vOvr">1</span><em id="wOvr">invoice</em></b></div>
+          <div class="dk"><span><i class="c-pd"></i>Paid this month</span><b><span class="v" id="vPd">2</span><em id="wPd">invoices</em></b></div>
+        </div>
+      </div>
+      <div class="tbl">
+        <table>
+          <colgroup><col class="c-n"><col class="c-cu"><col data-c="o" class="c-o"><col class="c-a"><col data-c="d" class="c-d"><col class="c-s"></colgroup>
+          <thead><tr><th>Invoice</th><th class="cu">Customer</th><th data-c="o">Order</th><th class="r">Amount</th><th data-c="d">Due</th><th>Status</th></tr></thead>
+          <tbody id="rows">
+            <tr data-i="0417"><td><b>INV-2026-0417</b></td><td class="cu">Rotterdam Foods BV</td><td data-c="o" class="mono">GNT-11904</td><td class="amt">€860.00</td><td data-c="d" class="due">21.11.26</td><td class="stc"><span class="tag b st">Sent</span></td></tr>
+            <tr data-i="0416"><td><b>INV-2026-0416</b></td><td class="cu">Lyon Logistique SARL</td><td data-c="o" class="mono">ANR-58190</td><td class="amt">€2,340.00</td><td data-c="d" class="due">18.11.26</td><td class="stc"><span class="tag b st">Sent</span></td></tr>
+            <tr data-i="0415"><td><b>INV-2026-0415</b></td><td class="cu">Köln Parts GmbH</td><td data-c="o" class="mono">ZEE-30021</td><td class="amt">€1,920.00</td><td data-c="d" class="due">02.11.26</td><td class="stc"><span class="tag r st">Overdue</span></td></tr>
+            <tr data-i="0414"><td><b>INV-2026-0414</b></td><td class="cu">Paris Retail SA</td><td data-c="o" class="mono">ANR-58122</td><td class="amt">€1,450.00</td><td data-c="d" class="due">30.10.26</td><td class="stc"><span class="tag g st">Paid</span></td></tr>
+            <tr data-i="0413"><td><b>INV-2026-0413</b></td><td class="cu">Gent Steel NV</td><td data-c="o" class="mono">GNT-11873</td><td class="amt">€3,100.00</td><td data-c="d" class="due">28.10.26</td><td class="stc"><span class="tag g st">Paid</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+<p class="note">Demo · Invoices · sample data · loops every ~7s</p>
+</div>
+
+<script>
+(() => {
+  const main = document.getElementById('main');
+  const rows = document.getElementById('rows');
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const eur = n => '€' + n.toLocaleString('en-US');
+  const start = {pen:[3200,2], ovr:[1920,1], pd:[4550,2]};
+  const initial = rows.innerHTML;
+
+  // Pending / Overdue / Paid: invoice counts
+  function kpis(k){
+    [['Pen','pen'],['Ovr','ovr'],['Pd','pd']].forEach(([id,key]) => {
+      const [v,n] = k[key];
+      document.getElementById('v'+id).textContent = n;
+      document.getElementById('w'+id).textContent = n === 1 ? 'invoice' : 'invoices';
+    });
+  }
+  function status(tr, cls, label, extra=''){
+    tr.querySelector('.stc').innerHTML = `<span class="tag ${cls} st">${label}</span>${extra}`;
+  }
+
+  async function run(){
+    rows.innerHTML = initial;
+    kpis(start);
+
+    // the overdue invoice gets paid
+    await wait(2200);
+    const late = rows.querySelector('tr[data-i="0415"]');
+    late.classList.add('hl');
+    status(late, 'g', 'Paid');
+    kpis({pen:[3200,2], ovr:[0,0], pd:[6470,3]});
+
+    await wait(3200);
+    late.classList.remove('hl');
+    await wait(1400);
+    next();
+  }
+  // embedded: play once when the landing page says so, then tell it we are done
+  const EMBED = document.documentElement.classList.contains('embed');
+  function next(){ EMBED ? parent.postMessage('kalyd-demo-done', '*') : run(); }
+  if(EMBED) addEventListener('message', e => { if(e.data === 'kalyd-demo-start') run(); });
+  else run();
+})();
+
+/* ---------- small screens: the whole window scales down instead of re-flowing ---------- */
+(() => {
+  const stage = document.querySelector('.stage'), win = stage.querySelector('.win');
+  function fit(){
+    const s = Math.min(1, stage.clientWidth / 1040);
+    stage.classList.toggle('compact', stage.clientWidth < 700);   // phones: icon-only menu
+    stage.style.setProperty('--s', s);
+    win.style.marginBottom = (win.offsetHeight * (s - 1)) + 'px';
+  }
+  addEventListener('resize', fit); fit();
+})();
+</script>
+</body></html>
