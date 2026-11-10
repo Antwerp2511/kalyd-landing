@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy · Kalyd</title>
+<meta name="description" content="How Kalyd and Masev S.R.L. handle personal data sent through this website.">
+<link rel="preload" href="fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link href="fonts/fonts.css" rel="stylesheet">
+<script>try{if(localStorage.getItem('kalyd-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<style>
+:root{
+  --bg:#ffffff;--surface:#ffffff;--bg-sunk:#f4f4f1;--ink:#0e0f10;--ink-2:#4b4f56;--ink-3:#8b9099;
+  --line:#ebebe7;--line-2:#dfdfd9;--brand:#02379d;--brand-ink:#02379d;--brand-soft:#e9f0fc;
+  --shadow:0 1px 0 rgba(14,15,16,.04),0 8px 24px -8px rgba(14,15,16,.10);
+  --font:"Inter",system-ui,-apple-system,sans-serif;--font-display:"Inter Tight","Inter",system-ui,sans-serif;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0e1116;--surface:#161a21;--bg-sunk:#1e232c;--ink:#f1f3f6;--ink-2:#b3b8c2;--ink-3:#858c99;
+  --line:#262b34;--line-2:#343b47;--brand:#2e66e6;--brand-ink:#8fb2f5;--brand-soft:#16233e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--brand-ink)}
+[hidden]{display:none!important}
+.top{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:12px}
+.logo img{display:block}
+.logo .on-dark{display:none}
+:root[data-theme="dark"] .logo .on-light{display:none}
+:root[data-theme="dark"] .logo .on-dark{display:block}
+.back{margin-left:auto;font-size:14px;font-weight:500;color:var(--ink-2);text-decoration:none;padding:6px 8px;border-radius:8px}
+.back:hover{background:var(--bg-sunk);color:var(--ink)}
+.lang{position:relative}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 8px;border:0;border-radius:8px;background:none;font:inherit;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.lang-btn:hover,.lang.open .lang-btn{background:var(--bg-sunk);color:var(--ink)}
+.lang-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:180px;margin:0;padding:6px;list-style:none;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;box-shadow:var(--shadow);display:none}
+.lang.open .lang-menu{display:block}
+.lang-menu li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:14px;cursor:pointer}
+.lang-menu li span{margin-left:auto;font-size:11px;color:var(--ink-3)}
+.lang-menu li:hover{background:var(--bg-sunk)}
+.lang-menu li[aria-selected="true"]{font-weight:600}
+main{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+h1{font-family:var(--font-display);font-size:clamp(32px,5vw,44px);line-height:1.1;letter-spacing:-.02em;margin:0 0 8px}
+h2{font-family:var(--font-display);font-size:22px;letter-spacing:-.01em;margin:40px 0 10px}
+p{margin:0 0 14px;color:var(--ink-2)}
+.meta{color:var(--ink-3);font-size:14px}
+.tr-note{font-size:14px;background:var(--brand-soft);border-radius:8px;padding:10px 14px;color:var(--ink)}
+.tbl{margin:8px 0 16px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.5}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--bg-sunk);font-weight:600;color:var(--ink)}
+td{color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+@media (max-width:700px){
+  .top-in{padding:10px 16px}
+  main{padding:32px 16px 64px}
+  .back{font-size:13px}
+  .t5 thead{display:none}
+  .t5 tr{display:block;border-bottom:1px solid var(--line);padding:8px 0}
+  .t5 tr:last-child{border-bottom:0}
+  .t5 td{display:grid;grid-template-columns:110px 1fr;gap:10px;border:0;padding:4px 12px}
+  .t5 td::before{content:attr(data-label);font-weight:600;color:var(--ink)}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <a class="logo" href="./"><img class="on-light" src="kalyd-logo.svg" alt="Kalyd" width="77" height="26"><img class="on-dark" src="kalyd-logo-dark.svg" alt="Kalyd" width="77" height="26"></a>
+  <a class="back" href="./">← <span data-lang="en">Back to Kalyd</span><span data-lang="nl" hidden>Terug naar Kalyd</span><span data-lang="fr" hidden>Retour à Kalyd</span></a>
+  <div class="lang">
+    <button class="lang-btn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+      <span class="lang-cur">EN</span>
+    </button>
+    <ul class="lang-menu" role="listbox"><li role="option" data-lang="EN" aria-selected="true">English<span>EN</span></li><li role="option" data-lang="NL" aria-selected="false">Nederlands<span>NL</span></li><li role="option" data-lang="FR" aria-selected="false">Français<span>FR</span></li></ul>
+  </div>
+</div></header>
+<main>
+<article lang="en" data-lang="en">
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: 11 November 2026</p>
+  
+  <h2>Who we are</h2>
+  <p>Kalyd is a transport management system developed by Masev S.R.L., Str. Zorilor nr. 6, bl. Z7, ap. 28, 700377 Iași, Romania, fiscal code (CUI) 49017137, VAT ID RO49017137. Masev S.R.L. is the controller of the personal data described in this policy.</p>
+  <p>Questions about your data: <a href="mailto:info@masev.ro">info@masev.ro</a> or <a href="mailto:admin@mail.kalyd.app">admin@mail.kalyd.app</a>.</p>
+  <h2>What we collect and why</h2>
+  <p>We only collect what you send us through the site, plus the technical data any website receives. We do not sell your data or use it for advertising.</p>
+  <div class="tbl t5"><table><thead><tr><th scope="col">Data</th><th scope="col">When</th><th scope="col">Why</th><th scope="col">Legal basis</th><th scope="col">Kept for</th></tr></thead><tbody><tr><td data-label="Data">Name, work email, company, role</td><td data-label="When">You request a demo or a pilot</td><td data-label="Why">To contact you about your request</td><td data-label="Legal basis">Steps you asked for before a contract (GDPR art. 6(1)(b))</td><td data-label="Kept for">12 months after our last contact</td></tr><tr><td data-label="Data">Company type, fleet size, orders per week, how orders arrive</td><td data-label="When">You start a pilot request</td><td data-label="Why">To prepare a pilot on orders like yours</td><td data-label="Legal basis">Steps you asked for before a contract (art. 6(1)(b))</td><td data-label="Kept for">12 months after our last contact</td></tr><tr><td data-label="Data">IP address, browser, pages requested, time</td><td data-label="When">You visit the site</td><td data-label="Why">To deliver the site and keep it secure</td><td data-label="Legal basis">Our legitimate interest (art. 6(1)(f))</td><td data-label="Kept for">Up to 30 days</td></tr></tbody></table></div>
+  <p>If you become a customer, your data moves under the customer agreement and its data processing terms.</p>
+  <h2>Who else handles your data</h2>
+  <p>These providers process data only on our instructions, under a data processing agreement.</p>
+  <div class="tbl t2"><table><thead><tr><th scope="col">Provider</th><th scope="col">What they do for us</th></tr></thead><tbody><tr><td data-label="Provider">Vercel Inc.</td><td data-label="What they do for us">Hosts the website, the videos and the fonts; optional visitor statistics</td></tr><tr><td data-label="Provider">Supabase Inc.</td><td data-label="What they do for us">Stores demo and pilot requests in our database</td></tr><tr><td data-label="Provider">Zoho Corporation B.V. (Zoho Mail)</td><td data-label="What they do for us">Sends each new request to our admin email</td></tr></tbody></table></div>
+  <p>The site loads no fonts, scripts or videos from other companies.</p>
+  <h2>Cookies and analytics</h2>
+  <p>The site sets no cookies. It saves two settings in your browser, your light or dark theme and your language, and never sends them to us.</p>
+  <p>We count visits with Vercel Web Analytics. It stores nothing on your device. Visits are grouped by a code that changes every day, so we see totals such as pages, countries and devices, never individual visitors. Our basis is our legitimate interest in knowing how the site is used (art. 6(1)(f)).</p>
+  <h2>Transfers outside the EU</h2>
+  <p>Some providers are based in the USA. Where data leaves the EU, it is protected by the EU-US Data Privacy Framework or the European Commission's standard contractual clauses.</p>
+  <h2>Your rights</h2>
+  <p>You can ask us to see, correct or delete your data, to limit how we use it, or to receive it in a portable format. You can also object to processing based on our legitimate interest. Email <a href="mailto:info@masev.ro">info@masev.ro</a> or <a href="mailto:admin@mail.kalyd.app">admin@mail.kalyd.app</a> and we answer within one month.</p>
+  <p>If you are not satisfied, you can complain to the Romanian data protection authority, Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, 010336 Bucharest, <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">dataprotection.ro</a>, or to the authority in your own EU country. In Belgium this is the Data Protection Authority (Gegevensbeschermingsautoriteit / Autorité de protection des données), <a href="https://www.dataprotectionauthority.be" target="_blank" rel="noopener">dataprotectionauthority.be</a>.</p>
+  <h2>Changes to this policy</h2>
+  <p>We update this page when the way we handle data changes, for example when Kalyd becomes its own company. The date at the top shows the latest version. If a change affects data you already gave us, we tell you by email.</p>
+</article>
+<article lang="nl" data-lang="nl" hidden>
+  <h1>Privacybeleid</h1>
+  <p class="meta">Laatst bijgewerkt: 11 november 2026</p>
+  <p class="tr-note">Deze vertaling is ter informatie. Bij verschillen geldt de Engelse versie.</p>
+  <h2>Wie we zijn</h2>
+  <p>Kalyd is een transportmanagementsysteem, ontwikkeld door Masev S.R.L., Str. Zorilor nr. 6, bl. Z7, ap. 28, 700377 Iași, Roemenië, fiscaal nummer (CUI) 49017137, btw-nummer RO49017137. Masev S.R.L. is de verwerkingsverantwoordelijke voor de persoonsgegevens in dit beleid.</p>
+  <p>Vragen over uw gegevens: <a href="mailto:info@masev.ro">info@masev.ro</a> of <a href="mailto:admin@mail.kalyd.app">admin@mail.kalyd.app</a>.</p>
+  <h2>Welke gegevens we verzamelen en waarom</h2>
+  <p>We verzamelen alleen wat u ons via de site stuurt, plus de technische gegevens die elke website ontvangt. We verkopen uw gegevens niet en gebruiken ze niet voor reclame.</p>
+  <div class="tbl t5"><table><thead><tr><th scope="col">Gegevens</th><th scope="col">Wanneer</th><th scope="col">Waarom</th><th scope="col">Rechtsgrond</th><th scope="col">Bewaard</th></tr></thead><tbody><tr><td data-label="Gegevens">Naam, zakelijk e-mailadres, bedrijf, functie</td><td data-label="Wanneer">U vraagt een demo of pilot aan</td><td data-label="Waarom">Om contact met u op te nemen over uw aanvraag</td><td data-label="Rechtsgrond">Stappen die u vóór een overeenkomst hebt gevraagd (AVG art. 6(1)(b))</td><td data-label="Bewaard">12 maanden na ons laatste contact</td></tr><tr><td data-label="Gegevens">Type bedrijf, vlootgrootte, orders per week, hoe orders binnenkomen</td><td data-label="Wanneer">U vraagt een pilot aan</td><td data-label="Waarom">Om een pilot voor te bereiden op orders zoals de uwe</td><td data-label="Rechtsgrond">Stappen die u vóór een overeenkomst hebt gevraagd (art. 6(1)(b))</td><td data-label="Bewaard">12 maanden na ons laatste contact</td></tr><tr><td data-label="Gegevens">IP-adres, browser, opgevraagde pagina's, tijdstip</td><td data-label="Wanneer">U bezoekt de site</td><td data-label="Waarom">Om de site te leveren en te beveiligen</td><td data-label="Rechtsgrond">Ons gerechtvaardigd belang (art. 6(1)(f))</td><td data-label="Bewaard">Maximaal 30 dagen</td></tr></tbody></table></div>
+  <p>Wordt u klant, dan vallen uw gegevens onder de klantovereenkomst en de bijbehorende verwerkingsvoorwaarden.</p>
+  <h2>Wie uw gegevens nog verwerkt</h2>
+  <p>Deze dienstverleners verwerken gegevens alleen in onze opdracht, op basis van een verwerkersovereenkomst.</p>
+  <div class="tbl t2"><table><thead><tr><th scope="col">Dienstverlener</th><th scope="col">Wat ze voor ons doen</th></tr></thead><tbody><tr><td data-label="Dienstverlener">Vercel Inc.</td><td data-label="Wat ze voor ons doen">Host de website, de video's en de lettertypen; optionele bezoekersstatistieken</td></tr><tr><td data-label="Dienstverlener">Supabase Inc.</td><td data-label="Wat ze voor ons doen">Bewaart demo- en pilotaanvragen in onze database</td></tr><tr><td data-label="Dienstverlener">Zoho Corporation B.V. (Zoho Mail)</td><td data-label="Wat ze voor ons doen">Stuurt elke nieuwe aanvraag naar ons beheerders-e-mailadres</td></tr></tbody></table></div>
+  <p>De site laadt geen lettertypen, scripts of video's van andere bedrijven.</p>
+  <h2>Cookies en statistieken</h2>
+  <p>De site plaatst geen cookies. Hij bewaart twee instellingen in uw browser, uw licht of donker thema en uw taal, en stuurt die nooit naar ons.</p>
+  <p>We tellen bezoeken met Vercel Web Analytics. Dat slaat niets op uw apparaat op. Bezoeken worden gegroepeerd met een code die elke dag verandert, zodat we alleen totalen zien, zoals pagina's, landen en apparaten, en nooit individuele bezoekers. Onze grondslag is ons gerechtvaardigd belang om te weten hoe de site wordt gebruikt (art. 6(1)(f)).</p>
+  <h2>Doorgifte buiten de EU</h2>
+  <p>Sommige dienstverleners zijn gevestigd in de VS. Verlaten gegevens de EU, dan worden ze beschermd door het EU-VS Data Privacy Framework of de modelcontractbepalingen van de Europese Commissie.</p>
+  <h2>Uw rechten</h2>
+  <p>U kunt ons vragen uw gegevens in te zien, te corrigeren of te wissen, het gebruik ervan te beperken, of ze in een overdraagbaar formaat te ontvangen. U kunt ook bezwaar maken tegen verwerking op basis van ons gerechtvaardigd belang. Mail naar <a href="mailto:info@masev.ro">info@masev.ro</a> of <a href="mailto:admin@mail.kalyd.app">admin@mail.kalyd.app</a> en we antwoorden binnen een maand.</p>
+  <p>Bent u niet tevreden, dan kunt u een klacht indienen bij de Roemeense toezichthouder, Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, 010336 Boekarest, <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">dataprotection.ro</a>, of bij de toezichthouder in uw eigen EU-land. In België is dat de Gegevensbeschermingsautoriteit, <a href="https://www.gegevensbeschermingsautoriteit.be" target="_blank" rel="noopener">gegevensbeschermingsautoriteit.be</a>.</p>
+  <h2>Wijzigingen in dit beleid</h2>
+  <p>We werken deze pagina bij wanneer de manier waarop we met gegevens omgaan verandert, bijvoorbeeld wanneer Kalyd een eigen bedrijf wordt. De datum bovenaan toont de laatste versie. Raakt een wijziging gegevens die u ons al hebt gegeven, dan laten we het u per e-mail weten.</p>
+</article>
+<article lang="fr" data-lang="fr" hidden>
+  <h1>Politique de confidentialité</h1>
+  <p class="meta">Dernière mise à jour : 11 novembre 2026</p>
+  <p class="tr-note">Cette traduction est fournie à titre informatif. En cas de divergence, la version anglaise prévaut.</p>
+  <h2>Qui sommes-nous</h2>
+  <p>Kalyd est un système de gestion du transport développé par Masev S.R.L., Str. Zorilor nr. 6, bl. Z7, ap. 28, 700377 Iași, Roumanie, code fiscal (CUI) 49017137, numéro de TVA RO49017137. Masev S.R.L. est le responsable du traitement des données personnelles décrites dans cette politique.</p>
+  <p>Questions sur vos données : <a href="mailto:info@masev.ro">info@masev.ro</a> ou <a href="mailto:admin@mail.kalyd.app">admin@mail.kalyd.app</a>.</p>
+  <h2>Les données que nous collectons et pourquoi</h2>
+  <p>Nous ne collectons que ce que vous nous envoyez via le site, ainsi que les données techniques que reçoit tout site web. Nous ne vendons pas vos données et ne les utilisons pas à des fins publicitaires.</p>
+  <div class="tbl t5"><table><thead><tr><th scope="col">Données</th><th scope="col">Quand</th><th scope="col">Pourquoi</th><th scope="col">Base légale</th><th scope="col">Conservation</th></tr></thead><tbody><tr><td data-label="Données">Nom, e-mail professionnel, entreprise, fonction</td><td data-label="Quand">Vous demandez une démo ou un pilote</td><td data-label="Pourquoi">Pour vous contacter au sujet de votre demande</td><td data-label="Base légale">Mesures précontractuelles prises à votre demande (RGPD art. 6(1)(b))</td><td data-label="Conservation">12 mois après notre dernier contact</td></tr><tr><td data-label="Données">Type d'entreprise, taille de la flotte, commandes par semaine, mode de réception des commandes</td><td data-label="Quand">Vous demandez un pilote</td><td data-label="Pourquoi">Pour préparer un pilote sur des commandes comme les vôtres</td><td data-label="Base légale">Mesures précontractuelles prises à votre demande (art. 6(1)(b))</td><td data-label="Conservation">12 mois après notre dernier contact</td></tr><tr><td data-label="Données">Adresse IP, navigateur, pages demandées, heure</td><td data-label="Quand">Vous visitez le site</td><td data-label="Pourquoi">Pour fournir le site et en assurer la sécurité</td><td data-label="Base légale">Notre intérêt légitime (art. 6(1)(f))</td><td data-label="Conservation">30 jours maximum</td></tr></tbody></table></div>
+  <p>Si vous devenez client, vos données relèvent du contrat client et de ses conditions de traitement des données.</p>
+  <h2>Qui d'autre traite vos données</h2>
+  <p>Ces prestataires ne traitent les données que sur nos instructions, dans le cadre d'un accord de traitement des données.</p>
+  <div class="tbl t2"><table><thead><tr><th scope="col">Prestataire</th><th scope="col">Ce qu'il fait pour nous</th></tr></thead><tbody><tr><td data-label="Prestataire">Vercel Inc.</td><td data-label="Ce qu'il fait pour nous">Héberge le site, les vidéos et les polices ; statistiques de visite optionnelles</td></tr><tr><td data-label="Prestataire">Supabase Inc.</td><td data-label="Ce qu'il fait pour nous">Conserve les demandes de démo et de pilote dans notre base de données</td></tr><tr><td data-label="Prestataire">Zoho Corporation B.V. (Zoho Mail)</td><td data-label="Ce qu'il fait pour nous">Envoie chaque nouvelle demande à notre adresse e-mail d'administration</td></tr></tbody></table></div>
+  <p>Le site ne charge aucune police, aucun script ni aucune vidéo d'autres entreprises.</p>
+  <h2>Cookies et statistiques</h2>
+  <p>Le site ne dépose aucun cookie. Il enregistre deux réglages dans votre navigateur, votre thème clair ou sombre et votre langue, et ne nous les envoie jamais.</p>
+  <p>Nous comptons les visites avec Vercel Web Analytics. Cet outil n'enregistre rien sur votre appareil. Les visites sont regroupées par un code qui change chaque jour : nous voyons des totaux, comme les pages, les pays et les appareils, jamais des visiteurs individuels. Notre base est notre intérêt légitime à savoir comment le site est utilisé (art. 6(1)(f)).</p>
+  <h2>Transferts hors de l'UE</h2>
+  <p>Certains prestataires sont établis aux États-Unis. Lorsque des données quittent l'UE, elles sont protégées par le cadre de protection des données UE-États-Unis (Data Privacy Framework) ou par les clauses contractuelles types de la Commission européenne.</p>
+  <h2>Vos droits</h2>
+  <p>Vous pouvez nous demander d'accéder à vos données, de les rectifier ou de les effacer, d'en limiter l'utilisation ou de les recevoir dans un format portable. Vous pouvez aussi vous opposer au traitement fondé sur notre intérêt légitime. Écrivez à <a href="mailto:info@masev.ro">info@masev.ro</a> ou <a href="mailto:admin@mail.kalyd.app">admin@mail.kalyd.app</a> : nous répondons dans un délai d'un mois.</p>
+  <p>Si vous n'êtes pas satisfait, vous pouvez introduire une réclamation auprès de l'autorité roumaine de protection des données, Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Sector 1, 010336 Bucarest, <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">dataprotection.ro</a>, ou auprès de l'autorité de votre propre pays de l'UE. En Belgique, il s'agit de l'Autorité de protection des données, <a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noopener">autoriteprotectiondonnees.be</a>.</p>
+  <h2>Modifications de cette politique</h2>
+  <p>Nous mettons cette page à jour lorsque notre façon de traiter les données change, par exemple lorsque Kalyd deviendra une entreprise à part entière. La date en haut de la page indique la dernière version. Si une modification concerne des données que vous nous avez déjà transmises, nous vous en informons par e-mail.</p>
+</article>
+</main>
+<script>
+(() => {
+  const TITLES = {'en': 'Privacy Policy', 'nl': 'Privacybeleid', 'fr': 'Politique de confidentialité'};
+  const g = document.querySelector('.lang'), btn = g.querySelector('.lang-btn');
+  function set(code, save){
+    code = (code || 'en').toLowerCase();
+    if(!TITLES[code]) code = 'en';
+    document.querySelectorAll('[data-lang]').forEach(el => {
+      if(el.tagName === 'LI') el.setAttribute('aria-selected', el.dataset.lang.toLowerCase() === code);
+      else el.hidden = el.dataset.lang !== code;
+    });
+    g.querySelector('.lang-cur').textContent = code.toUpperCase();
+    document.documentElement.lang = code;
+    document.title = TITLES[code] + ' · Kalyd';
+    if(save) try{ localStorage.setItem('kalyd-lang', code.toUpperCase()); }catch(e){}
+  }
+  let start = new URLSearchParams(location.search).get('lang');
+  if(!start) try{ start = localStorage.getItem('kalyd-lang'); }catch(e){}
+  set(start, false);
+  btn.addEventListener('click', e => { e.stopPropagation(); const o = !g.classList.contains('open'); g.classList.toggle('open', o); btn.setAttribute('aria-expanded', o); });
+  g.querySelectorAll('li').forEach(li => li.addEventListener('click', () => { set(li.dataset.lang, true); g.classList.remove('open'); btn.setAttribute('aria-expanded', false); }));
+  document.addEventListener('click', () => { g.classList.remove('open'); btn.setAttribute('aria-expanded', false); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') g.classList.remove('open'); });
+})();
+</script>
+</body>
+</html>
