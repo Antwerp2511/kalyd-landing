@@ -385,10 +385,8 @@ footer::before{background-position:left top}
 .chip input:checked + span{background:var(--brand-soft);border-color:var(--brand);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--brand)}
 .chip input:focus-visible + span{outline:2px solid var(--ink);outline-offset:2px}
 .fg.err .chips span{border-color:var(--bad-line)}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2);cursor:pointer}
-.consent input{width:16px;height:16px;margin:2px 0 0;accent-color:var(--ink);flex:none;cursor:pointer}
-.consent a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
-.fg.err .consent{color:var(--bad-ink)}
+.consent-note{margin:4px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+.consent-note a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
 .dm-actions{display:flex;align-items:center;gap:10px;margin-top:6px}
 .dm-actions .btn-back{background:none;border:0;font:inherit;font-size:14.5px;color:var(--ink-2);cursor:pointer;padding:0 6px;height:42px}
 .dm-actions .btn-back:hover{color:var(--ink)}
@@ -1003,7 +1001,7 @@ body.dm-lock{overflow:hidden}
         <div class="fg"><label for="f-company">Company <span class="opt">(optional)</span></label><input id="f-company" name="company" type="text" autocomplete="organization"></div>
         <div class="fg"><span class="flbl">Your role <span class="opt">(optional)</span></span><div class="chips"><label class="chip"><input type="radio" name="role" value="Owner"><span>Owner</span></label><label class="chip"><input type="radio" name="role" value="Operations manager"><span>Operations manager</span></label><label class="chip"><input type="radio" name="role" value="Dispatcher"><span>Dispatcher</span></label><label class="chip"><input type="radio" name="role" value="Finance"><span>Finance</span></label><label class="chip"><input type="radio" name="role" value="Other"><span>Other</span></label></div></div>
 
-        <div class="fg demo-only" data-group="consent_demo"><label class="consent"><input type="checkbox" name="privacy" value="accepted"><span>I agree to the <a href="#privacy" target="_blank">Privacy Policy</a>.</span></label><span class="emsg">Please accept the Privacy Policy to continue.</span></div>
+        <p class="consent-note demo-only">We'll use these details to contact you about your demo. See our <a href="#privacy">Privacy Policy</a>.</p>
         <div class="dm-actions"><button class="btn btn-primary" type="button" data-next><span id="dmNextTxt">Continue</span> <span class="arr">→</span></button></div>
       </div>
 
@@ -1021,9 +1019,8 @@ body.dm-lock{overflow:hidden}
 
         <div style="height:18px"></div>
         <input type="hidden" name="source" id="f-source" value="demo">
-        <div class="fg" data-group="consent"><label class="consent"><input type="checkbox" name="privacy" value="accepted"><span>I agree to the <a href="#privacy" target="_blank">Privacy Policy</a>.</span></label><span class="emsg">Please accept the Privacy Policy to continue.</span></div>
         <div class="dm-actions"><button class="btn-back" type="button" data-back>← Back</button><button class="btn btn-brand" type="submit"><span id="dmSubmitTxt">Pick a time</span> <span class="arr">→</span></button></div>
-        <p class="dm-note">Your answers only go to the Kalyd team.</p>
+        <p class="dm-note consent-note">We'll use these details to contact you about your pilot. See our <a href="#privacy">Privacy Policy</a>.</p>
       </div>
     </form>
     <!-- step 3 (demo only): pick a slot in Valentin's calendar.
