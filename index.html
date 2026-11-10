@@ -110,7 +110,7 @@ h2{font-size:clamp(32px,4.2vw,52px);line-height:1.06}
 h3{font-size:19px;letter-spacing:-.015em;line-height:1.3}
 .lead{font-size:clamp(17px,1.5vw,19.5px);color:var(--ink-2);line-height:1.55}
 .muted{color:var(--ink-2)}
-mark{background:linear-gradient(transparent 58%,var(--brand-tint) 58%,var(--brand-tint) 92%,transparent 92%);color:inherit;padding:0 .04em}
+mark{background:linear-gradient(transparent 84%,var(--brand) 84%,var(--brand) 96%,transparent 96%);color:inherit;padding:0 .04em}
 
 /* ---------- hero ---------- */
 .hero{background:radial-gradient(1200px 500px at 50% -10%,var(--brand-soft),transparent 70%),var(--bg);overflow:hidden}
@@ -1077,7 +1077,12 @@ body.dm-lock{overflow:hidden}
   addEventListener('message', e => {
     if(e.data === 'kalyd-demo-done' && e.source === frames[i].contentWindow) play((i + 1) % frames.length);
   });
+  // the screens follow the site's light / dark switch
+  const theme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  const syncTheme = () => frames.forEach(f => f.contentWindow && f.contentWindow.postMessage({kalydTheme: theme()}, '*'));
+  new MutationObserver(syncTheme).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
   frames.forEach(f => f.addEventListener('load', () => {
+    f.contentWindow.postMessage({kalydTheme: theme()}, '*');
     if(++loaded === frames.length && !started){ started = true; play(0); }
   }));
 })();
