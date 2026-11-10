@@ -493,10 +493,12 @@ body.dm-lock{overflow:hidden}
 .how{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:stretch}
 .how-media{position:relative;display:flex;align-items:center;padding:28px 28px 28px 0}
 .how-media::before{content:"";position:absolute;inset:0 0 0 24px;background:var(--brand);border-radius:16px}
-.how-video{position:relative;width:100%;aspect-ratio:16/10;border-radius:10px;overflow:hidden;display:grid;place-items:center;background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px)}
+.how-video{position:relative;width:100%;border:0;padding:0;font:inherit;cursor:pointer;aspect-ratio:16/10;border-radius:10px;overflow:hidden;display:grid;place-items:center;background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px)}
 .how-video img,.how-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .how-video img{transform:scale(1.4);transform-origin:54% 46%}
-.how-play{position:relative;width:64px;height:64px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px -6px rgba(2,55,157,.5)}
+.how-play{position:relative;width:64px;height:64px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px -6px rgba(2,55,157,.5);transition:transform .2s}
+.how-video:hover .how-play,.how-video:focus-visible .how-play{transform:scale(1.08)}
+.how-video:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 .how-steps{list-style:none;margin:0;padding:0;display:grid;gap:6px;align-content:center}
 .hs{--dur:4600ms;position:relative;display:grid;grid-template-columns:56px 1fr;gap:16px;width:100%;padding:14px 0 14px 22px;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
 .hs::before,.hs::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--line-2)}
@@ -519,9 +521,10 @@ body.dm-lock{overflow:hidden}
 
 .vm{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(14,15,16,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .vm.open{display:flex}
-.vm-box{position:relative;width:100%;max-width:960px}
+.vm-box{position:relative;width:100%;max-width:1200px}
 .vm-media{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
 .vm-media video,.vm-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vm-media video{object-fit:contain;background:#000}
 .vm-soon{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:#fff;background:rgba(14,15,16,.72);border-radius:var(--radius);padding:6px 10px;white-space:nowrap}
 .vm-close{top:-44px;right:0;color:#fff}
 .vm-close:hover{background:rgba(255,255,255,.14);color:#fff}
@@ -775,11 +778,10 @@ body.dm-lock{overflow:hidden}
       <h2>From inbox to invoice, in four steps.</h2>
     </div>
     <div class="how reveal">
-      <!-- poster for now: swap the img and play button for <video src="..." poster="how-video-poster.webp" autoplay muted loop playsinline></video> -->
-      <div class="how-media"><div class="how-video">
+      <div class="how-media"><button class="how-video" type="button" id="howPlay" aria-label="Play the How it works video">
         <img src="how-video-poster.webp" alt="Kalyd dashboard on a laptop" loading="lazy">
         <span class="how-play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg></span>
-      </div></div>
+      </button></div>
       <ol class="how-steps" id="howSteps">
         <li><button class="hs on" type="button"><span class="hs-ico">01</span><span class="hs-body"><strong>An order comes in.</strong><span class="hs-p">By email, exactly how your customers already send it today. Body text or PDF.</span></span></button></li>
         <li><button class="hs" type="button"><span class="hs-ico">02</span><span class="hs-body"><strong>Kalyd builds the order.</strong><span class="hs-p">Parties, loading reference, addresses, dates, pallets and price land on the dispatch board automatically. Dangerous goods are flagged as ADR the moment the order is read.</span></span></button></li>
@@ -1439,15 +1441,17 @@ document.querySelectorAll('.mq-row').forEach(row=>{
 
 /* ---------- hero video: opens only from the Watch button ---------- */
 (() => {
-  // Path to the Kalyd video, e.g. 'kalyd-intro.mp4'. Empty = show the poster with a note.
+  // Hero "About us" card: path to its video. Empty = show the poster with a note.
   const VIDEO_SRC = '';
+  // How it works: original 1080p file, remuxed only (no re-encode), so quality is untouched.
+  const HOW_SRC = 'how-video.mp4';
   const modal = document.getElementById('vidModal');
   const media = document.getElementById('vidMedia');
   let last = null;
-  function open(){
+  function open(src){
     last = document.activeElement;
-    media.innerHTML = VIDEO_SRC
-      ? `<video src="${VIDEO_SRC}" poster="how-video-poster.webp" controls autoplay playsinline></video>`
+    media.innerHTML = src
+      ? `<video src="${src}" controls autoplay playsinline preload="auto"></video>`
       : '<img src="how-video-poster.webp" alt="Kalyd dashboard on a laptop"><span class="vm-soon">Video coming soon</span>';
     modal.hidden = false; modal.classList.add('open');
     document.body.classList.add('dm-lock');
@@ -1459,7 +1463,8 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     document.body.classList.remove('dm-lock');
     if(last) last.focus({preventScroll:true});
   }
-  document.getElementById('watchBtn').addEventListener('click',open);
+  document.getElementById('watchBtn').addEventListener('click',()=>open(VIDEO_SRC));
+  document.getElementById('howPlay').addEventListener('click',()=>open(HOW_SRC));
   modal.querySelector('.vm-close').addEventListener('click',close);
   modal.addEventListener('mousedown',e=>{ if(e.target===modal) close(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !modal.hidden) close(); });
