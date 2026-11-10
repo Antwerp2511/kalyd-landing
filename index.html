@@ -140,6 +140,8 @@ mark{background:linear-gradient(transparent 84%,var(--brand) 84%,var(--brand) 96
 .proof-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
 .proof{display:grid;grid-template-columns:1.05fr 1fr;gap:0}
 .proof .ph{min-height:420px;border-right:1px solid var(--line)}
+.proof-photo{position:relative;overflow:hidden;background:var(--bg-sunk)}
+.proof-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:38% 40%}
 .placeholder{position:relative;background:repeating-linear-gradient(135deg,var(--bg-soft) 0 12px,var(--bg-sunk) 12px 13px);display:grid;place-items:center;color:var(--ink-3);font-size:13px;font-family:var(--mono);text-align:center;padding:24px}
 .placeholder span{background:var(--surface);border:1px dashed var(--line-2);border-radius:8px;padding:8px 12px}
 .proof-txt{padding:56px}
@@ -818,7 +820,8 @@ body.dm-lock{overflow:hidden}
 <section class="sec" id="customers" data-stop="Customers">
   <div class="frame"><div class="sec-inner"><div class="proof-card">
     <div class="proof">
-      <div class="placeholder ph"><span>Photo · Masev team · TBC: ask Sergiu for a team photo</span></div>
+      <!-- temporary photo until Masev sends a real team photo -->
+      <div class="ph proof-photo"><img src="testimonial-photo.webp" alt="Transport manager with a clipboard in front of a truck" width="2000" height="1116" loading="lazy" decoding="async"></div>
       <div class="proof-txt reveal">
         <div class="kicker">Running live operations at Masev</div>
         <p class="quote">“As a transport manager, I need to know where things stand. Now I open Kalyd and I see it all: every order from email, every driver on the road, every invoice. One app, and I don’t need to call my dispatchers anymore.”</p>
