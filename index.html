@@ -523,6 +523,9 @@ body.dm-lock{overflow:hidden}
 .vm-media{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
 .vm-media video,.vm-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .vm-media video{object-fit:contain;background:#000}
+/* vertical (9:16) videos, e.g. the hero About us clip */
+.vm-box.portrait{max-width:min(430px,calc((100vh - 120px) * 9 / 16))}
+.vm-box.portrait .vm-media{aspect-ratio:9/16}
 .vm-soon{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:#fff;background:rgba(14,15,16,.72);border-radius:var(--radius);padding:6px 10px;white-space:nowrap}
 .vm-close{top:-44px;right:0;color:#fff}
 .vm-close:hover{background:rgba(255,255,255,.14);color:#fff}
@@ -544,6 +547,7 @@ body.dm-lock{overflow:hidden}
 .hx-vid:hover{transform:rotate(2deg) scale(1.03)}
 .hx-frame{position:relative;display:block;aspect-ratio:16/10;border-radius:7px;overflow:hidden}
 .hx-frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.4);transform-origin:54% 46%}
+.hx-frame img.hx-about{transform:none}
 .hx-play{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center}
 .hx-vid b{display:block;margin-top:4px;font-size:11px;font-weight:600;color:var(--brand-ink)}
 .hx-drv{right:0;top:5%;width:284px;padding:14px;transform:rotate(2deg) scale(.6);transform-origin:top right}
@@ -714,7 +718,7 @@ body.dm-lock{overflow:hidden}
         <div class="hx-hub logo"><img class="on-light" src="kalyd-logo.svg" alt="Kalyd" width="62" height="21"><img class="on-dark" src="kalyd-logo-dark.svg" alt="Kalyd" width="62" height="21"></div>
         <div class="hx-card hx-chip hx-orders"><span class="hx-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>Orders</div>
         <div class="hx-card hx-chip hx-board"><span class="hx-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>Dispatch board</div>
-        <button class="hx-card hx-vid" type="button" id="watchBtn" aria-label="Play the About us video"><span class="hx-frame"><img src="how-video-poster.webp" alt=""><span class="hx-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg></span></span><b>About us</b></button>
+        <button class="hx-card hx-vid" type="button" id="watchBtn" aria-label="Play the About us video"><span class="hx-frame"><img class="hx-about" src="about-video-poster.jpg" alt=""><span class="hx-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg></span></span><b>About us</b></button>
         <div class="hx-card hx-drv">
           <b class="hx-cap">Driver profile</b>
           <div class="hx-drv-top"><img class="hx-av" src="hero-driver.png" alt="" width="44" height="44"><div><div class="hx-name">Jan Peeters</div><div class="hx-tel">+32 470 00 00 00</div></div><span class="hx-status"><i></i>On route</span></div>
@@ -814,11 +818,11 @@ body.dm-lock{overflow:hidden}
 <section class="sec" id="customers" data-stop="Customers">
   <div class="frame"><div class="sec-inner"><div class="proof-card">
     <div class="proof">
-      <div class="placeholder ph"><span>Photo · Masev team · TBC: ask Sergio for a team photo</span></div>
+      <div class="placeholder ph"><span>Photo · Masev team · TBC: ask Sergiu for a team photo</span></div>
       <div class="proof-txt reveal">
         <div class="kicker">Running live operations at Masev</div>
-        <p class="quote">“As an owner, I need to know where things stand. Now I open Kalyd and I see it all: every order from email, every driver on the road, every invoice. One app, and I don’t need to call my dispatchers anymore.” <span class="tbc">Draft · pending approval</span></p>
-        <div class="who"><span class="avatar">S</span><div><b>Sergio</b><small>CEO · Masev, Port of Antwerp</small></div></div>
+        <p class="quote">“As a transport manager, I need to know where things stand. Now I open Kalyd and I see it all: every order from email, every driver on the road, every invoice. One app, and I don’t need to call my dispatchers anymore.”</p>
+        <div class="who"><span class="avatar">S</span><div><b>Sergiu</b><small>Transport Manager at Masev</small></div></div>
       </div>
     </div>
     <div class="stats">
@@ -1020,7 +1024,7 @@ body.dm-lock{overflow:hidden}
         <div style="height:18px"></div>
         <input type="hidden" name="source" id="f-source" value="demo">
         <div class="dm-actions"><button class="btn-back" type="button" data-back>← Back</button><button class="btn btn-brand" type="submit"><span id="dmSubmitTxt">Pick a time</span> <span class="arr">→</span></button></div>
-        <p class="dm-note consent-note">We'll use these details to contact you about your pilot. See our <a href="#privacy">Privacy Policy</a>.</p>
+        <p class="dm-note consent-note">We'll use these details to contact you about Kalyd. See our <a href="#privacy">Privacy Policy</a>.</p>
       </div>
     </form>
     <!-- step 3 (demo only): pick a slot in Valentin's calendar.
@@ -1053,7 +1057,7 @@ body.dm-lock{overflow:hidden}
     <div class="dm-done" id="dmDone">
       <div class="ok"><svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="m3 8.5 3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h3 id="dmDoneT">Thanks, we've got it.</h3>
-      <p id="dmDoneP">We'll reach out within one business day to set up your pilot.</p>
+      <p id="dmDoneP">We'll reach out within one business day to set up your demo or pilot.</p>
       <button class="btn btn-primary" type="button" data-close>Back to the site</button><br>
       <span class="dm-demo" id="dmDemoNote" hidden>Demo mode: no data was sent.</span>
     </div>
@@ -1189,10 +1193,11 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     if(lastFocus) lastFocus.focus({preventScroll:true});
   }
 
-  // every "Book a demo" / "Start a free pilot" button opens the form
+  // every "Book a demo" / "Start a free pilot" button opens the same contact form
+  // (the calendar step below is no longer used; it was the old "Book a demo" flow)
   document.querySelectorAll('a[href="#demo"]').forEach(a=>a.addEventListener('click',e=>{
     e.preventDefault();
-    open(/pilot/i.test(a.textContent));
+    open(true);
   }));
   modal.querySelector('.dm-close').addEventListener('click',close);
   modal.querySelector('[data-close]').addEventListener('click',close);
@@ -1259,7 +1264,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
       if(pilot){
         head.forEach(h=>h.hidden=true);
         document.getElementById('dmDoneT').textContent = "Thanks, we've got it.";
-        document.getElementById('dmDoneP').textContent = "We'll reach out within one business day to set up your pilot.";
+        document.getElementById('dmDoneP').textContent = "We'll reach out within one business day to set up your demo or pilot.";
         done.classList.add('on');
       } else {
         openBooking(data);
@@ -1439,14 +1444,16 @@ document.querySelectorAll('.mq-row').forEach(row=>{
 /* ---------- hero video: opens only from the Watch button ---------- */
 (() => {
   // Hero "About us" card: path to its video. Empty = show the poster with a note.
-  const VIDEO_SRC = '';
+  // 1080x1920 (vertical), re-encoded from the 4K original at 8 Mbps.
+  const VIDEO_SRC = 'about-video.mp4';
   // How it works: original 1080p file, remuxed only (no re-encode), so quality is untouched.
   const HOW_SRC = 'how-video.mp4';
   const modal = document.getElementById('vidModal');
   const media = document.getElementById('vidMedia');
   let last = null;
-  function open(src){
+  function open(src, portrait){
     last = document.activeElement;
+    modal.querySelector('.vm-box').classList.toggle('portrait', !!portrait);
     media.innerHTML = src
       ? `<video src="${src}" controls autoplay playsinline preload="auto"></video>`
       : '<img src="how-video-poster.webp" alt="Kalyd dashboard on a laptop"><span class="vm-soon">Video coming soon</span>';
@@ -1460,7 +1467,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     document.body.classList.remove('dm-lock');
     if(last) last.focus({preventScroll:true});
   }
-  document.getElementById('watchBtn').addEventListener('click',()=>open(VIDEO_SRC));
+  document.getElementById('watchBtn').addEventListener('click',()=>open(VIDEO_SRC, true));
   document.getElementById('howPlay').addEventListener('click',()=>open(HOW_SRC));
   modal.querySelector('.vm-close').addEventListener('click',close);
   modal.addEventListener('mousedown',e=>{ if(e.target===modal) close(); });
