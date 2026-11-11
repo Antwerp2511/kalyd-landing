@@ -387,6 +387,7 @@ footer::before{background-position:left top}
 .chip input:checked + span{background:var(--brand-soft);border-color:var(--brand);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--brand)}
 .chip input:focus-visible + span{outline:2px solid var(--ink);outline-offset:2px}
 .fg.err .chips span{border-color:var(--bad-line)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .consent-note{margin:4px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
 .consent-note a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
 .dm-actions{display:flex;align-items:center;gap:10px;margin-top:6px}
@@ -1026,6 +1027,8 @@ body.dm-lock{overflow:hidden}
 
         <div style="height:18px"></div>
         <input type="hidden" name="source" id="f-source" value="demo">
+        <!-- spam trap: hidden from people, bots fill it -->
+        <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="dm-actions"><button class="btn-back" type="button" data-back>← Back</button><button class="btn btn-brand" type="submit"><span id="dmSubmitTxt">Pick a time</span> <span class="arr">→</span></button></div>
         <p class="dm-note consent-note">We'll use these details to contact you about Kalyd. See our <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
       </div>
@@ -1143,9 +1146,10 @@ document.querySelectorAll('.mq-row').forEach(row=>{
 
 /* ---------- demo request form ---------- */
 (() => {
-  // Paste a form endpoint here (Formspree, HubSpot, your own API) to send real submissions.
-  // While it's empty the form runs in demo mode and only shows the thank-you screen.
-  const FORM_ENDPOINT = '';
+  // Vercel Function that saves the request in Supabase and emails the admin inbox (api/contact.js).
+  // Empty = demo mode: the form only shows the thank-you screen.
+  const FORM_ENDPOINT = '/api/contact';
+  let openedAt = Date.now();
 
   const modal = document.getElementById('demoModal');
   const form = document.getElementById('demoForm');
@@ -1179,6 +1183,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     pilot = isPilot;
     lastFocus = document.activeElement;
     form.reset();
+    openedAt = Date.now();
     form.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
     form.hidden = false; done.classList.remove('on');
     book.classList.remove('on'); box.classList.remove('wide');
@@ -1251,6 +1256,8 @@ document.querySelectorAll('.mq-row').forEach(row=>{
       data[el.name] = data[el.name] ? [].concat(data[el.name], el.value) : el.value;
     }
     data.page = location.href;
+    data.lang = document.documentElement.lang;
+    data.t = openedAt;              // lets the server drop instant bot submissions
     return data;
   }
   async function send(data){

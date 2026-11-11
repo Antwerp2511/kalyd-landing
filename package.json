@@ -1,0 +1,9 @@
+{
+  "name": "kalyd-landing",
+  "private": true,
+  "description": "Kalyd landing page. Static HTML plus one Vercel Function for the contact form (api/contact.js).",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "nodemailer": "6.9.16"
+  }
+}
