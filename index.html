@@ -14,8 +14,13 @@
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="canonical" href="https://kalyd.app/">
+<link rel="alternate" hreflang="en" href="https://kalyd.app/">
+<link rel="alternate" hreflang="nl" href="https://kalyd.app/nl/">
+<link rel="alternate" hreflang="fr" href="https://kalyd.app/fr/">
+<link rel="alternate" hreflang="x-default" href="https://kalyd.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kalyd">
+<meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://kalyd.app/">
 <meta property="og:title" content="Kalyd — AI-powered TMS for road freight">
 <meta property="og:description" content="Your customers already email you orders. Kalyd turns that into dispatch: orders from your inbox land on the board, ready to assign, track and invoice.">
@@ -1118,19 +1123,19 @@ body.dm-lock{overflow:hidden}
 })();
 
 /* ---------- language switchers (header + footer stay in sync) ---------- */
+// Each language has its own page: / (English), /nl/ and /fr/ are built from this file
+// by i18n/build.py. Picking a language opens that page at the same spot.
 (() => {
+  const PAGES = {EN:'/', NL:'/nl/', FR:'/fr/'};
+  const cur = (document.documentElement.lang || 'en').toUpperCase();
   const groups = [...document.querySelectorAll('.lang')];
   const close = () => groups.forEach(g=>{g.classList.remove('open');g.querySelector('.lang-btn').setAttribute('aria-expanded','false')});
-  // the choice is remembered so privacy.html opens in the same language
-  function setLang(code, save){
-    groups.forEach(gr=>{
-      gr.querySelector('.lang-cur').textContent = code;
-      gr.querySelectorAll('li').forEach(x=>x.setAttribute('aria-selected',x.dataset.lang===code));
-    });
-    document.documentElement.lang = code.toLowerCase();
-    if(save) try{ localStorage.setItem('kalyd-lang', code); }catch(e){}
-  }
-  try{ const saved = localStorage.getItem('kalyd-lang'); if(['EN','NL','FR'].includes(saved)) setLang(saved, false); }catch(e){}
+  groups.forEach(gr=>{
+    gr.querySelector('.lang-cur').textContent = cur;
+    gr.querySelectorAll('li').forEach(x=>x.setAttribute('aria-selected',x.dataset.lang===cur));
+  });
+  // remembered so privacy.html opens in the same language
+  try{ localStorage.setItem('kalyd-lang', cur); }catch(e){}
   groups.forEach(g=>{
     const btn = g.querySelector('.lang-btn');
     btn.addEventListener('click',e=>{
@@ -1141,8 +1146,11 @@ body.dm-lock{overflow:hidden}
       btn.setAttribute('aria-expanded',open);
     });
     g.querySelectorAll('li').forEach(li=>li.addEventListener('click',()=>{
-      setLang(li.dataset.lang, true);
       close();
+      const code = li.dataset.lang;
+      if(code === cur || !PAGES[code]) return;
+      try{ localStorage.setItem('kalyd-lang', code); }catch(e){}
+      location.href = PAGES[code] + location.hash;
     }));
   });
   document.addEventListener('click',close);

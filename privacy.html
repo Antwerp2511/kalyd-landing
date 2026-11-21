@@ -192,6 +192,8 @@ tr:last-child td{border-bottom:0}
     g.querySelector('.lang-cur').textContent = code.toUpperCase();
     document.documentElement.lang = code;
     document.title = TITLES[code] + ' · Kalyd';
+    // logo and back link return to the home page in the same language
+    document.querySelectorAll('.logo, .back').forEach(a => a.href = {en: '/', nl: '/nl/', fr: '/fr/'}[code]);
     if(save) try{ localStorage.setItem('kalyd-lang', code.toUpperCase()); }catch(e){}
   }
   let start = new URLSearchParams(location.search).get('lang');
