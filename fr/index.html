@@ -144,7 +144,7 @@ mark{background:linear-gradient(transparent 84%,var(--brand) 84%,var(--brand) 96
 .hero{background:radial-gradient(1200px 500px at 50% -10%,var(--brand-soft),transparent 70%),var(--bg);overflow:hidden}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 70% 1134px at 50% 0%,#000 46%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 1134px at 50% 0%,#000 46%,transparent 75%);opacity:.7;pointer-events:none}
 .hero-inner{position:relative;padding:128px 56px 0;text-align:center}
-.hero h1{max-width:1240px;margin:28px auto 0;font-weight:700;letter-spacing:-.045em;font-size:clamp(36px,4.6vw,76px);text-wrap:balance}
+.hero h1{max-width:1240px;margin:28px auto 0;font-weight:700;letter-spacing:-.045em;font-size:clamp(32px,3.7vw,60px);text-wrap:balance}
 .h1-accent{background:linear-gradient(90deg,var(--brand) 0%,var(--brand-2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .eyebrow-ai{gap:8px;padding:6px 14px 6px 12px;color:var(--on-solid);background:var(--solid);border-color:var(--solid);font-weight:500;box-shadow:0 4px 14px -4px rgba(14,15,16,.35)}
 .hero .lead{max-width:640px;margin:24px auto 0}
@@ -605,16 +605,23 @@ body.dm-lock{overflow:hidden}
 .hx-inv{animation-delay:.75s}
 .hx-board{animation-delay:.85s}
 @media (prefers-reduced-motion:reduce){.hx-hub,.hx-copy,.hx-card{animation:none}.hx-lines .hx-draw{animation:none;stroke-dashoffset:0}.hx-pulses{display:none}}
+/* wide screens: a wider text column keeps the headline to 4 lines in every language */
+@media (min-width:1400px){
+  .hx-copy{max-width:760px}
+}
+@media (min-width:1600px){
+  .hx-copy{max-width:820px}
+}
 @media (max-width:1360px){
   .hx-copy{max-width:520px}
-  .hero .hx-copy h1{font-size:clamp(36px,3.5vw,48px)}
+  .hero .hx-copy h1{font-size:clamp(32px,2.9vw,40px)}
 }
 @media (max-width:1180px){
   .hx{min-height:0;display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 0 0}
   .hx-hub{display:none}
   .hx-lines{display:none}
   .hx-copy{order:-1;max-width:640px;margin-bottom:22px}
-  .hero .hx-copy h1{font-size:clamp(34px,6vw,52px)}
+  .hero .hx-copy h1{font-size:clamp(30px,5vw,44px)}
   .hx-card{display:none}            /* the floating cards only work around the headline on wide screens */
 }
 
