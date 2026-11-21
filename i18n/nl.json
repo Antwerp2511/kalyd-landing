@@ -232,6 +232,20 @@
     "Light mode": "Lichte modus",
     "Dark mode": "Donkere modus",
     "Start": "Start",
-    "<img src=\"how-video-poster.webp\" alt=\"Kalyd dashboard on a laptop\"><span class=\"vm-soon\">Video coming soon</span>": "<img src=\"how-video-poster.webp\" alt=\"Kalyd-dashboard op een laptop\"><span class=\"vm-soon\">Video volgt binnenkort</span>"
-  }
+    "<img src=\"how-video-poster.webp\" alt=\"Kalyd dashboard on a laptop\"><span class=\"vm-soon\">Video coming soon</span>": "<img src=\"how-video-poster.webp\" alt=\"Kalyd-dashboard op een laptop\"><span class=\"vm-soon\">Video volgt binnenkort</span>",
+    "Start my pilot": "Start mijn pilot",
+    "Continue": "Verder",
+    "Pick a time": "Kies een tijdstip",
+    "Thanks, we've got it.": "Bedankt, we hebben het goed ontvangen.",
+    "We'll reach out within one business day to set up your demo or pilot.": "We nemen binnen één werkdag contact met u op om uw demo of pilot in te plannen.",
+    "Book a demo with Valentin.": "Plan een demo met Valentin.",
+    "Tell us who you are, then pick a time that suits you.": "Vertel ons wie u bent en kies dan een tijdstip dat u past.",
+    "Book a call with Valentin.": "Plan een gesprek met Valentin.",
+    "Pick a time that suits you. You’ll get a calendar invite with a video link.": "Kies een tijdstip dat u past. U krijgt een agenda-uitnodiging met een videolink.",
+    "Pick a day": "Kies een dag",
+    "You're booked with Valentin.": "Uw afspraak met Valentin staat vast.",
+    "Brussels time": "Brusselse tijd"
+  },
+  "js_keep": ["About us", "Book a demo", "Start a free pilot"],
+  "_note": "js_keep: English text that only appears in code comments, so it needs no translation"
 }

@@ -234,6 +234,20 @@
     "Light mode": "Mode clair",
     "Dark mode": "Mode sombre",
     "Start": "Début",
-    "<img src=\"how-video-poster.webp\" alt=\"Kalyd dashboard on a laptop\"><span class=\"vm-soon\">Video coming soon</span>": "<img src=\"how-video-poster.webp\" alt=\"Tableau de bord Kalyd sur un ordinateur portable\"><span class=\"vm-soon\">Vidéo bientôt disponible</span>"
-  }
+    "<img src=\"how-video-poster.webp\" alt=\"Kalyd dashboard on a laptop\"><span class=\"vm-soon\">Video coming soon</span>": "<img src=\"how-video-poster.webp\" alt=\"Tableau de bord Kalyd sur un ordinateur portable\"><span class=\"vm-soon\">Vidéo bientôt disponible</span>",
+    "Start my pilot": "Lancer mon pilote",
+    "Continue": "Continuer",
+    "Pick a time": "Choisir un créneau",
+    "Thanks, we've got it.": "Merci, c'est bien reçu.",
+    "We'll reach out within one business day to set up your demo or pilot.": "Nous vous contactons sous un jour ouvrable pour organiser votre démo ou votre pilote.",
+    "Book a demo with Valentin.": "Réservez une démo avec Valentin.",
+    "Tell us who you are, then pick a time that suits you.": "Dites-nous qui vous êtes, puis choisissez un créneau qui vous convient.",
+    "Book a call with Valentin.": "Réservez un appel avec Valentin.",
+    "Pick a time that suits you. You’ll get a calendar invite with a video link.": "Choisissez un créneau qui vous convient. Vous recevrez une invitation avec un lien vidéo.",
+    "Pick a day": "Choisissez un jour",
+    "You're booked with Valentin.": "Votre rendez-vous avec Valentin est confirmé.",
+    "Brussels time": "heure de Bruxelles"
+  },
+  "js_keep": ["About us", "Book a demo", "Start a free pilot"],
+  "_note": "js_keep: English text that only appears in code comments, so it needs no translation"
 }

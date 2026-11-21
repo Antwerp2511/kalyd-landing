@@ -1225,10 +1225,10 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     form.hidden = false; done.classList.remove('on');
     book.classList.remove('on'); box.classList.remove('wide');
     modal.classList.toggle('pilot', pilot);
-    document.getElementById('dmTitle').textContent = pilot ? HEAD_T : 'Book a demo with Valentin.';
-    document.querySelector('#dmHead p').textContent = pilot ? HEAD_P : 'Tell us who you are, then pick a time that suits you.';
-    document.getElementById('dmSubmitTxt').textContent = 'Start my pilot';
-    document.getElementById('dmNextTxt').textContent = pilot ? 'Continue' : 'Pick a time';
+    document.getElementById('dmTitle').textContent = pilot ? HEAD_T : 'Plan een demo met Valentin.';
+    document.querySelector('#dmHead p').textContent = pilot ? HEAD_P : 'Vertel ons wie u bent en kies dan een tijdstip dat u past.';
+    document.getElementById('dmSubmitTxt').textContent = 'Start mijn pilot';
+    document.getElementById('dmNextTxt').textContent = pilot ? 'Verder' : 'Kies een tijdstip';
     head.forEach(h=>h.hidden=false);
     document.getElementById('f-source').value = pilot ? 'free pilot' : 'demo';
     modal.hidden = false;
@@ -1315,8 +1315,8 @@ document.querySelectorAll('.mq-row').forEach(row=>{
       form.hidden = true;
       if(pilot){
         head.forEach(h=>h.hidden=true);
-        document.getElementById('dmDoneT').textContent = "Thanks, we've got it.";
-        document.getElementById('dmDoneP').textContent = "We'll reach out within one business day to set up your demo or pilot.";
+        document.getElementById('dmDoneT').textContent = "Bedankt, we hebben het goed ontvangen.";
+        document.getElementById('dmDoneP').textContent = "We nemen binnen één werkdag contact met u op om uw demo of pilot in te plannen.";
         done.classList.add('on');
       } else {
         openBooking(data);
@@ -1329,7 +1329,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
   });
 
   /* ---- step 3: Valentin's calendar (mock until CAL_LINK is set) ---- */
-  const TZ_NOTE = 'Brussels time';
+  const TZ_NOTE = 'Brusselse tijd';
   const fmtDay = d => d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
   let lead = {}, view, selDay = null, selTime = null;
   const today = new Date(); today.setHours(0,0,0,0);
@@ -1348,8 +1348,8 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     prog.forEach(p=>p.classList.add('on'));
     stepLbl.textContent = labels()[2];
     modal.scrollTop = 0;
-    document.getElementById('dmTitle').textContent = 'Book a call with Valentin.';
-    document.querySelector('#dmHead p').textContent = 'Pick a time that suits you. You’ll get a calendar invite with a video link.';
+    document.getElementById('dmTitle').textContent = 'Plan een gesprek met Valentin.';
+    document.querySelector('#dmHead p').textContent = 'Kies een tijdstip dat u past. U krijgt een agenda-uitnodiging met een videolink.';
     box.classList.add('wide');
     book.classList.add('on');
     const live = document.getElementById('bkLive');
@@ -1386,7 +1386,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
   function drawSlots(){
     const list = document.getElementById('bkList');
     document.getElementById('bkGo').disabled = !selTime;
-    if(!selDay){ document.getElementById('bkDay').textContent = 'Pick a day'; list.innerHTML = ''; return; }
+    if(!selDay){ document.getElementById('bkDay').textContent = 'Kies een dag'; list.innerHTML = ''; return; }
     document.getElementById('bkDay').textContent = selDay.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
     const free = TIMES.filter((t,i)=>!taken(selDay,i));
     list.innerHTML = free.length ? free.map(t=>`<button type="button" class="${t===selTime?'sel':''}">${t}</button>`).join('') : '<p class="bk-empty">No free times this day.</p>';
@@ -1406,7 +1406,7 @@ document.querySelectorAll('.mq-row').forEach(row=>{
     if(!selDay || !selTime) return;
     book.classList.remove('on'); box.classList.remove('wide');
     head.forEach(h=>h.hidden=true);
-    document.getElementById('dmDoneT').textContent = `You're booked with Valentin.`;
+    document.getElementById('dmDoneT').textContent = `Uw afspraak met Valentin staat vast.`;
     document.getElementById('dmDoneP').textContent = `${fmtDay(selDay)} at ${selTime} (${TZ_NOTE}). A calendar invite with the video link is on its way to ${lead.email || 'your inbox'}.`;
     done.classList.add('on');
   });
